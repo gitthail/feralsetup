@@ -1,3 +1,13 @@
+FERALSETUP 3.5.2 — GUIDE AND PACKAGE CHECKS
+
+- Generated HTML key table reads the versioned addon layout.
+- Search and form-number configuration tested in a JavaScript stub runtime.
+- HTML scripts parse; internal anchors and local guide links verified.
+- Python release ZIP and HTML-generated ZIP contain exactly one FeralSetup folder.
+- Both ZIP paths contain byte-identical addon sources and the levelling guide.
+- Lua binding and levelling regression checks passed.
+Visual browser preview was unavailable; no live-client test.
+
 FERALSETUP 3.5.1 — HOTFIX CHECKS
 
 Passed Lua 5.1 binding and leveling tests:

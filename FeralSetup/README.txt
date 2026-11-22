@@ -1,4 +1,4 @@
-FERAL SETUP 3.5.1 — MAC/WINDOWS BINDINGS AND CAT STEALTH ACTIONS
+FERAL SETUP 3.5.2 — MAC/WINDOWS BINDINGS AND CAT STEALTH ACTIONS
 
 See KEYBINDS.txt for the full side-by-side layout and all modifiers.
 Every Cmd shortcut also works with Alt. No automatic form change on Q/E/B.

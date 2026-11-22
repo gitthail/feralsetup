@@ -1,4 +1,4 @@
--- FeralSetup v3.5.1: setup, snapshots, restore. All changes require a slash command.
+-- FeralSetup v3.5.2: setup, snapshots, restore. All changes require a slash command.
 -- No automatic restoration on login, no combat handlers and no spell casting.
 local A=FeralSetup
 local unpack=unpack or table.unpack
@@ -329,7 +329,7 @@ local function applySetup()
  db().pages.human=copy(main)
  if success then
   savedSnapshot()
-  A.say('Bindings, three fixed bars and Humanoid page installed (v3.5.1; Cmd/Alt aliases; Faerie Fire on Shift+R).')
+  A.say('Bindings, three fixed bars and Humanoid page installed (v3.5.2; Cmd/Alt aliases; Faerie Fire on Shift+R).')
   A.say('Wheel UP into Cat, then /feralsetup form. Wheel DOWN into Bear, run it again.')
   A.say('Then /feralsetup save to save a recovery snapshot and reload.')
  else A.say('Some operations failed. Backup was preserved; see messages above. /feralsetup undo reverses layout changes.') end
