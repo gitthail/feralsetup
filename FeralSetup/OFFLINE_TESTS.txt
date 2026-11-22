@@ -1,3 +1,13 @@
+FERALSETUP 3.5.1 — HOTFIX CHECKS
+
+Passed Lua 5.1 binding and leveling tests:
+- Shift+R casts Faerie Fire on the current target, not focus.
+- Ctrl+Shift+R casts on enemy mouseover.
+- Old Cmd/Alt+R addon bindings and targeting variants are removed.
+- Remaining Cmd/Alt alternatives, Prowl toggle and other tests still pass.
+
+Historical checks follow.
+
 FERALSETUP 3.5 — OFFLINE CHECKS
 
 Passed in Lua 5.1 with simulated APIs and a macro-condition evaluator:

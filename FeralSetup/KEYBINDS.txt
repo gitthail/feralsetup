@@ -1,4 +1,4 @@
-FERALSETUP 3.5 — MAC + WINDOWS
+FERALSETUP 3.5.1 — MAC + WINDOWS
 
 Cmd and Alt are alternatives everywhere Cmd is assigned. On Windows use Alt.
 Use one modifier at a time except the explicitly listed targeting combinations.
@@ -31,9 +31,9 @@ Ctrl+E        Mouseover charge in your current animal form.
 Shift/Ctrl+6  Focus/mouseover Growl in Bear.
 
 FIXED KEYS — EVERY FORM
-Cmd/Alt+R     Faerie Fire on target.
-Cmd/Alt+Shift+R   Faerie Fire on focus.
-Cmd/Alt+Ctrl+R    Faerie Fire on enemy mouseover.
+Shift+R       Faerie Fire on target.
+Ctrl+Shift+R  Faerie Fire on enemy mouseover.
+Faerie Fire has no focus shortcut in this temporary layout. Cmd/Alt+R unused.
 T             Roots. Shift = focus; Ctrl = enemy mouseover.
 X             Hibernate. Shift = focus; Ctrl = enemy mouseover.
 F             Rejuvenation
@@ -83,7 +83,7 @@ Humanoid main page retains 1 Moonfire, 2 Wrath, 3 Starfire, 4 Hurricane,
 R Soothe Animal; other main slots empty. Fixed keys still work.
 
 MIGRATION
-Faerie Fire moved from the key left of 1 to Cmd/Alt+R.
+Faerie Fire moved to Shift+R; previous Cmd/Alt+R assignments are removed.
 Focus moved from N to Shift+Space; Cmd/Alt+Shift+Space clears it.
 Frenzied Regeneration moved from Cmd+R to Cmd/Alt+J.
 B remains Challenging Roar in Bear and toggles Prowl only in Cat.

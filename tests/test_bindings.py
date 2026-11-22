@@ -26,7 +26,7 @@ end
 for f in (ROOT/'FeralSetup/FeralSetup.toc').read_text().splitlines():
  if f.endswith('.lua'): lua.execute((ROOT/'FeralSetup'/f).read_text())
 g=lua.globals();A=g.FeralSetup;layout=g.FeralSetupLayout
-for k,v in [('N','MULTIACTIONBAR2BUTTON12'),('`','MULTIACTIONBAR1BUTTON9'),('SECTION','MULTIACTIONBAR1BUTTON9'),('ALT-F','OLD'),('CMD-R','ACTIONBUTTON11'),('SHIFT-Q','OLD'),('F12','UNRELATED')]:g.bindings[k]=v
+for k,v in [('N','MULTIACTIONBAR2BUTTON12'),('`','MULTIACTIONBAR1BUTTON9'),('SECTION','MULTIACTIONBAR1BUTTON9'),('ALT-F','OLD'),('CMD-R','MULTIACTIONBAR1BUTTON9'),('ALT-R','MULTIACTIONBAR1BUTTON9'),('CMD-SHIFT-R','MULTIACTIONBAR1BUTTON9'),('SHIFT-Q','OLD'),('F12','UNRELATED')]:g.bindings[k]=v
 setup=g.findUp(g.findUp(g.SlashCmdList.FERALSETUP,'applySetup'),'setupBindings')
 assert setup()
 assert g.bindings['N'] is None and g.bindings['`'] is None and g.bindings['SECTION'] is None
@@ -35,7 +35,9 @@ assert g.bindings['ALT-F'] is None and g.bindings['SHIFT-Q'] is None
 for k,v in layout.bindings.items():
  assert g.bindings[k]==v,(k,v)
  if k.startswith('CMD-'): assert g.bindings['ALT-'+k[4:]]==v,k
-assert g.bindings['CMD-R']=='MULTIACTIONBAR1BUTTON9'
+assert g.bindings['CMD-R'] is None and g.bindings['ALT-R'] is None and g.bindings['CMD-SHIFT-R'] is None
+assert g.bindings['SHIFT-R']=='MULTIACTIONBAR1BUTTON9'
+assert g.bindings['CTRL-SHIFT-R']=='MULTIACTIONBAR1BUTTON9'
 assert g.bindings['CMD-J']=='ACTIONBUTTON11'
 assert g.bindings['SHIFT-SPACE']=='MULTIACTIONBAR2BUTTON12'
 assert g.bindings['ALT-Q']=='ACTIONBUTTON7'
@@ -104,10 +106,9 @@ for name,form in [('Cat Form',3),('Bear Form',1)]:
   out,state=run(name,form=form,mods=[mod]);assert out==[('cancel',),(name,'target')] and state['form']==form
   out,state=run(name,form=0,mods=[mod]);assert out==[(name,'target')] and state['form']==form
 for mod in ['cmd','alt']:
- assert run('Faerie Fire',mods=[mod])[0]==[('Faerie Fire','target')]
- assert run('Faerie Fire',mods=[mod,'shift'])[0]==[('Faerie Fire','focus')]
- assert run('Faerie Fire',mods=[mod,'ctrl'])[0]==[('Faerie Fire','mouseover')]
  assert run('Set Focus',mods=[mod,'shift'])[0]==[('/clearfocus','target')]
+assert run('Faerie Fire',mods=['shift'])[0]==[('Faerie Fire','target')]
+assert run('Faerie Fire',mods=['ctrl','shift'])[0]==[('Faerie Fire','mouseover')]
 assert run('Set Focus',mods=['shift'])[0]==[('/focus','mouseover')]
 # Both self modifiers must work identically, including with Shift/Ctrl held.
 friendly=['Rejuvenation','Regrowth','Healing Touch','Remove Curse','Poison Cleanse','Innervate','Thorns','Mark of the Wild']

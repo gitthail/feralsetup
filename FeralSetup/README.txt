@@ -1,13 +1,13 @@
-FERAL SETUP 3.5 — MAC/WINDOWS BINDINGS AND CAT STEALTH ACTIONS
+FERAL SETUP 3.5.1 — MAC/WINDOWS BINDINGS AND CAT STEALTH ACTIONS
 
 See KEYBINDS.txt for the full side-by-side layout and all modifiers.
 Every Cmd shortcut also works with Alt. No automatic form change on Q/E/B.
 B toggles Prowl in Cat; B remains Challenging Roar in Bear.
-Cmd/Alt+R = Faerie Fire; Cmd/Alt+J = Frenzied Regeneration in Bear.
+Shift+R = Faerie Fire; Cmd/Alt+J = Frenzied Regeneration in Bear.
 Shift+Space = set focus; Cmd/Alt+Shift+Space = clear focus.
 Alt+Q = Dash in Cat, including stealth.
 
-INSTALL / UPGRADE TO 3.5
+INSTALL / UPGRADE TO 3.5.1
 Replace the FeralSetup folder's files, then restart WoW.
 Out of combat, in humanoid form on main page 1: /feralsetup setup
 In Cat Form: /feralsetup form
@@ -17,7 +17,12 @@ Only populate forms you have learned. Setup replaces same-name guide macros
 and configured bars/bindings. Personal slots marked KEEP are not overwritten.
 Unlearned native spell slots remain empty. Train and place ranks manually.
 
+UPGRADE FROM 3.5 ONLY
+After /reload, run /feralsetup update, /feralsetup bindings, /feralsetup save.
+No form-page rebuild is needed for this hotfix.
+
 COMMANDS
+/feralsetup bindings Apply keybindings only; leave action bars unchanged.
 /feralsetup setup    Replace guide macros, fixed bars, bindings, humanoid page.
 /feralsetup form     Place current form page; reuse existing macro bodies.
 /feralsetup install  Replace/create guide macros only; no bar/binding changes.

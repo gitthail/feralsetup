@@ -1,4 +1,4 @@
--- FeralSetup v3.5: setup, snapshots, restore. All changes require a slash command.
+-- FeralSetup v3.5.1: setup, snapshots, restore. All changes require a slash command.
 -- No automatic restoration on login, no combat handlers and no spell casting.
 local A=FeralSetup
 local unpack=unpack or table.unpack
@@ -131,7 +131,9 @@ local function setupBindings()
   reserved['CTRL-'..k]=true;reserved['SHIFT-'..k]=true
  end
  -- Retire old addon keys; leave a user's unrelated replacement bindings alone.
- local retired={['N']='MULTIACTIONBAR2BUTTON12',['CMD-N']='MULTIACTIONBAR2BUTTON12',
+ local retired={['CMD-R']='MULTIACTIONBAR1BUTTON9',['ALT-R']='MULTIACTIONBAR1BUTTON9',
+  ['CMD-CTRL-R']='MULTIACTIONBAR1BUTTON9',['ALT-CTRL-R']='MULTIACTIONBAR1BUTTON9',
+  ['CMD-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['ALT-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['N']='MULTIACTIONBAR2BUTTON12',['CMD-N']='MULTIACTIONBAR2BUTTON12',
   ['`']='MULTIACTIONBAR1BUTTON9',['CTRL-`']='MULTIACTIONBAR1BUTTON9',['SHIFT-`']='MULTIACTIONBAR1BUTTON9'}
  if FeralSetupCharDB and FeralSetupCharDB.leftKey then
   local k=FeralSetupCharDB.leftKey
@@ -327,7 +329,7 @@ local function applySetup()
  db().pages.human=copy(main)
  if success then
   savedSnapshot()
-  A.say('Bindings, three fixed bars and Humanoid page installed (v3.5; Cmd/Alt aliases; Faerie Fire on Cmd/Alt+R).')
+  A.say('Bindings, three fixed bars and Humanoid page installed (v3.5.1; Cmd/Alt aliases; Faerie Fire on Shift+R).')
   A.say('Wheel UP into Cat, then /feralsetup form. Wheel DOWN into Bear, run it again.')
   A.say('Then /feralsetup save to save a recovery snapshot and reload.')
  else A.say('Some operations failed. Backup was preserved; see messages above. /feralsetup undo reverses layout changes.') end
@@ -407,6 +409,8 @@ SlashCmdList.FERALSETUP=function(msg)
  local cmd,rest=(msg or ''):match('^%s*(%S*)%s*(.-)%s*$');cmd=cmd:lower()
  if cmd=='setup' then applySetup()
  elseif cmd=='form' then applyForm()
+ elseif cmd=='bindings' then
+  if A.guard() then baseline();if setupBindings() then A.say('Bindings updated; bars unchanged. /feralsetup save after checking.') end end
  elseif cmd=='save' or cmd=='backup' then saveAndReload()
  elseif cmd=='restore' then restore(db().saved,'saved layout')
  elseif cmd=='undo' then restore(db().before,'pre-setup')
@@ -417,6 +421,7 @@ SlashCmdList.FERALSETUP=function(msg)
   if A.guard() and A.macros(true) then A.say('Guide macros installed/replaced. /feralsetup setup also places bars and bindings.') end
  else
   A.say('/feralsetup setup: replace same-name guide macros + current guide layout (start humanoid).')
+  A.say('/feralsetup bindings: apply keybindings only; leave bars unchanged.')
   A.say('/feralsetup form: place current page only; keep existing macro bodies.')
   A.say('/feralsetup save: snapshot + reload. /feralsetup restore: recover saved layout.')
   A.say('/feralsetup undo: pre-setup layout. /feralsetup status: diagnostics.')

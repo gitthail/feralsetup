@@ -58,7 +58,7 @@ FeralSetupMacros={
   },
   {
     ["name"]="Faerie Fire",
-    ["body"]="#showtooltip Faerie Fire\n/cast [mod:shift,@focus,harm,nodead][mod:ctrl,@mouseover,harm,nodead][nomod:shift/ctrl,harm,nodead] Faerie Fire"
+    ["body"]="#showtooltip Faerie Fire\n/cast [mod:ctrl,@mouseover,harm,nodead][nomod:ctrl,harm,nodead] Faerie Fire"
   },
   {
     ["name"]="Growl",
