@@ -1,0 +1,11 @@
+## Interface: 16001
+## Title: Feral Setup
+## Notes: Explicit macro, binding and action-bar setup, with local snapshot recovery.
+## Version: 3.4
+## SavedVariables: FeralSetupDB
+## SavedVariablesPerCharacter: FeralSetupCharDB
+Data.lua
+Layout.lua
+Installer.lua
+Recovery.lua
+Leveling.lua

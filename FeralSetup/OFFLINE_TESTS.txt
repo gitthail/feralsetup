@@ -1,0 +1,50 @@
+FERALSETUP 3.4 — PASSED 21 NOVEMBER 2026
+
+Lua 5.1 runtime with simulated WoW APIs (tests/test_leveling.py):
+- All addon Lua files load in TOC order.
+- Current/next areas at each route boundary and adjacent levels.
+- New event level used even when UnitLevel still returns the old level.
+- Milestone training and route-end message at 30; silence outside 15-30.
+- Manual guide; on/off commands; existing character data preserved.
+- Automatic reminders filtered to Alliance Druids.
+No live WoW client test performed.
+
+Historical checks below apply to earlier versions.
+
+FERALSETUP 3.3 — CURRENT CHECKS
+
+Passed 17 November 2026:
+- Mark macro matches Thorns routing, with 128 modifier/recipient cases checked.
+- Mark is 247 characters; all 30 default-resolved macros fit 255 characters
+  and names fit 16 characters.
+- Mark is a macro on Right slot 1 / key 8; modified-8 conflicts are reserved
+  for clearing during setup.
+- Setup HTML JavaScript renders with a DOM stub, including Mark placement.
+- Embedded addon files match standalone files.
+- Separate guide calculator: batch margin, per-minute margin, invalid time.
+
+No live WoW client test or Lua runtime execution was performed for v3.3.
+The tests below are historical supplied v3.2 results, not rerun for v3.3.
+
+FERALSETUP 3.2 — OFFLINE CHECKS
+
+PASS 1: all Lua source files load; 29 macro templates fit original limits
+PASS 2: fresh setup installs named Thorns macro at right slot 2, on key 9
+PASS 3: setup clears conflicting Cmd/Ctrl/Shift+9 while preserving unrelated binding
+PASS 4: setup replaces native Thorns and overwrites manual same-name macro
+PASS 5: same-name copies in General and Character pools both update
+PASS 6: repeated setup creates no duplicates and retains personal item slots
+PASS 7: Cat and Bear form commands populate only their live pages
+PASS 8: setup leaves existing Cat/Bear actions and bindings unchanged except Thorns modifiers
+PASS 9: form reuses edited page macros without reinstalling unrelated Thorns
+PASS 10: save snapshots the new Thorns macro and requests reload
+PASS 11: restore recovers Thorns and bindings after a simulated wipe
+PASS 12: setup refuses combat before changing Thorns
+PASS 13: status identifies v3.2
+ALL 13 LUA TESTS PASSED. Simulated APIs only, not a live client.
+
+PASS: 96 Thorns modifier/recipient/cancellation cases.
+PASS: all existing layout assignments unchanged except Thorns native -> macro.
+PASS: guide has 29 macros and Thorns on Right slot 2 / key 9.
+
+These use simulated APIs and a conditional-logic evaluator, not a live Mac WoW client.
