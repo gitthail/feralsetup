@@ -1,3 +1,7 @@
+v3.5.3 checks
+- Simulated Windows rejects CMD keys: installer skips them, installs Alt aliases, and still reports real Alt binding failures.
+- Repeated unmodified Cat/Bear macro execution stays in the requested form from humanoid, Cat and Bear starts. This does not verify live Windows bar contents.
+
 FERALSETUP 3.5.2 — GUIDE AND PACKAGE CHECKS
 
 - Generated HTML key table reads the versioned addon layout.

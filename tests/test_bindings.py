@@ -43,6 +43,28 @@ assert g.bindings['SHIFT-SPACE']=='MULTIACTIONBAR2BUTTON12'
 assert g.bindings['ALT-Q']=='ACTIONBUTTON7'
 # Re-running migration must not remove an unrelated user assignment.
 g.bindings['N']='OPENALLBAGS';assert setup();assert g.bindings['N']=='OPENALLBAGS'
+# Windows rejects CMD keys: skip them without hiding genuine Alt failures.
+lua.execute("""
+local original=SetBinding
+function IsWindowsClient() return true end
+function SetBinding(k,v)
+ assert(not k:match('^CMD%-'), 'Command key attempted on Windows')
+ return original(k,v)
+end
+""")
+assert setup()
+for k,v in layout.bindings.items():
+ if not k.startswith('CMD-'): assert g.bindings[k]==v,(k,v)
+lua.execute("""
+local original=SetBinding
+function SetBinding(k,v)
+ if k=='ALT-MOUSEWHEELDOWN' and v then return false end
+ return original(k,v)
+end
+""")
+assert not setup()
+assert 'ALT-MOUSEWHEELDOWN' in g.messages[len(g.messages)]
+lua.execute("function SetBinding(k,v) bindings[k]=v;return true end; IsWindowsClient=nil")
 macros={m.name:A.text(m.body,g.FeralSetupDefaults) for _,m in g.FeralSetupMacros.items()}
 for config in ({'cat':'2','bear':'1','aquatic':'3','travel':'4','bearSpell':'Dire Bear Form','bearCharge':'Feral Charge','poison':'Abolish Poison','trinket':'13'},):
  c=lua.table_from(config)
@@ -101,7 +123,12 @@ assert run('Prowl')[1]['stealth'] is True
 assert run('Prowl',stealth=True)[1]['stealth'] is False
 assert run('Prowl',form=1)[0]==[]
 for name,form in [('Cat Form',3),('Bear Form',1)]:
- assert run(name,form=form)[0]==[]
+ for initial in [0,1,3]:
+  _,state=run(name,form=initial)
+  assert state['form']==form
+  for _ in range(10):
+   out,state=run(name,form=state['form'])
+   assert out==[] and state['form']==form
  for mod in ['cmd','alt']:
   out,state=run(name,form=form,mods=[mod]);assert out==[('cancel',),(name,'target')] and state['form']==form
   out,state=run(name,form=0,mods=[mod]);assert out==[(name,'target')] and state['form']==form

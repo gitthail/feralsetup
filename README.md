@@ -17,7 +17,7 @@ The packaged addon runs directly; no build tools or Git installation are needed.
 If downloading GitHub's source ZIP instead, copy only its inner `FeralSetup`
 folder into `AddOns`.
 
-## Current version: 3.5.2
+## Current version: 3.5.3
 
 - Private level-up reminders: recommended current/next area and milestone training.
 - `/feralsetup guide`: current route, quest suggestions and training notes.
@@ -60,8 +60,8 @@ Use it deliberately, out of combat:
 3. Check your bars, then `/feralsetup save` to snapshot and reload.
 
 **Fresh installs and upgrades from before 3.5 require the setup steps above.**
-From 3.5.1, replace the files and reload; 3.5.2 changes documentation and
-packaging only. Replacing files alone does not rewrite your bars.
+From 3.5.1, replace the files and reload; 3.5.3 also skips unsupported Cmd bindings on Windows. Run
+`/feralsetup bindings` to apply the Windows fix. Replacing files alone does not rewrite your bars.
 Attack spells on native buttons still need manual rank updates after training.
 The two stealth-selecting macros naturally cast their named spells by rank.
 
@@ -69,7 +69,7 @@ See [addon instructions](FeralSetup/README.txt) for all commands and recovery.
 Saved preferences and snapshots live separately in WoW's `WTF` directory;
 installing this addon on another PC does not transfer them.
 
-For the 3.5 to 3.5.2 hotfix, `/reload`, then `/feralsetup update`,
+For the 3.5 to 3.5.3 hotfix, `/reload`, then `/feralsetup update`,
 `/feralsetup bindings` and `/feralsetup save`. No form-page rebuild is needed.
 
 ## Build the install package
