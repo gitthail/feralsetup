@@ -1,3 +1,8 @@
+v3.5.4 checks
+- Force shifts issue a direct form cast without a preceding cancelform.
+- Simulated failed casts preserve the original form; ordinary repeat scrolls do not cast.
+- Macro predicate tests do not establish real client spell timing or fix reported Forever form/bar desync.
+
 v3.5.3 checks
 - Simulated Windows rejects CMD keys: installer skips them, installs Alt aliases, and still reports real Alt binding failures.
 - Repeated unmodified Cat/Bear macro execution stays in the requested form from humanoid, Cat and Bear starts. This does not verify live Windows bar contents.

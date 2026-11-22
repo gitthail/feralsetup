@@ -110,11 +110,11 @@ FeralSetupMacros={
   },
   {
     ["name"]="Cat Form",
-    ["body"]="#showtooltip Cat Form\n/stopcasting\n/cancelform [mod:cmd/alt,form:{{cat}}]\n/cast [noform:{{cat}}] Cat Form"
+    ["body"]="#showtooltip Cat Form\n/stopcasting\n/cast [mod:cmd/alt][noform:{{cat}}] Cat Form"
   },
   {
     ["name"]="Bear Form",
-    ["body"]="#showtooltip {{bearSpell}}\n/stopcasting\n/cancelform [mod:cmd/alt,form:{{bear}}]\n/cast [noform:{{bear}}] {{bearSpell}}"
+    ["body"]="#showtooltip {{bearSpell}}\n/stopcasting\n/cast [mod:cmd/alt][noform:{{bear}}] {{bearSpell}}"
   },
   {
     ["name"]="Travel Forms",

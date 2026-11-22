@@ -93,7 +93,7 @@ def select(text,state):
    if ok:return action,unit
  return None
 
-def run(name,mods=(),form=3,stealth=False,units=None):
+def run(name,mods=(),form=3,stealth=False,units=None,cast_blocked=False):
  state={'mods':set(mods),'form':form,'stealth':stealth,'units':units or {'target':{'exists':True,'harm':True},'focus':{'exists':True,'harm':True},'mouseover':{'exists':True,'harm':True},'player':{'exists':True,'help':True}}}
  out=[]
  for line in macros[name].splitlines():
@@ -105,6 +105,7 @@ def run(name,mods=(),form=3,stealth=False,units=None):
   if cmd=='/cancelform':state['form']=0;out.append(('cancel',))
   elif cmd=='/cast':
    out.append((action,unit))
+   if cast_blocked:continue
    if action=='Cat Form':state['form']=3
    elif action=='Bear Form':state['form']=1
    elif action=='Prowl':state['stealth']=not state['stealth']
@@ -130,8 +131,14 @@ for name,form in [('Cat Form',3),('Bear Form',1)]:
    out,state=run(name,form=state['form'])
    assert out==[] and state['form']==form
  for mod in ['cmd','alt']:
-  out,state=run(name,form=form,mods=[mod]);assert out==[('cancel',),(name,'target')] and state['form']==form
+  out,state=run(name,form=form,mods=[mod]);assert out==[(name,'target')] and state['form']==form
   out,state=run(name,form=0,mods=[mod]);assert out==[(name,'target')] and state['form']==form
+# Failed re-casts must not first execute /cancelform and expose the player.
+for name,form in [('Cat Form',3),('Bear Form',1)]:
+ assert '/cancelform' not in macros[name]
+ for mod in ['cmd','alt']:
+  out,state=run(name,form=form,mods=[mod],cast_blocked=True)
+  assert out==[(name,'target')] and state['form']==form
 for mod in ['cmd','alt']:
  assert run('Set Focus',mods=[mod,'shift'])[0]==[('/clearfocus','target')]
 assert run('Faerie Fire',mods=['shift'])[0]==[('Faerie Fire','target')]
