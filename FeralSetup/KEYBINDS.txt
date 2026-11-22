@@ -1,0 +1,92 @@
+FERALSETUP 3.5 — MAC + WINDOWS
+
+Cmd and Alt are alternatives everywhere Cmd is assigned. On Windows use Alt.
+Use one modifier at a time except the explicitly listed targeting combinations.
+
+KEY           CAT                  STEALTHED CAT          BEAR
+1             Claw                 Claw                   Maul
+2             Rake                 Rake                   Primal Bite
+3             Ferocious Bite       Ferocious Bite         Swipe
+4             Rip                  Rip                    Demoralizing Roar
+R             Shred                Ravage                 Lacerate
+Q             Dash                 Pounce                 Bash
+E             Cat Charge           Cat Charge*            Bear Charge
+Z             Shifting Power       Shifting Power         Enrage
+B             Prowl ON             Prowl OFF              Challenging Roar
+6             Empty                Empty                  Growl
+J             Cower                Cower                  Empty
+Cmd/Alt+J     Empty                Empty                  Frenzied Regeneration
+
+* E retains Cat Charge in stealth; the client still enforces its restrictions.
+Unlearned spells are unavailable. R and Q do not fall back to a different attack
+when the selected stealth opener is unlearned. 1-4 remain ordinary attacks.
+No Q/E/B macro changes your form. To Bash from Cat: wheel down, then Q.
+
+MODIFIERS
+Alt+Q         Dash in Cat, including while stealthed. No action in Bear/humanoid.
+Shift+Q       Focus Pounce in stealth / focus Bash in Bear; inactive normal Cat.
+Ctrl+Q        Mouseover Pounce in stealth / mouseover Bash in Bear.
+Shift+E       Focus charge in your current animal form.
+Ctrl+E        Mouseover charge in your current animal form.
+Shift/Ctrl+6  Focus/mouseover Growl in Bear.
+
+FIXED KEYS — EVERY FORM
+Cmd/Alt+R     Faerie Fire on target.
+Cmd/Alt+Shift+R   Faerie Fire on focus.
+Cmd/Alt+Ctrl+R    Faerie Fire on enemy mouseover.
+T             Roots. Shift = focus; Ctrl = enemy mouseover.
+X             Hibernate. Shift = focus; Ctrl = enemy mouseover.
+F             Rejuvenation
+G             Regrowth
+5             Healing Touch
+C             Remove Curse
+V             Cure Poison / Abolish Poison when known (update macros after learning)
+Y             Innervate
+8             Mark of the Wild
+9             Thorns
+For F/G/5/C/V/Y/8/9: plain = living friendly mouseover, then living friendly
+ target, then self. Cmd OR Alt = self; Ctrl = living friendly mouseover only;
+ Shift alone = inactive. These macros leave form before casting.
+U             Rebirth: dead friendly mouseover, then dead friendly target.
+7             Moonfire on enemy target; leaves form.
+K             Tranquility; leaves form.
+
+FORMS AND FOCUS
+Wheel up/down       Enter Cat/Bear; no repeated shift when already in that form.
+Cmd/Alt+wheel up     Deliberately re-shift Cat, including from Cat.
+Cmd/Alt+wheel down   Deliberately re-shift Bear, including from Bear.
+Middle-click        Aquatic while swimming; Travel outdoors on land.
+H                   Leave form; stop casting and attacking.
+Shift+Space         Set focus: living mouseover, otherwise living target.
+Cmd/Alt+Shift+Space  Clear focus.
+
+DEFENSIVES AND ITEMS
+Cmd/Alt+1     Barkskin
+Cmd/Alt+2     Nature's Grasp
+Cmd/Alt+3     Shadowmeld
+Cmd/Alt+4     Elune's Light
+Cmd/Alt+X     PvP trinket
+Cmd/Alt+Z     Healing potion (user-placed item)
+Cmd/Alt+B     Healthstone (user-placed item)
+0             Gift of the Wild
+-             Revive
+=             Teleport: Moonglade
+O             Track Humanoids
+P             Bandage (user-placed item)
+[ / ]         Food / drink (user-placed items)
+Backslash     Mount (user-placed item)
+L             Mana potion (user-placed item)
+
+W/S forward/back; A/D strafe; Space jump; Tab nearest enemy.
+Page Up/Down zoom in/out. Shift/Alt+WASD are not assigned by this addon.
+Humanoid main page retains 1 Moonfire, 2 Wrath, 3 Starfire, 4 Hurricane,
+R Soothe Animal; other main slots empty. Fixed keys still work.
+
+MIGRATION
+Faerie Fire moved from the key left of 1 to Cmd/Alt+R.
+Focus moved from N to Shift+Space; Cmd/Alt+Shift+Space clears it.
+Frenzied Regeneration moved from Cmd+R to Cmd/Alt+J.
+B remains Challenging Roar in Bear and toggles Prowl only in Cat.
+The old N / key-left-of-1 addon assignments are removed if still assigned to
+those addon actions. Unrelated replacements on those keys are preserved.
+No bar-bug workaround or general spell-rank macro conversion was added.

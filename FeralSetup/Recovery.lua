@@ -1,4 +1,4 @@
--- FeralSetup v3.3: setup, snapshots, restore. All changes require a slash command.
+-- FeralSetup v3.5: setup, snapshots, restore. All changes require a slash command.
 -- No automatic restoration on login, no combat handlers and no spell casting.
 local A=FeralSetup
 local unpack=unpack or table.unpack
@@ -125,12 +125,21 @@ local function setupBindings()
  local reserved={}
  -- Let the macro receive these modifiers instead of another existing action.
  for _,k in ipairs({'F','G','5','C','V','Y','8','9'}) do
-  for _,mod in ipairs({'CMD-','CTRL-','SHIFT-'}) do reserved[mod..k]=true end
+  for _,mod in ipairs({'CMD-','ALT-','CTRL-','SHIFT-'}) do reserved[mod..k]=true end
  end
- for _,k in ipairs({'Q','E','T','X','`','6'}) do
+ for _,k in ipairs({'Q','E','T','X','6'}) do
   reserved['CTRL-'..k]=true;reserved['SHIFT-'..k]=true
  end
- reserved['CMD-N']=true
+ -- Retire old addon keys; leave a user's unrelated replacement bindings alone.
+ local retired={['N']='MULTIACTIONBAR2BUTTON12',['CMD-N']='MULTIACTIONBAR2BUTTON12',
+  ['`']='MULTIACTIONBAR1BUTTON9',['CTRL-`']='MULTIACTIONBAR1BUTTON9',['SHIFT-`']='MULTIACTIONBAR1BUTTON9'}
+ if FeralSetupCharDB and FeralSetupCharDB.leftKey then
+  local k=FeralSetupCharDB.leftKey
+  retired[k]='MULTIACTIONBAR1BUTTON9';retired['CTRL-'..k]='MULTIACTIONBAR1BUTTON9';retired['SHIFT-'..k]='MULTIACTIONBAR1BUTTON9'
+ end
+ for k,action in pairs(retired) do
+  if GetBindingAction and GetBindingAction(k)==action then reserved[k]=true end
+ end
  for i=1,6 do reserved['SHIFT-'..i]=true end
  for _,wheel in ipairs({'MOUSEWHEELUP','MOUSEWHEELDOWN','BUTTON3'}) do
   for _,m in ipairs({'SHIFT-','CTRL-','ALT-','CMD-'}) do reserved[m..wheel]=true end
@@ -141,11 +150,6 @@ local function setupBindings()
  end
  for k in pairs(reserved) do bind(k,nil) end
  for k,cmd in pairs(FeralSetupLayout.bindings) do bind(k,cmd) end
- -- Keep a different physical key-left-of-1 only when explicitly configured.
- if FeralSetupCharDB.leftKey and FeralSetupCharDB.leftKey~='`' then
-  local k=FeralSetupCharDB.leftKey
-  bind(k,'MULTIACTIONBAR1BUTTON9');bind('CTRL-'..k,nil);bind('SHIFT-'..k,nil)
- end
  if not saveBindings() then errors[#errors+1]='SaveBindings' end
  if #errors>0 then A.say('Bindings not accepted: '..table.concat(errors,', '));return false end
  return true
@@ -323,7 +327,7 @@ local function applySetup()
  db().pages.human=copy(main)
  if success then
   savedSnapshot()
-  A.say('Bindings, three fixed bars and Humanoid page installed (v3.3; Mark macro on 8; Thorns macro on 9).')
+  A.say('Bindings, three fixed bars and Humanoid page installed (v3.5; Cmd/Alt aliases; Faerie Fire on Cmd/Alt+R).')
   A.say('Wheel UP into Cat, then /feralsetup form. Wheel DOWN into Bear, run it again.')
   A.say('Then /feralsetup save to save a recovery snapshot and reload.')
  else A.say('Some operations failed. Backup was preserved; see messages above. /feralsetup undo reverses layout changes.') end
@@ -336,7 +340,7 @@ local function applyForm()
  if fill(FeralSetupLayout.main[kind],slots,book,bodies) then
   db().pages[kind]=copy(slots);savedSnapshot()
   A.say(kind..' page filled using LIVE slots '..slots[1]..'-'..slots[12]..'.')
-  A.say('After both Cat and Bear: /feralsetup save. For a separate Prowl page, use /feralsetup form while stealthed too.')
+  A.say('After both Cat and Bear: /feralsetup save. Cat Q/R select their stealth abilities automatically.')
  end
 end
 local function restore(s,label)
@@ -378,7 +382,7 @@ local function saveAndReload()
 end
 local function status()
  local d=db();local form=currentForm() or 'unknown';local slots=getSlots('ActionButton','MainActionBar')
- A.say('v3.4. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
+ A.say('v3.5. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
  local pages={};for k,v in pairs(d.pages) do pages[#pages+1]=k..' '..v[1]..'-'..v[12] end
  A.say('Recorded pages: '..(#pages>0 and table.concat(pages,', ') or 'none'))
  A.say('Saved layout: '..(d.saved and 'yes' or 'no')..'; pre-setup backup: '..(d.before and 'yes' or 'no')..'; talent group '..groupKey())

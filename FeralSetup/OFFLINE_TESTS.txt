@@ -1,3 +1,23 @@
+FERALSETUP 3.5 — OFFLINE CHECKS
+
+Passed in Lua 5.1 with simulated APIs and a macro-condition evaluator:
+- All addon files load; existing level-up guide tests pass.
+- Every Cmd binding has an identical Alt binding.
+- Old focus/Faerie Fire bindings migrate; unrelated bindings are retained.
+- Faerie Fire target/focus/mouseover routes work through Cmd and Alt.
+- Cmd/Alt self-targeting, Ctrl mouseover guards and Shift suppression.
+- Q Dash/Pounce and R Shred/Ravage select correctly by stealth state.
+- B toggles Prowl; B's macro never enters Cat; Bear B stays Challenging Roar.
+- Normal same-form wheel presses are inert; Cmd/Alt re-shift once per press.
+- Shift+Space sets focus; Cmd/Alt+Shift+Space clears it without resetting it.
+- Q/E never cast a form or use a sequence requiring repeated presses.
+- All 32 macro names/bodies fit limits, including upgraded spell/form names.
+
+No live WoW client test; condition tests cannot validate client timing,
+form-state bugs, spell usability or operating-system shortcut interception.
+
+Historical version checks follow.
+
 FERALSETUP 3.4 — PASSED 21 NOVEMBER 2026
 
 Lua 5.1 runtime with simulated WoW APIs (tests/test_leveling.py):
