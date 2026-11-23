@@ -297,6 +297,7 @@ FeralSetupLayout={
     }
   },
   ["bindings"]={
+    ["SHIFT-D"]="FERALSETUP_DAMAGE_METER",
     ["PAGEDOWN"]="CAMERAZOOMOUT",
     ["-"]="MULTIACTIONBAR3BUTTON4",
     ["PAGEUP"]="CAMERAZOOMIN",

@@ -1,4 +1,4 @@
-FERALSETUP 3.5.6 — MAC + WINDOWS
+FERALSETUP 3.5.7 — MAC + WINDOWS
 
 Cmd and Alt are alternatives everywhere Cmd is assigned. On Windows use Alt.
 Use one modifier at a time except the explicitly listed targeting combinations.
@@ -31,6 +31,7 @@ Ctrl+E        Mouseover charge in your current animal form.
 Shift/Ctrl+6  Focus/mouseover Growl in Bear.
 
 FIXED KEYS — EVERY FORM
+Shift+D       Toggle native damage meter enabled/disabled.
 Shift+R       Faerie Fire on target.
 Ctrl+Shift+R  Faerie Fire on enemy mouseover.
 Faerie Fire has no focus shortcut in this temporary layout. Cmd/Alt+R unused.
@@ -78,7 +79,7 @@ Backslash     Mount (user-placed item)
 L             Mana potion (user-placed item)
 
 W/S forward/back; A/D strafe; Space jump; Tab nearest enemy.
-Page Up/Down zoom in/out. Shift/Alt+WASD are not assigned by this addon.
+Page Up/Down zoom in/out. Shift+D toggles the native damage meter; other Shift/Alt+WASD are unassigned.
 Humanoid main page retains 1 Moonfire, 2 Wrath, 3 Starfire, 4 Hurricane,
 R Soothe Animal; Q Roots; E Hibernate. Other main slots empty.
 Human Q/E: plain = target, Shift = focus, Ctrl = enemy mouseover.

@@ -135,3 +135,16 @@ function A.pageMacros(rows)
  if #errors>0 then for _,e in ipairs(errors) do A.say(e) end;return nil end
  return bodies
 end
+
+-- Native Forever meter enable/disable, using the same CVar as Advanced Options.
+BINDING_NAME_FERALSETUP_DAMAGE_METER='Toggle damage meter'
+function A.toggleDamageMeter()
+ local get=(C_CVar and C_CVar.GetCVar) or GetCVar
+ local set=(C_CVar and C_CVar.SetCVar) or SetCVar
+ if not get or not set then A.say('Damage meter settings unavailable in this client.');return end
+ local value=get('damageMeterEnabled')
+ if value==nil then A.say('Native damage meter unavailable in this client.');return end
+ local enabled=tostring(value)=='1'
+ set('damageMeterEnabled',enabled and '0' or '1')
+ A.say(enabled and 'Damage meter disabled.' or 'Damage meter enabled. Its visibility follows your meter settings (use Always to see it outside combat).')
+end

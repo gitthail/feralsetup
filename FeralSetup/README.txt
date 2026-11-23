@@ -1,7 +1,9 @@
-FERAL SETUP 3.5.6 — MAC/WINDOWS BINDINGS AND CAT STEALTH ACTIONS
+FERAL SETUP 3.5.7 — MAC/WINDOWS BINDINGS AND CAT STEALTH ACTIONS
 
 Use /fs for every command. /feralsetup remains supported.
-From 3.5.5: replace files and /reload; no layout changes needed.
+From 3.5.5–3.5.6: replace files, restart WoW, then /fs bindings.
+Shift+D toggles the native damage meter enabled/disabled.
+Set its visibility to Always to view it outside combat. No form rebuild needed.
 
 See KEYBINDS.txt for the full side-by-side layout and all modifiers.
 Every Cmd shortcut also works with Alt. No automatic form change on Q/E/B.

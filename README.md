@@ -17,10 +17,12 @@ The packaged addon runs directly; no build tools or Git installation are needed.
 If downloading GitHub's source ZIP instead, copy only its inner `FeralSetup`
 folder into `AddOns`.
 
-## Current version: 3.5.6
+## Current version: 3.5.7
 
 All commands now accept **`/fs`**; `/feralsetup` remains an alias.
-Upgrading from 3.5.5 only needs `/reload`; no layout changes.
+Shift+D toggles the native dungeon damage meter enabled/disabled.
+From 3.5.5–3.5.6: restart WoW after installing, then `/fs bindings`.
+No form-page rebuild needed. Meter visibility follows its in-game settings.
 
 - Private level-up reminders: recommended current/next area and milestone training.
 - `/fs guide`: current route, quest suggestions and training notes.
