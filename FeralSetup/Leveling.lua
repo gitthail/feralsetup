@@ -10,7 +10,7 @@ local route={
   note="First complete The Great Cat Spirit for Cat Form. Get Astranaar's flight path; leave harder chain steps for later."},
  {level=23,area='Wetlands - Menethil Harbor',
   quests="Claws from the Deep; Young Crocolisk Skins; The Greenwarden -> Tramping Paws; early Ormer's Revenge; Digging Through the Ooze.",
-  note="Return to Auberdine, boat to Menethil, and get its flight path. Combine excavation and swamp objectives."},
+  note="Stay with productive local quests first; travel here only for a worthwhile batch. Combine excavation and swamp objectives; inspect unlocked stages."},
  {level=25,area='Duskwood - Darkshire',
   quests='The Night Watch; Raven Hill; Wolves at Our Heels; Eight-Legged Menaces; The Totem of Infliction.',
   note='Establish connecting flight paths. Batch cemetery objectives; Redridge leftovers are an alternative. Skip elite finales without a ready group.'},
@@ -65,7 +65,7 @@ local function show(level,details)
   for n=level+1,30 do
    if training[n] then A.say('Next trainer stop ('..n..'): '..training[n]);break end
   end
-  A.say('Flexible checkpoints, not quest tracking. Reminders: '..(enabled() and 'on' or 'off')..'. /feralsetup guide on|off')
+  A.say('Candidate areas, not travel orders or quest tracking. See Leveling.html for session efficiency. Reminders: '..(enabled() and 'on' or 'off')..'. /fs guide on|off')
  end
 end
 function A.guide(option)
@@ -75,7 +75,7 @@ function A.guide(option)
   FeralSetupCharDB.levelingReminders=option=='on'
   A.say('Level-up reminders '..option..' for this character.')
  elseif option=='' then show(UnitLevel('player'),true)
- else A.say('Usage: /feralsetup guide [on|off]') end
+ else A.say('Usage: /fs guide [on|off]') end
 end
 local frame=CreateFrame('Frame')
 frame:RegisterEvent('PLAYER_LEVEL_UP')

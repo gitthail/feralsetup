@@ -1,4 +1,4 @@
-FERALSETUP 3.6.0 — MAC + WINDOWS
+FERALSETUP 3.6.1 — MAC + WINDOWS
 
 Cmd and Alt are alternatives everywhere Cmd is assigned. On Windows use Alt.
 Use one modifier at a time except the explicitly listed targeting combinations.

@@ -1,4 +1,4 @@
-FERAL SETUP 3.6.0 — V2 Q/E ATTACK LAYOUT
+FERAL SETUP 3.6.1 — V2 Q/E ATTACK LAYOUT
 
 Use /fs for every command; /feralsetup remains supported.
 See KEYBINDS.txt and Guide.html for all forms, modifiers and utility keys.
@@ -14,7 +14,12 @@ Native mouseover handles normal spells. Cmd/Alt-self and selected Shift-focus
 remain macro-controlled. Ctrl is available for your own bindings.
 Shift+D toggles the native damage meter; use visibility Always outside combat.
 
-INSTALL / UPGRADE TO V2
+UPGRADE FROM 3.6.0
+Replace files and restart WoW; no setup or bar changes needed.
+Guide-only Mage/Rogue proposals are not addon profiles.
+Leveling.html now explains efficient sessions from level 24 onward.
+
+FIRST INSTALL / SWITCH TO V2
 Replace files and restart WoW. Out of combat, humanoid form on main page 1:
 /fs setup
 Enter Cat: /fs form

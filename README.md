@@ -5,7 +5,7 @@ snapshots and a lightweight Alliance levelling guide for levels 15–30.
 
 ## Download and install
 
-**[Download FeralSetup.zip — ready to extract and move](https://github.com/gitthail/fs/releases/latest/download/FeralSetup.zip)**
+**[Download FeralSetup.zip — ready to extract and move](https://github.com/gitthail/feralsetup/releases/latest/download/FeralSetup.zip)**
 
 Extract the ZIP, then move the single extracted **FeralSetup** folder into AddOns.
 No installer, extra nesting, renaming or build step is needed.
@@ -17,9 +17,11 @@ The packaged addon runs directly; no build tools or Git installation are needed.
 If downloading GitHub's source ZIP instead, copy only its inner `FeralSetup`
 folder into `AddOns`.
 
-## Current version: 3.6.0
+## Current version: 3.6.1
 
 All commands accept **`/fs`**; `/feralsetup` remains supported.
+**3.6.1 updates the levelling strategy guide and adds guide-only Mage/Rogue proposals. Controls are unchanged; existing 3.6.0 users only replace files and restart WoW.**
+
 **3.6.0 switches to the v2 Q/E attack layout. Apply all three form pages using
 the steps below, even when upgrading from 3.5.8.**
 
@@ -33,12 +35,11 @@ The guide is a flexible reference, not completed-quest tracking; it ends at 30.
 ## HTML guides
 
 The install ZIP includes **Guide.html** (controls, modifiers, installation, all
-commands and a searchable macro reference) and **Leveling.html** (the agreed
-route and professions guide). Open them in your browser from the extracted
+commands and a searchable macro reference) and **Leveling.html** (efficient levelling from 24 onward, route decisions, dungeon tradeoffs and professions). Open them in your browser from the extracted
 FeralSetup folder; they work offline.
 
-- [Download the controls guide](https://github.com/gitthail/fs/releases/latest/download/Guide.html)
-- [Download the levelling guide](https://github.com/gitthail/fs/releases/latest/download/Leveling.html)
+- [Download the controls guide](https://github.com/gitthail/feralsetup/releases/latest/download/Guide.html)
+- [Download the levelling guide](https://github.com/gitthail/feralsetup/releases/latest/download/Leveling.html)
 - [Guide source](docs/Guide.html) · [Levelling source](docs/Leveling.html)
 
 Use `/fs guide` for current-area advice in-game, and

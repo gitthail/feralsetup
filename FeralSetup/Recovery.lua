@@ -1,4 +1,4 @@
--- FeralSetup v3.6.0: setup, snapshots, restore. All changes require a slash command.
+-- FeralSetup v3.6.1: setup, snapshots, restore. All changes require a slash command.
 -- No automatic restoration on login, no combat handlers and no spell casting.
 local A=FeralSetup
 local unpack=unpack or table.unpack
@@ -338,7 +338,7 @@ local function applySetup()
  db().pages.human=copy(main)
  if success then
   savedSnapshot()
-  A.say('Bindings, three fixed bars and Humanoid page installed (v3.6.0; Cmd/Alt aliases; Q/E attacks; Faerie Fire on 4).')
+  A.say('Bindings, three fixed bars and Humanoid page installed (v3.6.1; Cmd/Alt aliases; Q/E attacks; Faerie Fire on 4).')
   A.say('Wheel UP into Cat, then /feralsetup form. Wheel DOWN into Bear, run it again.')
   A.say('Then /feralsetup save to save a recovery snapshot and reload.')
  else A.say('Some operations failed. Backup was preserved; see messages above. /feralsetup undo reverses layout changes.') end
@@ -393,7 +393,7 @@ local function saveAndReload()
 end
 local function status()
  local d=db();local form=currentForm() or 'unknown';local slots=getSlots('ActionButton','MainActionBar')
- A.say('v3.6.0. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
+ A.say('v3.6.1. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
  local pages={};for k,v in pairs(d.pages) do pages[#pages+1]=k..' '..v[1]..'-'..v[12] end
  A.say('Recorded pages: '..(#pages>0 and table.concat(pages,', ') or 'none'))
  A.say('Saved layout: '..(d.saved and 'yes' or 'no')..'; pre-setup backup: '..(d.before and 'yes' or 'no')..'; talent group '..groupKey())
