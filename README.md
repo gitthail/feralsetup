@@ -17,7 +17,7 @@ The packaged addon runs directly; no build tools or Git installation are needed.
 If downloading GitHub's source ZIP instead, copy only its inner `FeralSetup`
 folder into `AddOns`.
 
-## Current version: 3.5.4
+## Current version: 3.5.5
 
 - Private level-up reminders: recommended current/next area and milestone training.
 - `/feralsetup guide`: current route, quest suggestions and training notes.
@@ -46,11 +46,13 @@ Use `/feralsetup guide` for current-area advice in-game, and
 has an Alt alternative, including self-casting and deliberate form re-shifts.
 See the [complete key map](FeralSetup/KEYBINDS.txt).
 
-Current controls: numbered Cat builder/finisher and Bear single-target/AoE groups;
+Current controls: numbered Cat direct/bleed and Bear single-target/AoE groups;
 Cat Q selects Dash/Pounce, R selects Shred/Ravage; B toggles Prowl in Cat and
 remains Challenging Roar in Bear. No combat macro automatically enters a form.
 Faerie Fire is Shift+R; set focus is Shift+Space. Frenzied Regeneration is
 Cmd/Alt+J in Bear. Cmd/Alt+Shift+Space clears focus.
+Human Q is Roots and E is Hibernate, with Shift focus / Ctrl mouseover.
+T Roots and X Hibernate remain available in every form.
 
 **Setup replaces same-name guide macros and configured bar slots/keybindings.**
 Use it deliberately, out of combat:
@@ -60,19 +62,17 @@ Use it deliberately, out of combat:
 3. Check your bars, then `/feralsetup save` to snapshot and reload.
 
 **Fresh installs and upgrades from before 3.5 require the setup steps above.**
-From 3.5.1–3.5.3, replace files, `/reload`, then `/feralsetup update`,
-`/feralsetup bindings` and `/feralsetup save`. No bar rebuild is needed.
-3.5.4 fixes force-shift macros to cast the form directly rather than cancel it
-first. Ordinary scrolling retains its no-op guard in the current form.
+From 3.5–3.5.4: replace files and `/reload`. Out of combat, in humanoid
+form on main page 1, run `/feralsetup form`. Enter Cat and run it again.
+This places human Q/E and swaps Cat 2/3. Then `/feralsetup save`.
+Bear and fixed bars need no rebuild. If upgrading from before 3.5.4, also
+run `/feralsetup update` and `/feralsetup bindings` for earlier fixes.
 Attack spells on native buttons still need manual rank updates after training.
 The two stealth-selecting macros naturally cast their named spells by rank.
 
 See [addon instructions](FeralSetup/README.txt) for all commands and recovery.
 Saved preferences and snapshots live separately in WoW's `WTF` directory;
 installing this addon on another PC does not transfer them.
-
-For the 3.5 to 3.5.4 hotfix, `/reload`, then `/feralsetup update`,
-`/feralsetup bindings` and `/feralsetup save`. No form-page rebuild is needed.
 
 ## Build the install package
 

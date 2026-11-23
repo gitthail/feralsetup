@@ -1,4 +1,4 @@
--- v3.5.1: numbered damage pairs; Cat Q Dash/Pounce; R Shred/Ravage.
+-- v3.5.5: Cat direct/bleed pairs; human Q Roots, E Hibernate; Cat Q Dash/Pounce; R Shred/Ravage.
 FeralSetupLayout={
   ["fixed"]={
     ["selfbar"]={
@@ -178,10 +178,12 @@ FeralSetupLayout={
         ["kind"]="empty"
       },
       {
-        ["kind"]="empty"
+        ["kind"]="macro",
+        ["name"]="Roots"
       },
       {
-        ["kind"]="empty"
+        ["kind"]="macro",
+        ["name"]="Hibernate"
       },
       {
         ["kind"]="empty"
@@ -203,11 +205,11 @@ FeralSetupLayout={
       },
       {
         ["kind"]="spell",
-        ["name"]="Rake"
+        ["name"]="Ferocious Bite"
       },
       {
         ["kind"]="spell",
-        ["name"]="Ferocious Bite"
+        ["name"]="Rake"
       },
       {
         ["kind"]="spell",

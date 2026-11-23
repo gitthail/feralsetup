@@ -156,7 +156,10 @@ for name in friendly:
   out,_=run(name,mods=['ctrl'],units=units)
   assert bool(out)==(helpful and not dead),(name,dead,helpful,out)
  assert run(name,mods=['shift'])[0]==[]
-assert layout.main.cat[1].name=='Claw' and layout.main.cat[2].name=='Rake'
+assert [layout.main.cat[i].name for i in range(1,5)]==['Claw','Ferocious Bite','Rake','Rip']
+assert layout.main.human[7].name=='Roots' and layout.main.human[8].name=='Hibernate'
+assert layout.fixed.support[7].name=='Roots' and layout.fixed.support[8].name=='Hibernate'
+assert layout.bindings['T']=='MULTIACTIONBAR1BUTTON7' and layout.bindings['X']=='MULTIACTIONBAR1BUTTON8'
 assert layout.main.cat[5].name=='Cat Rear' and layout.main.cat[7].name=='Cat Q'
 assert layout.main.bear[5].name=='Lacerate' and layout.main.bear[10].name=='Challenging Roar'
 assert layout.main.bear[11].name=='Frenzied Regeneration'

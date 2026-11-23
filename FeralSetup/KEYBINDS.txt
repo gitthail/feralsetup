@@ -1,12 +1,12 @@
-FERALSETUP 3.5.4 — MAC + WINDOWS
+FERALSETUP 3.5.5 — MAC + WINDOWS
 
 Cmd and Alt are alternatives everywhere Cmd is assigned. On Windows use Alt.
 Use one modifier at a time except the explicitly listed targeting combinations.
 
 KEY           CAT                  STEALTHED CAT          BEAR
 1             Claw                 Claw                   Maul
-2             Rake                 Rake                   Primal Bite
-3             Ferocious Bite       Ferocious Bite         Swipe
+2             Ferocious Bite       Ferocious Bite                   Primal Bite
+3             Rake                 Rake         Swipe
 4             Rip                  Rip                    Demoralizing Roar
 R             Shred                Ravage                 Lacerate
 Q             Dash                 Pounce                 Bash
@@ -80,7 +80,9 @@ L             Mana potion (user-placed item)
 W/S forward/back; A/D strafe; Space jump; Tab nearest enemy.
 Page Up/Down zoom in/out. Shift/Alt+WASD are not assigned by this addon.
 Humanoid main page retains 1 Moonfire, 2 Wrath, 3 Starfire, 4 Hurricane,
-R Soothe Animal; other main slots empty. Fixed keys still work.
+R Soothe Animal; Q Roots; E Hibernate. Other main slots empty.
+Human Q/E: plain = target, Shift = focus, Ctrl = enemy mouseover.
+T Roots and X Hibernate remain available in EVERY form.
 
 MIGRATION
 Faerie Fire moved to Shift+R; previous Cmd/Alt+R assignments are removed.
