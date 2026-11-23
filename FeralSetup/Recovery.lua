@@ -1,4 +1,4 @@
--- FeralSetup v3.5.7: setup, snapshots, restore. All changes require a slash command.
+-- FeralSetup v3.5.8: setup, snapshots, restore. All changes require a slash command.
 -- No automatic restoration on login, no combat handlers and no spell casting.
 local A=FeralSetup
 local unpack=unpack or table.unpack
@@ -63,7 +63,7 @@ local function settingsSnapshot()
  end
  for _,k in ipairs(cvarNames) do if GetCVar then local ok,v=pcall(GetCVar,k);if ok and v~=nil then s.cvars[k]=v end end end
  if GetModifiedClick then
-  for _,k in ipairs({'SELFCAST','FOCUSCAST'}) do s.modified[k]=GetModifiedClick(k) end
+  for _,k in ipairs({'SELFCAST','FOCUSCAST','MOUSEOVERCAST'}) do s.modified[k]=GetModifiedClick(k) end
  end
  return s
 end
@@ -99,12 +99,17 @@ local function setVisibility(toggles)
  end
  if MultiActionBar_Update then pcall(MultiActionBar_Update) end
 end
-local function setupSettings()
- setVisibility({true,true,true,false})
+local function setupTargetingSettings()
  if SetModifiedClick then
   pcall(SetModifiedClick,'SELFCAST','NONE');pcall(SetModifiedClick,'FOCUSCAST','NONE')
+  pcall(SetModifiedClick,'MOUSEOVERCAST','NONE')
  end
- setCvar('enableMouseoverCast','0');setCvar('lockActionBars','1');setCvar('alwaysShowActionBars','1')
+ setCvar('enableMouseoverCast','1');setCvar('autoSelfCast','1')
+end
+local function setupSettings()
+ setVisibility({true,true,true,false})
+ setupTargetingSettings()
+ setCvar('lockActionBars','1');setCvar('alwaysShowActionBars','1')
 end
 local function restoreSettings(s)
  if not s then return end
@@ -129,13 +134,13 @@ local function setupBindings()
  local reserved={}
  -- Let the macro receive these modifiers instead of another existing action.
  for _,k in ipairs({'F','G','5','C','V','Y','8','9'}) do
-  for _,mod in ipairs({'CMD-','ALT-','CTRL-','SHIFT-'}) do reserved[mod..k]=true end
+  for _,mod in ipairs({'CMD-','ALT-','SHIFT-'}) do reserved[mod..k]=true end
  end
  for _,k in ipairs({'Q','E','T','X','6'}) do
-  reserved['CTRL-'..k]=true;reserved['SHIFT-'..k]=true
+  reserved['SHIFT-'..k]=true
  end
  -- Retire old addon keys; leave a user's unrelated replacement bindings alone.
- local retired={['CMD-R']='MULTIACTIONBAR1BUTTON9',['ALT-R']='MULTIACTIONBAR1BUTTON9',
+ local retired={['CTRL-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['CMD-R']='MULTIACTIONBAR1BUTTON9',['ALT-R']='MULTIACTIONBAR1BUTTON9',
   ['CMD-CTRL-R']='MULTIACTIONBAR1BUTTON9',['ALT-CTRL-R']='MULTIACTIONBAR1BUTTON9',
   ['CMD-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['ALT-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['N']='MULTIACTIONBAR2BUTTON12',['CMD-N']='MULTIACTIONBAR2BUTTON12',
   ['`']='MULTIACTIONBAR1BUTTON9',['CTRL-`']='MULTIACTIONBAR1BUTTON9',['SHIFT-`']='MULTIACTIONBAR1BUTTON9'}
@@ -148,7 +153,7 @@ local function setupBindings()
  end
  for i=1,6 do reserved['SHIFT-'..i]=true end
  for _,wheel in ipairs({'MOUSEWHEELUP','MOUSEWHEELDOWN','BUTTON3'}) do
-  for _,m in ipairs({'SHIFT-','CTRL-','ALT-','CMD-'}) do reserved[m..wheel]=true end
+  for _,m in ipairs({'SHIFT-','ALT-','CMD-'}) do reserved[m..wheel]=true end
  end
  -- Unbind action paging and old zoom keys, including secondary bindings.
  for _,cmd in ipairs({'NEXTACTIONPAGE','PREVIOUSACTIONPAGE','CAMERAZOOMIN','CAMERAZOOMOUT'}) do
@@ -333,7 +338,7 @@ local function applySetup()
  db().pages.human=copy(main)
  if success then
   savedSnapshot()
-  A.say('Bindings, three fixed bars and Humanoid page installed (v3.5.7; Cmd/Alt aliases; Faerie Fire on Shift+R).')
+  A.say('Bindings, three fixed bars and Humanoid page installed (v3.5.8; Cmd/Alt aliases; Faerie Fire on Shift+R).')
   A.say('Wheel UP into Cat, then /feralsetup form. Wheel DOWN into Bear, run it again.')
   A.say('Then /feralsetup save to save a recovery snapshot and reload.')
  else A.say('Some operations failed. Backup was preserved; see messages above. /feralsetup undo reverses layout changes.') end
@@ -388,7 +393,7 @@ local function saveAndReload()
 end
 local function status()
  local d=db();local form=currentForm() or 'unknown';local slots=getSlots('ActionButton','MainActionBar')
- A.say('v3.5.7. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
+ A.say('v3.5.8. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
  local pages={};for k,v in pairs(d.pages) do pages[#pages+1]=k..' '..v[1]..'-'..v[12] end
  A.say('Recorded pages: '..(#pages>0 and table.concat(pages,', ') or 'none'))
  A.say('Saved layout: '..(d.saved and 'yes' or 'no')..'; pre-setup backup: '..(d.before and 'yes' or 'no')..'; talent group '..groupKey())
@@ -414,6 +419,14 @@ SlashCmdList.FERALSETUP=function(msg)
  local cmd,rest=(msg or ''):match('^%s*(%S*)%s*(.-)%s*$');cmd=cmd:lower()
  if cmd=='setup' then applySetup()
  elseif cmd=='form' then applyForm()
+ elseif cmd=='targeting' then
+  if A.guard() then
+   baseline()
+   if A.macros(true) then
+    setupTargetingSettings()
+    if setupBindings() then A.say('Native mouseover enabled; macro self/focus retained; Ctrl mouseover retired. Bars unchanged. /fs save after checking.') end
+   end
+  end
  elseif cmd=='bindings' then
   if A.guard() then baseline();if setupBindings() then A.say('Bindings updated; bars unchanged. /feralsetup save after checking.') end end
  elseif cmd=='save' or cmd=='backup' then saveAndReload()
@@ -426,6 +439,7 @@ SlashCmdList.FERALSETUP=function(msg)
   if A.guard() and A.macros(true) then A.say('Guide macros installed/replaced. /feralsetup setup also places bars and bindings.') end
  else
   A.say('/feralsetup setup: replace same-name guide macros + current guide layout (start humanoid).')
+  A.say('/fs targeting: update macros/bindings and enable native mouseover; keep bars.')
   A.say('/feralsetup bindings: apply keybindings only; leave bars unchanged.')
   A.say('/feralsetup form: place current page only; keep existing macro bodies.')
   A.say('/feralsetup save: snapshot + reload. /feralsetup restore: recover saved layout.')

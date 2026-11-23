@@ -1,4 +1,4 @@
-FERALSETUP 3.5.7 — MAC + WINDOWS
+FERALSETUP 3.5.8 — MAC + WINDOWS
 
 Cmd and Alt are alternatives everywhere Cmd is assigned. On Windows use Alt.
 Use one modifier at a time except the explicitly listed targeting combinations.
@@ -23,20 +23,20 @@ when the selected stealth opener is unlearned. 1-4 remain ordinary attacks.
 No Q/E/B macro changes your form. To Bash from Cat: wheel down, then Q.
 
 MODIFIERS
+Native mouseover needs no modifier, including on ordinary attacks.
+Global self/focus modifiers are None; macros retain those overrides.
+Ctrl is free for user bindings. /fs targeting applies this mode.
 Alt+Q         Dash in Cat, including while stealthed. No action in Bear/humanoid.
 Shift+Q       Focus Pounce in stealth / focus Bash in Bear; inactive normal Cat.
-Ctrl+Q        Mouseover Pounce in stealth / mouseover Bash in Bear.
 Shift+E       Focus charge in your current animal form.
-Ctrl+E        Mouseover charge in your current animal form.
-Shift/Ctrl+6  Focus/mouseover Growl in Bear.
+Shift+6       Focus Growl in Bear.
 
 FIXED KEYS — EVERY FORM
 Shift+D       Toggle native damage meter enabled/disabled.
-Shift+R       Faerie Fire on target.
-Ctrl+Shift+R  Faerie Fire on enemy mouseover.
+Shift+R       Faerie Fire with native mouseover / target.
 Faerie Fire has no focus shortcut in this temporary layout. Cmd/Alt+R unused.
-T             Roots. Shift = focus; Ctrl = enemy mouseover.
-X             Hibernate. Shift = focus; Ctrl = enemy mouseover.
+T             Roots. Native mouseover / target; Shift = focus.
+X             Hibernate. Native mouseover / target; Shift = focus.
 F             Rejuvenation
 G             Regrowth
 5             Healing Touch
@@ -45,11 +45,11 @@ V             Cure Poison / Abolish Poison when known (update macros after learn
 Y             Innervate
 8             Mark of the Wild
 9             Thorns
-For F/G/5/C/V/Y/8/9: plain = living friendly mouseover, then living friendly
- target, then self. Cmd OR Alt = self; Ctrl = living friendly mouseover only;
+For F/G/5/C/V/Y/8/9: plain = native mouseover / target / auto-self fallback.
+ Cmd OR Alt = self; Ctrl has no special targeting role;
  Shift alone = inactive. These macros leave form before casting.
-U             Rebirth: dead friendly mouseover, then dead friendly target.
-7             Moonfire on enemy target; leaves form.
+U             Rebirth: native resurrection targeting.
+7             Moonfire with native mouseover / target; leaves form.
 K             Tranquility; leaves form.
 
 FORMS AND FOCUS
@@ -82,7 +82,7 @@ W/S forward/back; A/D strafe; Space jump; Tab nearest enemy.
 Page Up/Down zoom in/out. Shift+D toggles the native damage meter; other Shift/Alt+WASD are unassigned.
 Humanoid main page retains 1 Moonfire, 2 Wrath, 3 Starfire, 4 Hurricane,
 R Soothe Animal; Q Roots; E Hibernate. Other main slots empty.
-Human Q/E: plain = target, Shift = focus, Ctrl = enemy mouseover.
+Human Q/E: plain = native mouseover / target, Shift = focus.
 T Roots and X Hibernate remain available in EVERY form.
 
 MIGRATION

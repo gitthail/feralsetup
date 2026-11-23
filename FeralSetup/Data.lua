@@ -14,71 +14,71 @@ FeralSetupDefaults={
 FeralSetupMacros={
   {
     ["name"]="Rejuvenation",
-    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt][mod:ctrl,nomod:cmd/alt,@mouseover,nohelp][mod:ctrl,nomod:cmd/alt,@mouseover,dead]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] Rejuvenation"
+    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][] Rejuvenation"
   },
   {
     ["name"]="Regrowth",
-    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt][mod:ctrl,nomod:cmd/alt,@mouseover,nohelp][mod:ctrl,nomod:cmd/alt,@mouseover,dead]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] Regrowth"
+    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][] Regrowth"
   },
   {
     ["name"]="Healing Touch",
-    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt][mod:ctrl,nomod:cmd/alt,@mouseover,nohelp][mod:ctrl,nomod:cmd/alt,@mouseover,dead]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] Healing Touch"
+    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][] Healing Touch"
   },
   {
     ["name"]="Remove Curse",
-    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt][mod:ctrl,nomod:cmd/alt,@mouseover,nohelp][mod:ctrl,nomod:cmd/alt,@mouseover,dead]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] Remove Curse"
+    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][] Remove Curse"
   },
   {
     ["name"]="Poison Cleanse",
-    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt][mod:ctrl,nomod:cmd/alt,@mouseover,nohelp][mod:ctrl,nomod:cmd/alt,@mouseover,dead]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] {{poison}}"
+    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][] {{poison}}"
   },
   {
     ["name"]="Innervate",
-    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt][mod:ctrl,nomod:cmd/alt,@mouseover,nohelp][mod:ctrl,nomod:cmd/alt,@mouseover,dead]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] Innervate"
+    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][] Innervate"
   },
   {
     ["name"]="Thorns",
-    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt][mod:ctrl,nomod:cmd/alt,@mouseover,nohelp][mod:ctrl,nomod:cmd/alt,@mouseover,dead]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] Thorns"
+    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][] Thorns"
   },
   {
     ["name"]="Pounce",
-    ["body"]="#showtooltip Pounce\n/cast [mod:shift,@focus,harm,nodead][mod:ctrl,@mouseover,harm,nodead][nomod,harm,nodead] Pounce"
+    ["body"]="#showtooltip Pounce\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt] Pounce"
   },
   {
     ["name"]="Bash",
-    ["body"]="#showtooltip Bash\n/cast [mod:shift,@focus,harm,nodead][mod:ctrl,@mouseover,harm,nodead][nomod,harm,nodead] Bash"
+    ["body"]="#showtooltip Bash\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt] Bash"
   },
   {
     ["name"]="Cat Charge",
-    ["body"]="#showtooltip Feral Charge (Cat)\n/cast [mod:shift,@focus,harm,nodead][mod:ctrl,@mouseover,harm,nodead][nomod,harm,nodead] Feral Charge (Cat)"
+    ["body"]="#showtooltip Feral Charge (Cat)\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt] Feral Charge (Cat)"
   },
   {
     ["name"]="Bear Charge",
-    ["body"]="#showtooltip {{bearCharge}}\n/cast [mod:shift,@focus,harm,nodead][mod:ctrl,@mouseover,harm,nodead][nomod,harm,nodead] {{bearCharge}}"
+    ["body"]="#showtooltip {{bearCharge}}\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt] {{bearCharge}}"
   },
   {
     ["name"]="Faerie Fire",
-    ["body"]="#showtooltip Faerie Fire\n/cast [mod:ctrl,@mouseover,harm,nodead][nomod:ctrl,harm,nodead] Faerie Fire"
+    ["body"]="#showtooltip Faerie Fire\n/cast Faerie Fire"
   },
   {
     ["name"]="Growl",
-    ["body"]="#showtooltip Growl\n/cast [mod:shift,@focus,harm,nodead][mod:ctrl,@mouseover,harm,nodead][nomod,harm,nodead] Growl"
+    ["body"]="#showtooltip Growl\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt] Growl"
   },
   {
     ["name"]="Roots",
-    ["body"]="#showtooltip Entangling Roots\n/stopattack\n/cancelform [mod:shift,@focus,harm,nodead][mod:ctrl,@mouseover,harm,nodead][nomod,harm,nodead]\n/cast [mod:shift,@focus,harm,nodead][mod:ctrl,@mouseover,harm,nodead][nomod,harm,nodead] Entangling Roots"
+    ["body"]="#showtooltip Entangling Roots\n/stopmacro [mod:shift,@focus,noharm][mod:shift,@focus,dead]\n/stopattack\n/cancelform [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt]\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt] Entangling Roots"
   },
   {
     ["name"]="Hibernate",
-    ["body"]="#showtooltip Hibernate\n/stopattack\n/cancelform [mod:shift,@focus,harm,nodead][mod:ctrl,@mouseover,harm,nodead][nomod,harm,nodead]\n/cast [mod:shift,@focus,harm,nodead][mod:ctrl,@mouseover,harm,nodead][nomod,harm,nodead] Hibernate"
+    ["body"]="#showtooltip Hibernate\n/stopmacro [mod:shift,@focus,noharm][mod:shift,@focus,dead]\n/stopattack\n/cancelform [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt]\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt] Hibernate"
   },
   {
     ["name"]="Moonfire",
-    ["body"]="#showtooltip Moonfire\n/cancelform [harm,nodead]\n/cast [harm,nodead] Moonfire"
+    ["body"]="#showtooltip Moonfire\n/cancelform\n/cast Moonfire"
   },
   {
     ["name"]="Rebirth",
-    ["body"]="#showtooltip Rebirth\n/stopattack\n/cancelform [@mouseover,help,dead][help,dead]\n/cast [@mouseover,help,dead][help,dead] Rebirth"
+    ["body"]="#showtooltip Rebirth\n/stopattack\n/cancelform\n/cast Rebirth"
   },
   {
     ["name"]="Tranquility",
@@ -130,7 +130,7 @@ FeralSetupMacros={
   },
   {
     ["name"]="Mark of the Wild",
-    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt][mod:ctrl,nomod:cmd/alt,@mouseover,nohelp][mod:ctrl,nomod:cmd/alt,@mouseover,dead]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] Mark of the Wild"
+    ["body"]="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/stopattack\n/cancelform\n/cast [mod:cmd/alt,@player][] Mark of the Wild"
   },
   {
     ["name"]="Cat Rear",
@@ -138,6 +138,6 @@ FeralSetupMacros={
   },
   {
     ["name"]="Cat Q",
-    ["body"]="#showtooltip\n/cast [form:{{cat}},mod:alt,nomod:cmd/ctrl/shift] Dash; [form:{{cat}},stealth,mod:shift,@focus,harm,nodead][form:{{cat}},stealth,mod:ctrl,@mouseover,harm,nodead][form:{{cat}},stealth,nomod,harm,nodead] Pounce; [form:{{cat}},nostealth,nomod] Dash"
+    ["body"]="#showtooltip\n/cast [form:{{cat}},mod:alt,nomod:cmd/shift] Dash; [form:{{cat}},stealth,mod:shift,@focus,harm,nodead][form:{{cat}},stealth,nomod:shift/cmd/alt] Pounce; [form:{{cat}},nostealth,nomod:shift/cmd/alt] Dash"
   }
 }

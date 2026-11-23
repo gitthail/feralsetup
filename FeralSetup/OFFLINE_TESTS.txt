@@ -1,3 +1,8 @@
+v3.5.8 checks
+- Native mouseover and auto-self fallback enabled; native modifiers NONE.
+- Self/focus macro overrides retained; Ctrl bindings preserved and old Ctrl+Shift+R retired.
+- Macro branches defer ordinary targeting to the client; native target resolution and modifier precedence require live-client testing.
+
 v3.5.5 checks
 - Verified Cat 1–4: Claw, Ferocious Bite, Rake, Rip.
 - Verified human Q/E use Roots/Hibernate and fixed T/X retain the same macros.

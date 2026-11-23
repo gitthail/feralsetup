@@ -37,7 +37,7 @@ for k,v in layout.bindings.items():
  if k.startswith('CMD-'): assert g.bindings['ALT-'+k[4:]]==v,k
 assert g.bindings['CMD-R'] is None and g.bindings['ALT-R'] is None and g.bindings['CMD-SHIFT-R'] is None
 assert g.bindings['SHIFT-R']=='MULTIACTIONBAR1BUTTON9'
-assert g.bindings['CTRL-SHIFT-R']=='MULTIACTIONBAR1BUTTON9'
+assert g.bindings['CTRL-SHIFT-R'] is None
 assert g.bindings['CMD-J']=='ACTIONBUTTON11'
 assert g.bindings['SHIFT-SPACE']=='MULTIACTIONBAR2BUTTON12'
 assert g.bindings['ALT-Q']=='ACTIONBUTTON7'
@@ -115,7 +115,7 @@ def run(name,mods=(),form=3,stealth=False,units=None,cast_blocked=False):
 for mods in [(),('shift',),('ctrl',),('alt',),('cmd',)]:
  for stealth in [False,True]:
   out,_=run('Cat Q',mods=mods,stealth=stealth)
-  expected=('Dash','target') if mods==('alt',) or (not mods and not stealth) else ('Pounce',{'shift':'focus','ctrl':'mouseover'}.get(mods[0] if mods else '', 'target')) if stealth and mods in [(),('shift',),('ctrl',)] else None
+  expected=('Dash','target') if mods==('alt',) or (mods in [(),('ctrl',)] and not stealth) else ('Pounce','focus' if mods==('shift',) else 'target') if stealth and mods in [(),('shift',),('ctrl',)] else None
   assert out==([expected] if expected else []),(mods,stealth,out)
 assert run('Cat Q',form=1)[0]==[]
 assert run('Cat Rear',stealth=True)[0]==[('Ravage','target')]
@@ -142,7 +142,7 @@ for name,form in [('Cat Form',3),('Bear Form',1)]:
 for mod in ['cmd','alt']:
  assert run('Set Focus',mods=[mod,'shift'])[0]==[('/clearfocus','target')]
 assert run('Faerie Fire',mods=['shift'])[0]==[('Faerie Fire','target')]
-assert run('Faerie Fire',mods=['ctrl','shift'])[0]==[('Faerie Fire','mouseover')]
+assert run('Faerie Fire',mods=['ctrl','shift'])[0]==[('Faerie Fire','target')]
 assert run('Set Focus',mods=['shift'])[0]==[('/focus','mouseover')]
 # Both self modifiers must work identically, including with Shift/Ctrl held.
 friendly=['Rejuvenation','Regrowth','Healing Touch','Remove Curse','Poison Cleanse','Innervate','Thorns','Mark of the Wild']
@@ -151,10 +151,9 @@ for name in friendly:
   for extra in [(),('shift',),('ctrl',),('shift','ctrl')]:
    out,_=run(name,mods=(mod,)+extra)
    assert out[-1][1]=='player',(name,mod,extra,out)
- for dead,helpful in itertools.product([False,True],repeat=2):
-  units={'mouseover':{'exists':True,'help':helpful,'dead':dead},'player':{'help':True,'exists':True}}
-  out,_=run(name,mods=['ctrl'],units=units)
-  assert bool(out)==(helpful and not dead),(name,dead,helpful,out)
+ # No hardcoded fallback target: the native client resolves unmodified casts.
+ assert run(name,mods=['ctrl'])[0][-1]==(name if name!='Poison Cleanse' else 'Cure Poison','target')
+ assert '@mouseover' not in macros[name]
  assert run(name,mods=['shift'])[0]==[]
 assert [layout.main.cat[i].name for i in range(1,5)]==['Claw','Ferocious Bite','Rake','Rip']
 assert layout.main.human[7].name=='Roots' and layout.main.human[8].name=='Hibernate'
@@ -185,3 +184,21 @@ assert g.installed[2].body=='/say untouched'
 assert len(g.FeralSetupCharDB.macroReplacements)==1
 assert A.macros(True) is not None and len(g.installed)==33
 print('PASS: binding migration/aliases, macro limits, stealth selection/toggle, focus, self/mouseover routing, single-press forms, Q/E no-autoshift, real macro updater and idempotence.')
+
+# Targeting migration keeps modifiers local to macros; native mouseover is always on.
+lua.execute("cvars={};modified={};function GetCVar(k) return cvars[k] or '0' end;function SetCVar(k,v) cvars[k]=v end;function SetModifiedClick(k,v) modified[k]=v end")
+targeting=g.findUp(g.SlashCmdList.FERALSETUP,'setupTargetingSettings')
+targeting()
+assert g.cvars['enableMouseoverCast']=='1' and g.cvars['autoSelfCast']=='1'
+assert all(g.modified[k]=='NONE' for k in ['SELFCAST','FOCUSCAST','MOUSEOVERCAST'])
+# User Ctrl shortcuts must survive subsequent binding setup.
+g.bindings['CTRL-Q']='USER_ACTION';g.bindings['CTRL-F']='USER_HEAL'
+g.bindings['CTRL-SHIFT-R']='MULTIACTIONBAR1BUTTON9'
+assert setup()
+assert g.bindings['CTRL-Q']=='USER_ACTION' and g.bindings['CTRL-F']=='USER_HEAL'
+assert g.bindings['CTRL-SHIFT-R'] is None
+for name in ['Bash','Cat Charge','Bear Charge','Growl','Roots','Hibernate']:
+ assert '@mouseover' not in macros[name] and 'mod:ctrl' not in macros[name]
+ out,_=run(name,mods=['shift'])
+ assert out[-1][1]=='focus',name
+print('PASS: native targeting settings, explicit self/focus routing, and freed Ctrl bindings. Native client target resolution is not simulated.')

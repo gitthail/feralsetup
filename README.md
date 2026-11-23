@@ -17,11 +17,13 @@ The packaged addon runs directly; no build tools or Git installation are needed.
 If downloading GitHub's source ZIP instead, copy only its inner `FeralSetup`
 folder into `AddOns`.
 
-## Current version: 3.5.7
+## Current version: 3.5.8
 
 All commands now accept **`/fs`**; `/feralsetup` remains an alias.
 Shift+D toggles the native dungeon damage meter enabled/disabled.
-From 3.5.5–3.5.6: restart WoW after installing, then `/fs bindings`.
+From 3.5.5–3.5.7: restart WoW after installing, then `/fs targeting` and `/fs save`.
+Native mouseover now handles normal spells, including attacks. Macros retain
+Cmd/Alt-self and selected Shift-focus targeting. Ctrl has no special targeting role.
 No form-page rebuild needed. Meter visibility follows its in-game settings.
 
 - Private level-up reminders: recommended current/next area and milestone training.
@@ -56,7 +58,7 @@ Cat Q selects Dash/Pounce, R selects Shred/Ravage; B toggles Prowl in Cat and
 remains Challenging Roar in Bear. No combat macro automatically enters a form.
 Faerie Fire is Shift+R; set focus is Shift+Space. Frenzied Regeneration is
 Cmd/Alt+J in Bear. Cmd/Alt+Shift+Space clears focus.
-Human Q is Roots and E is Hibernate, with Shift focus / Ctrl mouseover.
+Human Q is Roots and E is Hibernate, with native mouseover / Shift focus.
 T Roots and X Hibernate remain available in every form.
 
 **Setup replaces same-name guide macros and configured bar slots/keybindings.**
@@ -71,7 +73,7 @@ From 3.5–3.5.4: replace files and `/reload`. Out of combat, in humanoid
 form on main page 1, run `/fs form`. Enter Cat and run it again.
 This places human Q/E and swaps Cat 2/3. Then `/fs save`.
 Bear and fixed bars need no rebuild. If upgrading from before 3.5.4, also
-run `/fs update` and `/fs bindings` for earlier fixes.
+run `/fs targeting` to apply current targeting settings and macros.
 Attack spells on native buttons still need manual rank updates after training.
 The two stealth-selecting macros naturally cast their named spells by rank.
 

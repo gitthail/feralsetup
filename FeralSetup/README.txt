@@ -1,7 +1,9 @@
-FERAL SETUP 3.5.7 — MAC/WINDOWS BINDINGS AND CAT STEALTH ACTIONS
+FERAL SETUP 3.5.8 — MAC/WINDOWS BINDINGS AND CAT STEALTH ACTIONS
 
 Use /fs for every command. /feralsetup remains supported.
-From 3.5.5–3.5.6: replace files, restart WoW, then /fs bindings.
+From 3.5.5–3.5.7: replace files, restart WoW, then /fs targeting and /fs save.
+Native mouseover handles normal spells, including attacks. Macro Cmd/Alt-self
+and selected Shift-focus remain. Ctrl is free for your own bindings.
 Shift+D toggles the native damage meter enabled/disabled.
 Set its visibility to Always to view it outside combat. No form rebuild needed.
 
@@ -27,11 +29,13 @@ Replace files, /reload. Out of combat in humanoid form, main page 1:
 /fs form
 Then enter Cat and run /fs form again, followed by /fs save.
 Cat 1/2 = Claw/Bite; 3/4 = Rake/Rip. Human Q/E = Roots/Hibernate.
-Human Q/E support Shift focus and Ctrl mouseover. T/X still work in every form.
+Human Q/E support native mouseover and Shift focus. T/X still work in every form.
 Bear and fixed bars need no rebuild. If coming from before 3.5.4, also run
-/fs update and /fs bindings to apply earlier fixes.
+/fs targeting to apply the current targeting mode.
 
 COMMANDS
+/fs targeting       Update macros/bindings, enable native mouseover and auto-self
+                    fallback, disable native self/focus modifiers; keep bars.
 /fs bindings Apply keybindings only; leave action bars unchanged.
 /fs setup    Replace guide macros, fixed bars, bindings, humanoid page.
 /fs form     Place current form page; reuse existing macro bodies.

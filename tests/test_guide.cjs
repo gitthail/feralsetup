@@ -15,7 +15,7 @@ vm.createContext(sandbox);vm.runInContext(script[0],sandbox);
 assert(nodes['macro-status'].textContent.includes('32 macros'));
 nodes.search.value='Faerie Fire';vm.runInContext('renderMacros()',sandbox);
 const visible=Object.keys(nodes).filter(k=>/^macro-\d+$/.test(k)&&!nodes[k].hidden);assert.equal(visible.length,1);
-assert(nodes[visible[0]].querySelector('pre').textContent.includes('nomod:ctrl,harm,nodead'));
+assert(nodes[visible[0]].querySelector('pre').textContent.includes('/cast Faerie Fire'));
 nodes.cat.value='2';nodes.search.value='Prowl';vm.runInContext('renderMacros()',sandbox);
 assert(Object.keys(nodes).filter(k=>/^macro-\d+$/.test(k)).some(k=>nodes[k].querySelector('pre').textContent.includes('[form:2] Prowl')));
 vm.runInContext('downloadBundle()',sandbox);
