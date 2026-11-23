@@ -1,3 +1,8 @@
+v3.6.0 checks
+- Key-to-page mapping checked across Cat/Bear/human, including Shift+Q/E and 1/2 focus fallthrough.
+- Alt+Q still reaches the Cat Dash/Pounce macro; Alt+1 stays Barkskin.
+- Native targeting and form macro regression checks pass. No live-game test.
+
 v3.5.8 checks
 - Native mouseover and auto-self fallback enabled; native modifiers NONE.
 - Self/focus macro overrides retained; Ctrl bindings preserved and old Ctrl+Shift+R retired.

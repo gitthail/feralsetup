@@ -1,4 +1,4 @@
--- v3.5.5: Cat direct/bleed pairs; human Q Roots, E Hibernate; Cat Q Dash/Pounce; R Shred/Ravage.
+-- v3.6.0: Q/E attacks, Shift+Q/E finishers; numbered utility/control.
 FeralSetupLayout={
   ["fixed"]={
     ["selfbar"]={
@@ -155,24 +155,24 @@ FeralSetupLayout={
   ["main"]={
     ["human"]={
       {
-        ["name"]="Moonfire",
-        ["kind"]="macro"
+        ["kind"]="macro",
+        ["name"]="Roots"
       },
       {
-        ["name"]="Wrath",
-        ["kind"]="spell"
+        ["kind"]="macro",
+        ["name"]="Moonfire"
       },
       {
-        ["name"]="Starfire",
-        ["kind"]="spell"
+        ["kind"]="spell",
+        ["name"]="Wrath"
       },
       {
-        ["name"]="Hurricane",
-        ["kind"]="spell"
+        ["kind"]="spell",
+        ["name"]="Starfire"
       },
       {
-        ["name"]="Soothe Animal",
-        ["kind"]="spell"
+        ["kind"]="spell",
+        ["name"]="Soothe Animal"
       },
       {
         ["kind"]="empty"
@@ -186,7 +186,8 @@ FeralSetupLayout={
         ["name"]="Hibernate"
       },
       {
-        ["kind"]="empty"
+        ["kind"]="spell",
+        ["name"]="Hurricane"
       },
       {
         ["kind"]="empty"
@@ -205,11 +206,11 @@ FeralSetupLayout={
       },
       {
         ["kind"]="spell",
-        ["name"]="Ferocious Bite"
+        ["name"]="Rake"
       },
       {
         ["kind"]="spell",
-        ["name"]="Rake"
+        ["name"]="Ferocious Bite"
       },
       {
         ["kind"]="spell",
@@ -253,19 +254,19 @@ FeralSetupLayout={
       },
       {
         ["kind"]="spell",
-        ["name"]="Primal Bite"
-      },
-      {
-        ["kind"]="spell",
         ["name"]="Swipe"
       },
       {
         ["kind"]="spell",
-        ["name"]="Demoralizing Roar"
+        ["name"]="Primal Bite"
       },
       {
         ["kind"]="spell",
         ["name"]="Lacerate"
+      },
+      {
+        ["kind"]="spell",
+        ["name"]="Demoralizing Roar"
       },
       {
         ["kind"]="macro",
@@ -297,76 +298,76 @@ FeralSetupLayout={
     }
   },
   ["bindings"]={
-    ["SHIFT-D"]="FERALSETUP_DAMAGE_METER",
-    ["PAGEDOWN"]="CAMERAZOOMOUT",
-    ["-"]="MULTIACTIONBAR3BUTTON4",
-    ["PAGEUP"]="CAMERAZOOMIN",
+    ["ALT-J"]="ACTIONBUTTON11",
+    ["ALT-2"]="MULTIACTIONBAR2BUTTON2",
     ["CMD-X"]="MULTIACTIONBAR2BUTTON5",
-    ["TAB"]="TARGETNEARESTENEMY",
-    ["1"]="ACTIONBUTTON1",
+    ["SHIFT-D"]="FERALSETUP_DAMAGE_METER",
+    ["ALT-4"]="MULTIACTIONBAR2BUTTON4",
+    ["ALT-3"]="MULTIACTIONBAR2BUTTON3",
+    ["CMD-3"]="MULTIACTIONBAR2BUTTON3",
+    ["CMD-MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
+    ["CMD-MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
+    ["CMD-SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
+    ["CMD-J"]="ACTIONBUTTON11",
+    ["CMD-4"]="MULTIACTIONBAR2BUTTON4",
+    ["ALT-1"]="MULTIACTIONBAR2BUTTON1",
+    ["SPACE"]="JUMP",
+    ["ALT-Q"]="ACTIONBUTTON7",
+    ["ALT-SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
+    ["ALT-MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
+    ["ALT-Z"]="MULTIACTIONBAR2BUTTON6",
+    ["PAGEDOWN"]="CAMERAZOOMOUT",
+    ["ALT-MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
+    ["ALT-B"]="MULTIACTIONBAR2BUTTON7",
+    ["ALT-X"]="MULTIACTIONBAR2BUTTON5",
+    ["1"]="ACTIONBUTTON7",
     ["0"]="MULTIACTIONBAR3BUTTON3",
-    ["3"]="ACTIONBUTTON3",
-    ["2"]="ACTIONBUTTON2",
+    ["3"]="ACTIONBUTTON9",
+    ["2"]="ACTIONBUTTON8",
     ["5"]="MULTIACTIONBAR1BUTTON3",
-    ["4"]="ACTIONBUTTON4",
+    ["4"]="MULTIACTIONBAR1BUTTON9",
     ["7"]="MULTIACTIONBAR1BUTTON11",
     ["6"]="ACTIONBUTTON6",
     ["9"]="MULTIACTIONBAR3BUTTON2",
     ["8"]="MULTIACTIONBAR3BUTTON1",
-    ["SPACE"]="JUMP",
-    ["CMD-3"]="MULTIACTIONBAR2BUTTON3",
+    ["CMD-1"]="MULTIACTIONBAR2BUTTON1",
+    ["CMD-2"]="MULTIACTIONBAR2BUTTON2",
     ["="]="MULTIACTIONBAR3BUTTON5",
-    ["CMD-Z"]="MULTIACTIONBAR2BUTTON6",
+    ["\\"]="MULTIACTIONBAR3BUTTON10",
     ["MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
-    ["BUTTON3"]="MULTIACTIONBAR2BUTTON10",
+    ["CMD-B"]="MULTIACTIONBAR2BUTTON7",
     ["A"]="STRAFELEFT",
-    ["H"]="MULTIACTIONBAR2BUTTON11",
+    ["SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
     ["C"]="MULTIACTIONBAR1BUTTON4",
     ["B"]="ACTIONBUTTON10",
-    ["E"]="ACTIONBUTTON8",
+    ["E"]="ACTIONBUTTON2",
     ["D"]="STRAFERIGHT",
     ["G"]="MULTIACTIONBAR1BUTTON2",
     ["F"]="MULTIACTIONBAR1BUTTON1",
-    ["CMD-B"]="MULTIACTIONBAR2BUTTON7",
-    ["CMD-1"]="MULTIACTIONBAR2BUTTON1",
+    ["MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
+    ["H"]="MULTIACTIONBAR2BUTTON11",
     ["K"]="MULTIACTIONBAR1BUTTON12",
     ["J"]="ACTIONBUTTON12",
-    ["MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
+    ["Q"]="ACTIONBUTTON1",
     ["L"]="MULTIACTIONBAR3BUTTON11",
     ["O"]="MULTIACTIONBAR3BUTTON6",
-    ["Q"]="ACTIONBUTTON7",
+    ["W"]="MOVEFORWARD",
+    ["BUTTON3"]="MULTIACTIONBAR2BUTTON10",
     ["P"]="MULTIACTIONBAR3BUTTON7",
     ["S"]="MOVEBACKWARD",
     ["R"]="ACTIONBUTTON5",
     ["U"]="MULTIACTIONBAR1BUTTON10",
     ["T"]="MULTIACTIONBAR1BUTTON7",
-    ["W"]="MOVEFORWARD",
+    ["TAB"]="TARGETNEARESTENEMY",
     ["V"]="MULTIACTIONBAR1BUTTON5",
     ["Y"]="MULTIACTIONBAR1BUTTON6",
     ["X"]="MULTIACTIONBAR1BUTTON8",
     ["["]="MULTIACTIONBAR3BUTTON8",
-    ["Z"]="ACTIONBUTTON9",
     ["]"]="MULTIACTIONBAR3BUTTON9",
-    ["\\"]="MULTIACTIONBAR3BUTTON10",
-    ["CMD-4"]="MULTIACTIONBAR2BUTTON4",
-    ["CMD-2"]="MULTIACTIONBAR2BUTTON2",
-    ["CMD-J"]="ACTIONBUTTON11",
-    ["SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
-    ["CMD-SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
-    ["CMD-MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
-    ["CMD-MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
-    ["ALT-X"]="MULTIACTIONBAR2BUTTON5",
-    ["ALT-3"]="MULTIACTIONBAR2BUTTON3",
-    ["ALT-Z"]="MULTIACTIONBAR2BUTTON6",
-    ["ALT-B"]="MULTIACTIONBAR2BUTTON7",
-    ["ALT-1"]="MULTIACTIONBAR2BUTTON1",
-    ["ALT-4"]="MULTIACTIONBAR2BUTTON4",
-    ["ALT-2"]="MULTIACTIONBAR2BUTTON2",
-    ["ALT-J"]="ACTIONBUTTON11",
-    ["ALT-SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
-    ["ALT-MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
-    ["ALT-MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
-    ["ALT-Q"]="ACTIONBUTTON7",
-    ["SHIFT-R"]="MULTIACTIONBAR1BUTTON9",
+    ["PAGEUP"]="CAMERAZOOMIN",
+    ["CMD-Z"]="MULTIACTIONBAR2BUTTON6",
+    ["-"]="MULTIACTIONBAR3BUTTON4",
+    ["SHIFT-Q"]="ACTIONBUTTON3",
+    ["SHIFT-E"]="ACTIONBUTTON4"
   }
 }

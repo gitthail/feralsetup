@@ -1,39 +1,43 @@
-FERALSETUP 3.5.8 — MAC + WINDOWS
+FERALSETUP 3.6.0 — MAC + WINDOWS
 
 Cmd and Alt are alternatives everywhere Cmd is assigned. On Windows use Alt.
 Use one modifier at a time except the explicitly listed targeting combinations.
 
-KEY           CAT                  STEALTHED CAT          BEAR
-1             Claw                 Claw                   Maul
-2             Ferocious Bite       Ferocious Bite                   Primal Bite
-3             Rake                 Rake         Swipe
-4             Rip                  Rip                    Demoralizing Roar
-R             Shred                Ravage                 Lacerate
-Q             Dash                 Pounce                 Bash
-E             Cat Charge           Cat Charge*            Bear Charge
-Z             Shifting Power       Shifting Power         Enrage
-B             Prowl ON             Prowl OFF              Challenging Roar
-6             Empty                Empty                  Growl
-J             Cower                Cower                  Empty
-Cmd/Alt+J     Empty                Empty                  Frenzied Regeneration
+V2 MAIN CONTROLS
+KEY         CAT                 STEALTHED CAT        BEAR                 HUMAN
+Q           Claw                Claw                 Maul                 Roots
+E           Rake                Rake                 Swipe                Moonfire
+Shift+Q     Ferocious Bite      Ferocious Bite       Primal Bite          Wrath
+Shift+E     Rip                 Rip                  Lacerate             Starfire
+R           Shred               Ravage               Demoralizing Roar    Soothe Animal
+1           Dash                Pounce               Bash                 Roots
+2           Cat Charge          Cat Charge           Bear Charge          Hibernate
+3           Shifting Power      Shifting Power       Enrage               Hurricane
+4           Faerie Fire         Faerie Fire          Faerie Fire          Faerie Fire
+B           Prowl ON            Prowl OFF            Challenging Roar     Empty
+6           Empty               Empty                Growl                Empty
+J           Cower               Cower                Empty                Empty
+Cmd/Alt+J   Empty               Empty                Frenzied Regeneration Empty
 
-* E retains Cat Charge in stealth; the client still enforces its restrictions.
-Unlearned spells are unavailable. R and Q do not fall back to a different attack
-when the selected stealth opener is unlearned. 1-4 remain ordinary attacks.
-No Q/E/B macro changes your form. To Bash from Cat: wheel down, then Q.
+Cat Q/Shift+Q = direct builder/finisher; E/Shift+E = bleed builder/finisher.
+Bear Q/Shift+Q = single-target damage; E Swipe; Shift+E Lacerate; R Roar.
+No macro automatically enters an animal form. To Bash from Cat: wheel down, 1.
+Unlearned spells remain unavailable; stealth 1/R have no alternate attack fallback.
 
 MODIFIERS
-Native mouseover needs no modifier, including on ordinary attacks.
-Global self/focus modifiers are None; macros retain those overrides.
-Ctrl is free for user bindings. /fs targeting applies this mode.
-Alt+Q         Dash in Cat, including while stealthed. No action in Bear/humanoid.
-Shift+Q       Focus Pounce in stealth / focus Bash in Bear; inactive normal Cat.
-Shift+E       Focus charge in your current animal form.
+Shift+1       Focus Pounce in stealth / Bash in Bear / Roots in human.
+              Inactive in normal Cat.
+Shift+2       Focus Charge in Cat/Bear; focus Hibernate in human.
 Shift+6       Focus Growl in Bear.
+Alt+Q         Dash in Cat, including stealth. Inactive in Bear/human.
+Shift+Q/E are attacks, not focus shortcuts. Alt+1 remains Barkskin.
+Native mouseover needs no modifier, including on ordinary attacks.
+Global self/focus modifiers are None; macros retain self/focus overrides.
+Ctrl is free for user bindings. Z and Shift+R are freed.
 
 FIXED KEYS — EVERY FORM
 Shift+D       Toggle native damage meter enabled/disabled.
-Shift+R       Faerie Fire with native mouseover / target.
+4             Faerie Fire with native mouseover / target.
 Faerie Fire has no focus shortcut in this temporary layout. Cmd/Alt+R unused.
 T             Roots. Native mouseover / target; Shift = focus.
 X             Hibernate. Native mouseover / target; Shift = focus.
@@ -80,16 +84,14 @@ L             Mana potion (user-placed item)
 
 W/S forward/back; A/D strafe; Space jump; Tab nearest enemy.
 Page Up/Down zoom in/out. Shift+D toggles the native damage meter; other Shift/Alt+WASD are unassigned.
-Humanoid main page retains 1 Moonfire, 2 Wrath, 3 Starfire, 4 Hurricane,
-R Soothe Animal; Q Roots; E Hibernate. Other main slots empty.
-Human Q/E: plain = native mouseover / target, Shift = focus.
-T Roots and X Hibernate remain available in EVERY form.
+T Roots and X Hibernate remain available in EVERY form, Shift for focus.
+Human Q duplicates Roots; use Shift+1 or Shift+T for focus Roots.
 
-MIGRATION
-Faerie Fire moved to Shift+R; previous Cmd/Alt+R assignments are removed.
-Focus moved from N to Shift+Space; Cmd/Alt+Shift+Space clears it.
-Frenzied Regeneration moved from Cmd+R to Cmd/Alt+J.
-B remains Challenging Roar in Bear and toggles Prowl only in Cat.
-The old N / key-left-of-1 addon assignments are removed if still assigned to
-those addon actions. Unrelated replacements on those keys are preserved.
-No bar-bug workaround or general spell-rank macro conversion was added.
+UPGRADE TO V2
+Restart WoW after replacing files. Out of combat, humanoid form, main page 1:
+/fs setup
+Enter Cat: /fs form
+Enter Bear: /fs form
+Then /fs save. All three pages must be applied for the new layout.
+Personal item slots are preserved. Spell ranks on native buttons remain manual.
+No bar-bug workaround or automatic layout restoration was added.

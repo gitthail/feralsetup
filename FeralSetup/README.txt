@@ -1,37 +1,28 @@
-FERAL SETUP 3.5.8 — MAC/WINDOWS BINDINGS AND CAT STEALTH ACTIONS
+FERAL SETUP 3.6.0 — V2 Q/E ATTACK LAYOUT
 
-Use /fs for every command. /feralsetup remains supported.
-From 3.5.5–3.5.7: replace files, restart WoW, then /fs targeting and /fs save.
-Native mouseover handles normal spells, including attacks. Macro Cmd/Alt-self
-and selected Shift-focus remain. Ctrl is free for your own bindings.
-Shift+D toggles the native damage meter enabled/disabled.
-Set its visibility to Always to view it outside combat. No form rebuild needed.
+Use /fs for every command; /feralsetup remains supported.
+See KEYBINDS.txt and Guide.html for all forms, modifiers and utility keys.
 
-See KEYBINDS.txt for the full side-by-side layout and all modifiers.
-Every Cmd shortcut also works with Alt. No automatic form change on Q/E/B.
-B toggles Prowl in Cat; B remains Challenging Roar in Bear.
-Shift+R = Faerie Fire; Cmd/Alt+J = Frenzied Regeneration in Bear.
-Shift+Space = set focus; Cmd/Alt+Shift+Space = clear focus.
-Alt+Q = Dash in Cat, including stealth.
+Cat: Q Claw, E Rake, Shift+Q Bite, Shift+E Rip, R Shred/Ravage.
+Bear: Q Maul, E Swipe, Shift+Q Primal Bite, Shift+E Lacerate, R Roar.
+Human: Q Roots, E Moonfire; Shift+Q Wrath, Shift+E Starfire, 3 Hurricane.
+1 = Cat Dash/Pounce, Bear Bash, human Roots. 2 = Charge / human Hibernate.
+Shift+1/2 = focus control. 3 = Cat Shifting Power / Bear Enrage.
+4 = Faerie Fire in every form. T/X remain Roots/Hibernate in every form.
+Alt+Q remains stealth Dash; Alt+1 remains Barkskin. Z and Shift+R are freed.
+Native mouseover handles normal spells. Cmd/Alt-self and selected Shift-focus
+remain macro-controlled. Ctrl is available for your own bindings.
+Shift+D toggles the native damage meter; use visibility Always outside combat.
 
-FRESH INSTALL / UPGRADE FROM BEFORE 3.5
-Replace the FeralSetup folder's files, then restart WoW.
-Out of combat, in humanoid form on main page 1: /fs setup
-In Cat Form: /fs form
-In Bear Form: /fs form
-After checking your layout: /fs save
-Only populate forms you have learned. Setup replaces same-name guide macros
-and configured bars/bindings. Personal slots marked KEEP are not overwritten.
-Unlearned native spell slots remain empty. Train and place ranks manually.
-
-UPGRADE FROM 3.5–3.5.4
-Replace files, /reload. Out of combat in humanoid form, main page 1:
-/fs form
-Then enter Cat and run /fs form again, followed by /fs save.
-Cat 1/2 = Claw/Bite; 3/4 = Rake/Rip. Human Q/E = Roots/Hibernate.
-Human Q/E support native mouseover and Shift focus. T/X still work in every form.
-Bear and fixed bars need no rebuild. If coming from before 3.5.4, also run
-/fs targeting to apply the current targeting mode.
+INSTALL / UPGRADE TO V2
+Replace files and restart WoW. Out of combat, humanoid form on main page 1:
+/fs setup
+Enter Cat: /fs form
+Enter Bear: /fs form
+Check your bars, then /fs save. Both animal pages need rebuilding for v2.
+Setup updates macros, fixed bars, bindings and native targeting settings.
+Personal item slots are preserved. Unlearned spells leave empty slots.
+Train and update native spell ranks manually.
 
 COMMANDS
 /fs targeting       Update macros/bindings, enable native mouseover and auto-self

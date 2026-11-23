@@ -26,17 +26,19 @@ end
 for f in (ROOT/'FeralSetup/FeralSetup.toc').read_text().splitlines():
  if f.endswith('.lua'): lua.execute((ROOT/'FeralSetup'/f).read_text())
 g=lua.globals();A=g.FeralSetup;layout=g.FeralSetupLayout
-for k,v in [('N','MULTIACTIONBAR2BUTTON12'),('`','MULTIACTIONBAR1BUTTON9'),('SECTION','MULTIACTIONBAR1BUTTON9'),('ALT-F','OLD'),('CMD-R','MULTIACTIONBAR1BUTTON9'),('ALT-R','MULTIACTIONBAR1BUTTON9'),('CMD-SHIFT-R','MULTIACTIONBAR1BUTTON9'),('SHIFT-Q','OLD'),('F12','UNRELATED')]:g.bindings[k]=v
+for k,v in [('N','MULTIACTIONBAR2BUTTON12'),('`','MULTIACTIONBAR1BUTTON9'),('SECTION','MULTIACTIONBAR1BUTTON9'),('ALT-F','OLD'),('CMD-R','MULTIACTIONBAR1BUTTON9'),('ALT-R','MULTIACTIONBAR1BUTTON9'),('CMD-SHIFT-R','MULTIACTIONBAR1BUTTON9'),('SHIFT-Q','OLD'),('F12','UNRELATED'),('Z','ACTIONBUTTON9'),('SHIFT-R','MULTIACTIONBAR1BUTTON9')]:g.bindings[k]=v
 setup=g.findUp(g.findUp(g.SlashCmdList.FERALSETUP,'applySetup'),'setupBindings')
 assert setup()
 assert g.bindings['N'] is None and g.bindings['`'] is None and g.bindings['SECTION'] is None
 assert g.bindings['F12']=='UNRELATED'
-assert g.bindings['ALT-F'] is None and g.bindings['SHIFT-Q'] is None
+assert g.bindings['ALT-F'] is None and g.bindings['SHIFT-Q']=='ACTIONBUTTON3'
 for k,v in layout.bindings.items():
  assert g.bindings[k]==v,(k,v)
  if k.startswith('CMD-'): assert g.bindings['ALT-'+k[4:]]==v,k
 assert g.bindings['CMD-R'] is None and g.bindings['ALT-R'] is None and g.bindings['CMD-SHIFT-R'] is None
-assert g.bindings['SHIFT-R']=='MULTIACTIONBAR1BUTTON9'
+assert g.bindings['Z'] is None
+assert g.bindings['SHIFT-R'] is None
+assert g.bindings['4']=='MULTIACTIONBAR1BUTTON9'
 assert g.bindings['CTRL-SHIFT-R'] is None
 assert g.bindings['CMD-J']=='ACTIONBUTTON11'
 assert g.bindings['SHIFT-SPACE']=='MULTIACTIONBAR2BUTTON12'
@@ -155,12 +157,12 @@ for name in friendly:
  assert run(name,mods=['ctrl'])[0][-1]==(name if name!='Poison Cleanse' else 'Cure Poison','target')
  assert '@mouseover' not in macros[name]
  assert run(name,mods=['shift'])[0]==[]
-assert [layout.main.cat[i].name for i in range(1,5)]==['Claw','Ferocious Bite','Rake','Rip']
+assert [layout.main.cat[i].name for i in range(1,5)]==['Claw','Rake','Ferocious Bite','Rip']
 assert layout.main.human[7].name=='Roots' and layout.main.human[8].name=='Hibernate'
 assert layout.fixed.support[7].name=='Roots' and layout.fixed.support[8].name=='Hibernate'
 assert layout.bindings['T']=='MULTIACTIONBAR1BUTTON7' and layout.bindings['X']=='MULTIACTIONBAR1BUTTON8'
 assert layout.main.cat[5].name=='Cat Rear' and layout.main.cat[7].name=='Cat Q'
-assert layout.main.bear[5].name=='Lacerate' and layout.main.bear[10].name=='Challenging Roar'
+assert layout.main.bear[5].name=='Demoralizing Roar' and layout.main.bear[10].name=='Challenging Roar'
 assert layout.main.bear[11].name=='Frenzied Regeneration'
 assert layout.main.cat[12].name=='Cower'
 # Q/E macros must never shift or use castsequence.
@@ -202,3 +204,18 @@ for name in ['Bash','Cat Charge','Bear Charge','Growl','Roots','Hibernate']:
  out,_=run(name,mods=['shift'])
  assert out[-1][1]=='focus',name
 print('PASS: native targeting settings, explicit self/focus routing, and freed Ctrl bindings. Native client target resolution is not simulated.')
+
+# Actual keys resolve to the expected v2 page slots, across all forms.
+expected={
+ 'cat':{'Q':'Claw','E':'Rake','SHIFT-Q':'Ferocious Bite','SHIFT-E':'Rip','1':'Cat Q','2':'Cat Charge','3':'Shifting Power','R':'Cat Rear'},
+ 'bear':{'Q':'Maul','E':'Swipe','SHIFT-Q':'Primal Bite','SHIFT-E':'Lacerate','1':'Bash','2':'Bear Charge','3':'Enrage','R':'Demoralizing Roar'},
+ 'human':{'Q':'Roots','E':'Moonfire','SHIFT-Q':'Wrath','SHIFT-E':'Starfire','1':'Roots','2':'Hibernate','3':'Hurricane'}}
+for form,keys in expected.items():
+ for key,name in keys.items():
+  slot=int(layout.bindings[key].replace('ACTIONBUTTON',''))
+  assert layout.main[form][slot].name==name,(form,key,name)
+for key in ['SHIFT-1','SHIFT-2','SHIFT-T','SHIFT-X','SHIFT-6']:
+ assert g.bindings[key] is None,key
+assert layout.bindings['ALT-Q']=='ACTIONBUTTON7'
+assert layout.bindings['ALT-1']=='MULTIACTIONBAR2BUTTON1'
+print('PASS: v2 key-to-page mapping and control modifier routing.')

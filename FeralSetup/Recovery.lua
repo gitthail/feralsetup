@@ -1,4 +1,4 @@
--- FeralSetup v3.5.8: setup, snapshots, restore. All changes require a slash command.
+-- FeralSetup v3.6.0: setup, snapshots, restore. All changes require a slash command.
 -- No automatic restoration on login, no combat handlers and no spell casting.
 local A=FeralSetup
 local unpack=unpack or table.unpack
@@ -136,11 +136,11 @@ local function setupBindings()
  for _,k in ipairs({'F','G','5','C','V','Y','8','9'}) do
   for _,mod in ipairs({'CMD-','ALT-','SHIFT-'}) do reserved[mod..k]=true end
  end
- for _,k in ipairs({'Q','E','T','X','6'}) do
+ for _,k in ipairs({'1','2','T','X','6'}) do
   reserved['SHIFT-'..k]=true
  end
  -- Retire old addon keys; leave a user's unrelated replacement bindings alone.
- local retired={['CTRL-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['CMD-R']='MULTIACTIONBAR1BUTTON9',['ALT-R']='MULTIACTIONBAR1BUTTON9',
+ local retired={['Z']='ACTIONBUTTON9',['SHIFT-R']='MULTIACTIONBAR1BUTTON9',['CTRL-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['CMD-R']='MULTIACTIONBAR1BUTTON9',['ALT-R']='MULTIACTIONBAR1BUTTON9',
   ['CMD-CTRL-R']='MULTIACTIONBAR1BUTTON9',['ALT-CTRL-R']='MULTIACTIONBAR1BUTTON9',
   ['CMD-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['ALT-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['N']='MULTIACTIONBAR2BUTTON12',['CMD-N']='MULTIACTIONBAR2BUTTON12',
   ['`']='MULTIACTIONBAR1BUTTON9',['CTRL-`']='MULTIACTIONBAR1BUTTON9',['SHIFT-`']='MULTIACTIONBAR1BUTTON9'}
@@ -338,7 +338,7 @@ local function applySetup()
  db().pages.human=copy(main)
  if success then
   savedSnapshot()
-  A.say('Bindings, three fixed bars and Humanoid page installed (v3.5.8; Cmd/Alt aliases; Faerie Fire on Shift+R).')
+  A.say('Bindings, three fixed bars and Humanoid page installed (v3.6.0; Cmd/Alt aliases; Q/E attacks; Faerie Fire on 4).')
   A.say('Wheel UP into Cat, then /feralsetup form. Wheel DOWN into Bear, run it again.')
   A.say('Then /feralsetup save to save a recovery snapshot and reload.')
  else A.say('Some operations failed. Backup was preserved; see messages above. /feralsetup undo reverses layout changes.') end
@@ -351,7 +351,7 @@ local function applyForm()
  if fill(FeralSetupLayout.main[kind],slots,book,bodies) then
   db().pages[kind]=copy(slots);savedSnapshot()
   A.say(kind..' page filled using LIVE slots '..slots[1]..'-'..slots[12]..'.')
-  A.say('After both Cat and Bear: /feralsetup save. Cat Q/R select their stealth abilities automatically.')
+  A.say('After both Cat and Bear: /feralsetup save. Cat 1/R select their stealth abilities automatically.')
  end
 end
 local function restore(s,label)
@@ -393,7 +393,7 @@ local function saveAndReload()
 end
 local function status()
  local d=db();local form=currentForm() or 'unknown';local slots=getSlots('ActionButton','MainActionBar')
- A.say('v3.5.8. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
+ A.say('v3.6.0. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
  local pages={};for k,v in pairs(d.pages) do pages[#pages+1]=k..' '..v[1]..'-'..v[12] end
  A.say('Recorded pages: '..(#pages>0 and table.concat(pages,', ') or 'none'))
  A.say('Saved layout: '..(d.saved and 'yes' or 'no')..'; pre-setup backup: '..(d.before and 'yes' or 'no')..'; talent group '..groupKey())

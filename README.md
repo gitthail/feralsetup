@@ -17,14 +17,11 @@ The packaged addon runs directly; no build tools or Git installation are needed.
 If downloading GitHub's source ZIP instead, copy only its inner `FeralSetup`
 folder into `AddOns`.
 
-## Current version: 3.5.8
+## Current version: 3.6.0
 
-All commands now accept **`/fs`**; `/feralsetup` remains an alias.
-Shift+D toggles the native dungeon damage meter enabled/disabled.
-From 3.5.5–3.5.7: restart WoW after installing, then `/fs targeting` and `/fs save`.
-Native mouseover now handles normal spells, including attacks. Macros retain
-Cmd/Alt-self and selected Shift-focus targeting. Ctrl has no special targeting role.
-No form-page rebuild needed. Meter visibility follows its in-game settings.
+All commands accept **`/fs`**; `/feralsetup` remains supported.
+**3.6.0 switches to the v2 Q/E attack layout. Apply all three form pages using
+the steps below, even when upgrading from 3.5.8.**
 
 - Private level-up reminders: recommended current/next area and milestone training.
 - `/fs guide`: current route, quest suggestions and training notes.
@@ -53,33 +50,38 @@ Use `/fs guide` for current-area advice in-game, and
 has an Alt alternative, including self-casting and deliberate form re-shifts.
 See the [complete key map](FeralSetup/KEYBINDS.txt).
 
-Current controls: numbered Cat direct/bleed and Bear single-target/AoE groups;
-Cat Q selects Dash/Pounce, R selects Shred/Ravage; B toggles Prowl in Cat and
-remains Challenging Roar in Bear. No combat macro automatically enters a form.
-Faerie Fire is Shift+R; set focus is Shift+Space. Frenzied Regeneration is
-Cmd/Alt+J in Bear. Cmd/Alt+Shift+Space clears focus.
-Human Q is Roots and E is Hibernate, with native mouseover / Shift focus.
-T Roots and X Hibernate remain available in every form.
+| Key | Cat | Bear | Human |
+| --- | --- | --- | --- |
+| Q | Claw | Maul | Roots |
+| E | Rake | Swipe | Moonfire |
+| Shift+Q | Ferocious Bite | Primal Bite | Wrath |
+| Shift+E | Rip | Lacerate | Starfire |
+| R | Shred / stealthed Ravage | Demoralizing Roar | Soothe Animal |
+| 1 | Dash / stealthed Pounce | Bash | Roots |
+| 2 | Cat Charge | Bear Charge | Hibernate |
+| 3 | Shifting Power | Enrage | Hurricane |
+| 4 | Faerie Fire | Faerie Fire | Faerie Fire |
 
-**Setup replaces same-name guide macros and configured bar slots/keybindings.**
-Use it deliberately, out of combat:
+Shift+1/2 targets focus for the relevant controls; normal Cat Shift+1 is inactive.
+T/X remain all-form Roots/Hibernate, with Shift-focus. Alt+Q remains Cat Dash,
+including stealth. Alt+1 remains Barkskin. Z and Shift+R are freed.
+Native mouseover handles normal spells; macro Cmd/Alt-self and selected
+Shift-focus remain. Ctrl is available for user bindings. Shift+D toggles the
+native damage meter enabled/disabled; its visibility follows the game settings.
 
-1. In humanoid form, main action page 1: `/fs setup`.
-2. Enter each learned Cat/Bear form and run `/fs form`.
-3. Check your bars, then `/fs save` to snapshot and reload.
+**Install or upgrade to v2, out of combat:**
 
-**Fresh installs and upgrades from before 3.5 require the setup steps above.**
-From 3.5–3.5.4: replace files and `/reload`. Out of combat, in humanoid
-form on main page 1, run `/fs form`. Enter Cat and run it again.
-This places human Q/E and swaps Cat 2/3. Then `/fs save`.
-Bear and fixed bars need no rebuild. If upgrading from before 3.5.4, also
-run `/fs targeting` to apply current targeting settings and macros.
-Attack spells on native buttons still need manual rank updates after training.
-The two stealth-selecting macros naturally cast their named spells by rank.
+1. Replace addon files and restart WoW.
+2. In humanoid form, main action page 1: `/fs setup`.
+3. Enter Cat: `/fs form`.
+4. Enter Bear: `/fs form`.
+5. Check your bars, then `/fs save`.
 
-See [addon instructions](FeralSetup/README.txt) for all commands and recovery.
-Saved preferences and snapshots live separately in WoW's `WTF` directory;
-installing this addon on another PC does not transfer them.
+Setup updates guide macros, fixed bars, bindings and targeting settings. Both
+animal pages need applying for this layout change. Personal item slots are
+preserved; unlearned spells leave empty slots. Native spell ranks remain manual.
+Saved preferences and snapshots live separately in WoW's `WTF` directory.
+See [addon instructions](FeralSetup/README.txt) for commands and recovery.
 
 ## Build the install package
 
