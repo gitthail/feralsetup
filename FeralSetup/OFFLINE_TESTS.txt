@@ -1,3 +1,20 @@
+v3.7.0 — explicit mouseover / A-B layouts
+- Lua 5.1 simulated-API tests exercise the actual setup, form and switch commands.
+- A/B mappings checked in human/Cat/Bear without any action or macro writes on switch.
+- Personal item slots and unrelated keys preserved; stale focus keys cleared.
+- Combat/cursor guards, invalid layout rejection, failed-binding rollback and saved
+  profile restoration verified. Windows skips Command and keeps Alt alternatives.
+- Friendly/hostile/dead hover fallback, forced self, focus precedence and invalid
+  focus/no-target handling checked in the macro condition evaluator.
+- Learned/unlearned Ravage/Pounce variants, after-training update, and macro limits
+  checked. R uses Shred from stealth until Ravage is learned; no forced form cancel
+  before spells. H remains the explicit cancel command.
+- Settings are read back; refused native mouseover settings cannot report success.
+- Generated guide scripts, anchors, learned-opener previews and offline ZIP checked.
+- Not live-client testing: autoUnshift's range/mana/LOS failure behaviour and actual
+  casts are NOT established by these tests. There is no resource/range-aware form
+  cancellation script. Full client integration needs a safe in-game check.
+
 v3.6.1 checks
 - Existing Druid bindings/macros unchanged; Mage/Rogue tables are HTML proposals only.
 - Lua 5.1 binding and levelling regression tests pass.

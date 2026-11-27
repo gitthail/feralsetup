@@ -1,4 +1,4 @@
--- v3.6.0: Q/E attacks, Shift+Q/E finishers; numbered utility/control.
+-- Stable physical action slots shared by A (numbers) and B (Q/E).
 FeralSetupLayout={
   ["fixed"]={
     ["selfbar"]={
@@ -371,3 +371,30 @@ FeralSetupLayout={
     ["SHIFT-E"]="ACTIONBUTTON4"
   }
 }
+
+-- Switching only changes bindings. Every form keeps exactly the same slots.
+FeralSetupLayout.bindings.Z='MULTIACTIONBAR1BUTTON9'
+FeralSetupLayout.bindings['SHIFT-Z']='MULTIACTIONBAR1BUTTON9'
+FeralSetupLayout.bindings['SHIFT-3']='ACTIONBUTTON9'
+FeralSetupLayout.bindings['SHIFT-T']='MULTIACTIONBAR1BUTTON7'
+FeralSetupLayout.bindings['SHIFT-X']='MULTIACTIONBAR1BUTTON8'
+FeralSetupLayout.bindings['SHIFT-6']='ACTIONBUTTON6'
+FeralSetupLayout.bindings['SHIFT-1']='ACTIONBUTTON7'
+FeralSetupLayout.bindings['SHIFT-2']='ACTIONBUTTON8'
+FeralSetupLayout.bindingProfiles={A={},B={}}
+for key,action in pairs(FeralSetupLayout.bindings) do
+ FeralSetupLayout.bindingProfiles.A[key]=action
+ FeralSetupLayout.bindingProfiles.B[key]=action
+end
+local numbers=FeralSetupLayout.bindingProfiles.A
+numbers['1']='ACTIONBUTTON1'
+numbers['2']='ACTIONBUTTON3'
+numbers['3']='ACTIONBUTTON2'
+numbers['4']='ACTIONBUTTON4'
+numbers.Q='ACTIONBUTTON7'
+numbers.E='ACTIONBUTTON8'
+numbers['SHIFT-Q']='ACTIONBUTTON7'
+numbers['SHIFT-E']='ACTIONBUTTON8'
+numbers['SHIFT-1']=nil
+numbers['SHIFT-2']=nil
+FeralSetupLayout.profileNames={A='Numbers: 1/2 direct, 3/4 bleed; Q/E control',B='Q/E attacks, Shift+Q/E finishers; 1/2 control'}

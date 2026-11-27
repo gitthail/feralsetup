@@ -1,110 +1,76 @@
 # FeralSetup
 
-A personal WoW Forever Druid addon for explicit macro/keybinding setup, layout
-snapshots and a lightweight Alliance levelling guide for levels 15–30.
+Personal WoW Forever Druid controls, recovery snapshots and levelling advice.
 
-## Download and install
+**[Download FeralSetup.zip](https://github.com/gitthail/feralsetup/releases/latest/download/FeralSetup.zip)** — extract and move the single **FeralSetup** folder into `Interface/AddOns`. No build step, renaming or extra nesting. Restart WoW. Use the release asset, not GitHub's automatic source archive.
 
-**[Download FeralSetup.zip — ready to extract and move](https://github.com/gitthail/feralsetup/releases/latest/download/FeralSetup.zip)**
+## Version 3.7.0
 
-Extract the ZIP, then move the single extracted **FeralSetup** folder into AddOns.
-No installer, extra nesting, renaming or build step is needed.
-Use your WoW Forever installation's `Interface/AddOns` directory.
-The resulting path must be `Interface/AddOns/FeralSetup/FeralSetup.toc`.
-Restart WoW after installing new addon files.
+Explicit mouseover replaces the native-mouseover trial. Heals, cures, buffs, CC, Faerie Fire and Moonfire select appropriate mouseover units through macros. Self/focus modifiers remain explicit. Spell macros no longer force-cancel form before casting; only H does. Setup enables the client's `autoUnshift`, but client-side failed-cast form retention is not guaranteed by the addon.
 
-The packaged addon runs directly; no build tools or Git installation are needed.
-If downloading GitHub's source ZIP instead, copy only its inner `FeralSetup`
-folder into `AddOns`.
+R falls back to Shred until Ravage is learned. The Cat control button stays Dash until Pounce is learned; Dash must itself be learned. Run `/fs update` after training to refresh these choices.
 
-## Current version: 3.6.1
+## Upgrade from 3.6.x
 
-All commands accept **`/fs`**; `/feralsetup` remains supported.
-**3.6.1 updates the levelling strategy guide and adds guide-only Mage/Rogue proposals. Controls are unchanged; existing 3.6.0 users only replace files and restart WoW.**
+Replace files, restart WoW, then out of combat:
 
-**3.6.0 switches to the v2 Q/E attack layout. Apply all three form pages using
-the steps below, even when upgrading from 3.5.8.**
-
-- Private level-up reminders: recommended current/next area and milestone training.
-- `/fs guide`: current route, quest suggestions and training notes.
-- `/fs guide on` or `off`: toggle reminders for this character.
-- Explicit macro, action-bar and keybinding installation with local recovery snapshots.
-
-The guide is a flexible reference, not completed-quest tracking; it ends at 30.
-
-## HTML guides
-
-The install ZIP includes **Guide.html** (controls, modifiers, installation, all
-commands and a searchable macro reference) and **Leveling.html** (efficient levelling from 24 onward, route decisions, dungeon tradeoffs and professions). Open them in your browser from the extracted
-FeralSetup folder; they work offline.
-
-- [Download the controls guide](https://github.com/gitthail/feralsetup/releases/latest/download/Guide.html)
-- [Download the levelling guide](https://github.com/gitthail/feralsetup/releases/latest/download/Leveling.html)
-- [Guide source](docs/Guide.html) · [Levelling source](docs/Leveling.html)
-
-Use `/fs guide` for current-area advice in-game, and
-`/fs guide on` or `off` to control level-up reminders.
-
-## Keybinding setup
-
-**Mac Command and Windows Alt alternatives are included.** Every Cmd binding
-has an Alt alternative, including self-casting and deliberate form re-shifts.
-See the [complete key map](FeralSetup/KEYBINDS.txt).
-
-| Key | Cat | Bear | Human |
-| --- | --- | --- | --- |
-| Q | Claw | Maul | Roots |
-| E | Rake | Swipe | Moonfire |
-| Shift+Q | Ferocious Bite | Primal Bite | Wrath |
-| Shift+E | Rip | Lacerate | Starfire |
-| R | Shred / stealthed Ravage | Demoralizing Roar | Soothe Animal |
-| 1 | Dash / stealthed Pounce | Bash | Roots |
-| 2 | Cat Charge | Bear Charge | Hibernate |
-| 3 | Shifting Power | Enrage | Hurricane |
-| 4 | Faerie Fire | Faerie Fire | Faerie Fire |
-
-Shift+1/2 targets focus for the relevant controls; normal Cat Shift+1 is inactive.
-T/X remain all-form Roots/Hibernate, with Shift-focus. Alt+Q remains Cat Dash,
-including stealth. Alt+1 remains Barkskin. Z and Shift+R are freed.
-Native mouseover handles normal spells; macro Cmd/Alt-self and selected
-Shift-focus remain. Ctrl is available for user bindings. Shift+D toggles the
-native damage meter enabled/disabled; its visibility follows the game settings.
-
-**Install or upgrade to v2, out of combat:**
-
-1. Replace addon files and restart WoW.
-2. In humanoid form, main action page 1: `/fs setup`.
-3. Enter Cat: `/fs form`.
-4. Enter Bear: `/fs form`.
-5. Check your bars, then `/fs save`.
-
-Setup updates guide macros, fixed bars, bindings and targeting settings. Both
-animal pages need applying for this layout change. Personal item slots are
-preserved; unlearned spells leave empty slots. Native spell ranks remain manual.
-Saved preferences and snapshots live separately in WoW's `WTF` directory.
-See [addon instructions](FeralSetup/README.txt) for commands and recovery.
-
-## Build the install package
-
-```sh
-python3 -m pip install lupa
-python3 scripts/build_release.py
+```text
+/fs targeting
 ```
 
-This regenerates `docs/Guide.html` from the addon and builds
-`dist/FeralSetup.zip`. The archive contains exactly one top-level `FeralSetup`
-folder, including both offline HTML guides. It does not install anything.
-The HTML guide can also generate an offline ZIP of its bundled addon version.
+Test hover healing, Roots and Moonfire, then `/fs save`. The existing form-page slots stay unchanged.
 
-## Validation
+## Switch layouts immediately
 
-Offline Lua 5.1 tests use simulated WoW APIs, not a live game client:
+```text
+/fs a
+/fs b
+```
+
+A uses numbers; B uses Q/E. These commands change **bindings only**, in any form while out of combat. No per-form setup or reload is needed to switch. Character bindings are saved; `/fs save` also captures a recovery snapshot and flushes addon data to disk.
+
+| Action | A | B |
+| --- | --- | --- |
+| Claw / Maul / human Roots | 1 | Q |
+| Bite / Primal Bite / Wrath | 2 | Shift+Q |
+| Rake / Swipe / Moonfire | 3 | E |
+| Rip / Lacerate / Starfire | 4 | Shift+E |
+| Dash/Pounce / Bash / Roots | Q | 1 |
+| Charge / human Hibernate | E | 2 |
+| Shifting Power / Enrage / Hurricane | Shift+3 | 3 or Shift+3 |
+| Faerie Fire, all forms | Z | Z or 4 |
+| Focus Faerie Fire | Shift+Z | Shift+Z |
+
+Shift modifies the control keys for focus. R is rear attack in Cat, Roar in Bear, Soothe Animal in human. T/X remain Roots/Hibernate in every form. See the [complete key map](FeralSetup/KEYBINDS.txt).
+
+## First installation or upgrading from before 3.6.0
+
+1. Humanoid, main action page 1, out of combat: `/fs setup b` (or `a`).
+2. Enter Cat: `/fs form`.
+3. Enter Bear: `/fs form`.
+4. Check all pages, then `/fs save`.
+
+This initial placement is required once; subsequent A/B switches share those slots. Personal item slots are preserved. Unlearned native spell slots are empty; native spell-rank upgrades remain manual. Every Cmd shortcut has an Alt alternative for Windows. Snapshots/preferences are in WoW's WTF folder and do not transfer with the addon ZIP.
+
+## Guides and recovery
+
+Both offline HTML guides are inside the ZIP, and separately downloadable:
+
+- [Guide.html](https://github.com/gitthail/feralsetup/releases/latest/download/Guide.html): both layouts, targeting, commands, searchable macros; Mage/Rogue proposals only.
+- [Leveling.html](https://github.com/gitthail/feralsetup/releases/latest/download/Leveling.html): efficient sessions from level 24 onward, dungeon/route decisions and professions.
+- `/fs guide` displays the existing Alliance 15–30 checkpoints. `/fs guide on|off` toggles reminders.
+- `/fs restore` restores the saved snapshot; `/fs undo` restores pre-setup state. Follow with `/reload`.
+- `/fs status` displays layout and targeting settings. `/fs targeting` reports settings it cannot verify instead of claiming success.
+
+## Build and validation
 
 ```sh
 python3 -m pip install lupa
-python3 tests/test_leveling.py
 python3 tests/test_bindings.py
+python3 tests/test_profiles.py
+python3 tests/test_leveling.py
+python3 scripts/build_release.py
 node tests/test_guide.cjs
 ```
 
-See [validation notes](FeralSetup/OFFLINE_TESTS.txt).
+The build generates `docs/Guide.html` and `dist/FeralSetup.zip`. The HTML guide can also generate an offline ZIP. Tests use simulated WoW APIs and macro conditions, not live spell timing, range or line-of-sight checks. See [validation notes](FeralSetup/OFFLINE_TESTS.txt).

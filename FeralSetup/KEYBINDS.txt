@@ -1,97 +1,76 @@
-FERALSETUP 3.6.1 — MAC + WINDOWS
+FERALSETUP 3.7.0 — TWO DRUID LAYOUTS, MAC + WINDOWS
 
-Cmd and Alt are alternatives everywhere Cmd is assigned. On Windows use Alt.
-Use one modifier at a time except the explicitly listed targeting combinations.
+Switch out of combat: /fs a = numbers; /fs b = Q/E.
+Only bindings change. All form pages share stable action slots; no per-form
+rebuild or reload is required when switching an already installed v2 layout.
 
-V2 MAIN CONTROLS
-KEY         CAT                 STEALTHED CAT        BEAR                 HUMAN
-Q           Claw                Claw                 Maul                 Roots
-E           Rake                Rake                 Swipe                Moonfire
-Shift+Q     Ferocious Bite      Ferocious Bite       Primal Bite          Wrath
-Shift+E     Rip                 Rip                  Lacerate             Starfire
-R           Shred               Ravage               Demoralizing Roar    Soothe Animal
-1           Dash                Pounce               Bash                 Roots
-2           Cat Charge          Cat Charge           Bear Charge          Hibernate
-3           Shifting Power      Shifting Power       Enrage               Hurricane
-4           Faerie Fire         Faerie Fire          Faerie Fire          Faerie Fire
-B           Prowl ON            Prowl OFF            Challenging Roar     Empty
-6           Empty               Empty                Growl                Empty
-J           Cower               Cower                Empty                Empty
-Cmd/Alt+J   Empty               Empty                Frenzied Regeneration Empty
+A: NUMBERS
+Key       Cat                  Bear                 Human
+1         Claw                 Maul                 Roots
+2         Ferocious Bite       Primal Bite          Wrath
+3         Rake                 Swipe                Moonfire
+4         Rip                  Lacerate             Starfire
+Q         Dash / Pounce*       Bash                 Roots
+E         Cat Charge           Bear Charge          Hibernate
+Shift+3   Shifting Power       Enrage               Hurricane
+Shift+Q/E = focus controls, not attacks. Shift+1/2 cleared.
 
-Cat Q/Shift+Q = direct builder/finisher; E/Shift+E = bleed builder/finisher.
-Bear Q/Shift+Q = single-target damage; E Swipe; Shift+E Lacerate; R Roar.
-No macro automatically enters an animal form. To Bash from Cat: wheel down, 1.
-Unlearned spells remain unavailable; stealth 1/R have no alternate attack fallback.
+B: Q/E (previous v2 layout)
+Q         Claw                 Maul                 Roots
+E         Rake                 Swipe                Moonfire
+Shift+Q   Ferocious Bite       Primal Bite          Wrath
+Shift+E   Rip                  Lacerate             Starfire
+1         Dash / Pounce*       Bash                 Roots
+2         Cat Charge           Bear Charge          Hibernate
+3         Shifting Power       Enrage               Hurricane
+4         Faerie Fire in every form (extra shortcut)
+Shift+1/2 = focus controls. Shift+3 also reaches the resource ability.
 
-MODIFIERS
-Shift+1       Focus Pounce in stealth / Bash in Bear / Roots in human.
-              Inactive in normal Cat.
-Shift+2       Focus Charge in Cat/Bear; focus Hibernate in human.
-Shift+6       Focus Growl in Bear.
-Alt+Q         Dash in Cat, including stealth. Inactive in Bear/human.
-Shift+Q/E are attacks, not focus shortcuts. Alt+1 remains Barkskin.
-Native mouseover needs no modifier, including on ordinary attacks.
-Global self/focus modifiers are None; macros retain self/focus overrides.
-Ctrl is free for user bindings. Z and Shift+R are freed.
+BOTH LAYOUTS
+Z = Faerie Fire; Shift+Z = focus Faerie Fire. Cmd/Alt+Z = healing potion.
+R = Cat Shred / Ravage*; Bear Demoralizing Roar; human Soothe Animal.
+6 = Bear Growl; Shift+6 = focus Growl.
+B = Cat Prowl toggle; Bear Challenging Roar; human empty.
+J = Cat Cower; Cmd/Alt+J = Bear Frenzied Regeneration.
+Alt+Q = Cat Dash even in stealth. Cmd+Q is NOT bound (macOS Quit).
+* R uses Shred in stealth until Ravage is learned. The control key stays
+Dash in stealth until Pounce is learned. Dash must itself be learned.
+Run /fs update after learning those spells to refresh the macros.
+Learned spells do not fall back on energy/range/position/cooldown failure.
 
-FIXED KEYS — EVERY FORM
-Shift+D       Toggle native damage meter enabled/disabled.
-4             Faerie Fire with native mouseover / target.
-Faerie Fire has no focus shortcut in this temporary layout. Cmd/Alt+R unused.
-T             Roots. Native mouseover / target; Shift = focus.
-X             Hibernate. Native mouseover / target; Shift = focus.
-F             Rejuvenation
-G             Regrowth
-5             Healing Touch
-C             Remove Curse
-V             Cure Poison / Abolish Poison when known (update macros after learning)
-Y             Innervate
-8             Mark of the Wild
-9             Thorns
-For F/G/5/C/V/Y/8/9: plain = native mouseover / target / auto-self fallback.
- Cmd OR Alt = self; Ctrl has no special targeting role;
- Shift alone = inactive. These macros leave form before casting.
-U             Rebirth: native resurrection targeting.
-7             Moonfire with native mouseover / target; leaves form.
-K             Tranquility; leaves form.
+EXPLICIT MOUSEOVER
+F Rejuvenation; G Regrowth; 5 Healing Touch; C Remove Curse;
+V Cure/Abolish Poison; Y Innervate; 8 Mark of the Wild; 9 Thorns.
+Cmd/Alt forces self. Otherwise living friendly hover -> friendly target -> self.
+Shift alone is inactive on these friendly spells. Ctrl has no special role.
 
-FORMS AND FOCUS
-Wheel up/down       Enter Cat/Bear; no repeated shift when already in that form.
-Cmd/Alt+wheel up     Deliberately re-shift Cat, including from Cat.
-Cmd/Alt+wheel down   Deliberately re-shift Bear, including from Bear.
-Middle-click        Aquatic while swimming; Travel outdoors on land.
-H                   Leave form; stop casting and attacking.
-Shift+Space         Set focus: living mouseover, otherwise living target.
-Cmd/Alt+Shift+Space  Clear focus.
+T Roots; X Hibernate, in every form; Shift+T/X = hostile focus.
+Controls (including Pounce/Bash/Charge/Growl/FF): Shift = hostile focus;
+otherwise living hostile hover -> living hostile selected target.
+Invalid focus does NOT fall back. An out-of-range hover stays the chosen
+recipient; range/immunity/line of sight are not macro fallback conditions.
+7 Moonfire: hostile hover -> hostile target (also on the human main page).
+U Rebirth: dead friendly hover -> dead friendly target.
+K Tranquility. No spell macro forcibly cancels form. Only H does.
+Native mouseover is disabled; native self/focus modifiers are NONE.
+autoUnshift=1 lets the client handle caster spells leaving form; the addon
+cannot guarantee form retention on every client-side failed cast.
 
-DEFENSIVES AND ITEMS
-Cmd/Alt+1     Barkskin
-Cmd/Alt+2     Nature's Grasp
-Cmd/Alt+3     Shadowmeld
-Cmd/Alt+4     Elune's Light
-Cmd/Alt+X     PvP trinket
-Cmd/Alt+Z     Healing potion (user-placed item)
-Cmd/Alt+B     Healthstone (user-placed item)
-0             Gift of the Wild
--             Revive
-=             Teleport: Moonglade
-O             Track Humanoids
-P             Bandage (user-placed item)
-[ / ]         Food / drink (user-placed items)
-Backslash     Mount (user-placed item)
-L             Mana potion (user-placed item)
+FORMS / MOVEMENT / FOCUS
+Wheel up Cat, wheel down Bear. Unmodified repeats do not re-shift.
+Cmd/Alt+wheel = deliberate form re-cast. Middle click = Aquatic/Travel.
+H = explicitly leave form, stop casting and attacking.
+Shift+Space = set focus (living hover, then target).
+Cmd/Alt+Shift+Space = clear focus.
+W/S forward/back; A/D strafe; Tab nearest enemy; Space jump.
+Page Up/Down = camera zoom. Ctrl and Shift+R remain available.
+Shift+D = toggle native damage meter (visibility follows game settings).
 
-W/S forward/back; A/D strafe; Space jump; Tab nearest enemy.
-Page Up/Down zoom in/out. Shift+D toggles the native damage meter; other Shift/Alt+WASD are unassigned.
-T Roots and X Hibernate remain available in EVERY form, Shift for focus.
-Human Q duplicates Roots; use Shift+1 or Shift+T for focus Roots.
-
-UPGRADE TO V2
-Restart WoW after replacing files. Out of combat, humanoid form, main page 1:
-/fs setup
-Enter Cat: /fs form
-Enter Bear: /fs form
-Then /fs save. All three pages must be applied for the new layout.
-Personal item slots are preserved. Spell ranks on native buttons remain manual.
-No bar-bug workaround or automatic layout restoration was added.
+OTHER SHARED KEYS
+Cmd/Alt+1 Barkskin; +2 Nature's Grasp; +3 Shadowmeld; +4 Elune's Light.
+Cmd/Alt+X PvP trinket; Cmd/Alt+B Healthstone.
+0 Gift of the Wild; - Revive; = Teleport Moonglade; O Track Humanoids.
+P bandage; [ food; ] drink; backslash mount; L mana potion.
+Item slots are yours to populate and are preserved by setup.
+Every assigned Cmd binding has an Alt alternative for Windows.
+Mage and Rogue tables in Guide.html are proposals only, not addon profiles.

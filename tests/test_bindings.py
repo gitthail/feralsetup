@@ -36,7 +36,7 @@ for k,v in layout.bindings.items():
  assert g.bindings[k]==v,(k,v)
  if k.startswith('CMD-'): assert g.bindings['ALT-'+k[4:]]==v,k
 assert g.bindings['CMD-R'] is None and g.bindings['ALT-R'] is None and g.bindings['CMD-SHIFT-R'] is None
-assert g.bindings['Z'] is None
+assert g.bindings['Z']=='MULTIACTIONBAR1BUTTON9'
 assert g.bindings['SHIFT-R'] is None
 assert g.bindings['4']=='MULTIACTIONBAR1BUTTON9'
 assert g.bindings['CTRL-SHIFT-R'] is None
@@ -117,7 +117,7 @@ def run(name,mods=(),form=3,stealth=False,units=None,cast_blocked=False):
 for mods in [(),('shift',),('ctrl',),('alt',),('cmd',)]:
  for stealth in [False,True]:
   out,_=run('Cat Q',mods=mods,stealth=stealth)
-  expected=('Dash','target') if mods==('alt',) or (mods in [(),('ctrl',)] and not stealth) else ('Pounce','focus' if mods==('shift',) else 'target') if stealth and mods in [(),('shift',),('ctrl',)] else None
+  expected=('Dash','target') if mods==('alt',) or (mods in [(),('ctrl',)] and not stealth) else ('Pounce','focus' if mods==('shift',) else 'mouseover') if stealth and mods in [(),('shift',),('ctrl',)] else None
   assert out==([expected] if expected else []),(mods,stealth,out)
 assert run('Cat Q',form=1)[0]==[]
 assert run('Cat Rear',stealth=True)[0]==[('Ravage','target')]
@@ -143,8 +143,8 @@ for name,form in [('Cat Form',3),('Bear Form',1)]:
   assert out==[(name,'target')] and state['form']==form
 for mod in ['cmd','alt']:
  assert run('Set Focus',mods=[mod,'shift'])[0]==[('/clearfocus','target')]
-assert run('Faerie Fire',mods=['shift'])[0]==[('Faerie Fire','target')]
-assert run('Faerie Fire',mods=['ctrl','shift'])[0]==[('Faerie Fire','target')]
+assert run('Faerie Fire',mods=['shift'])[0]==[('Faerie Fire','focus')]
+assert run('Faerie Fire',mods=['ctrl','shift'])[0]==[('Faerie Fire','focus')]
 assert run('Set Focus',mods=['shift'])[0]==[('/focus','mouseover')]
 # Both self modifiers must work identically, including with Shift/Ctrl held.
 friendly=['Rejuvenation','Regrowth','Healing Touch','Remove Curse','Poison Cleanse','Innervate','Thorns','Mark of the Wild']
@@ -153,9 +153,9 @@ for name in friendly:
   for extra in [(),('shift',),('ctrl',),('shift','ctrl')]:
    out,_=run(name,mods=(mod,)+extra)
    assert out[-1][1]=='player',(name,mod,extra,out)
- # No hardcoded fallback target: the native client resolves unmodified casts.
- assert run(name,mods=['ctrl'])[0][-1]==(name if name!='Poison Cleanse' else 'Cure Poison','target')
- assert '@mouseover' not in macros[name]
+ # Explicit friendly target, then player fallback when no friendly unit exists.
+ assert run(name,mods=['ctrl'])[0][-1]==(name if name!='Poison Cleanse' else 'Cure Poison','player')
+ assert '@mouseover' in macros[name]
  assert run(name,mods=['shift'])[0]==[]
 assert [layout.main.cat[i].name for i in range(1,5)]==['Claw','Rake','Ferocious Bite','Rip']
 assert layout.main.human[7].name=='Roots' and layout.main.human[8].name=='Hibernate'
@@ -187,11 +187,11 @@ assert len(g.FeralSetupCharDB.macroReplacements)==1
 assert A.macros(True) is not None and len(g.installed)==33
 print('PASS: binding migration/aliases, macro limits, stealth selection/toggle, focus, self/mouseover routing, single-press forms, Q/E no-autoshift, real macro updater and idempotence.')
 
-# Targeting migration keeps modifiers local to macros; native mouseover is always on.
+# Targeting migration uses explicit macros; native mouseover is disabled.
 lua.execute("cvars={};modified={};function GetCVar(k) return cvars[k] or '0' end;function SetCVar(k,v) cvars[k]=v end;function SetModifiedClick(k,v) modified[k]=v end")
 targeting=g.findUp(g.SlashCmdList.FERALSETUP,'setupTargetingSettings')
 targeting()
-assert g.cvars['enableMouseoverCast']=='1' and g.cvars['autoSelfCast']=='1'
+assert g.cvars['enableMouseoverCast']=='0' and g.cvars['autoSelfCast']=='1' and g.cvars['autoUnshift']=='1'
 assert all(g.modified[k]=='NONE' for k in ['SELFCAST','FOCUSCAST','MOUSEOVERCAST'])
 # User Ctrl shortcuts must survive subsequent binding setup.
 g.bindings['CTRL-Q']='USER_ACTION';g.bindings['CTRL-F']='USER_HEAL'
@@ -200,10 +200,10 @@ assert setup()
 assert g.bindings['CTRL-Q']=='USER_ACTION' and g.bindings['CTRL-F']=='USER_HEAL'
 assert g.bindings['CTRL-SHIFT-R'] is None
 for name in ['Bash','Cat Charge','Bear Charge','Growl','Roots','Hibernate']:
- assert '@mouseover' not in macros[name] and 'mod:ctrl' not in macros[name]
+ assert '@mouseover' in macros[name] and 'mod:ctrl' not in macros[name]
  out,_=run(name,mods=['shift'])
  assert out[-1][1]=='focus',name
-print('PASS: native targeting settings, explicit self/focus routing, and freed Ctrl bindings. Native client target resolution is not simulated.')
+print('PASS: native mouseover disabled, explicit self/focus routing, and freed Ctrl bindings. Client casting and form-validation behaviour is not simulated.')
 
 # Actual keys resolve to the expected v2 page slots, across all forms.
 expected={
@@ -215,7 +215,77 @@ for form,keys in expected.items():
   slot=int(layout.bindings[key].replace('ACTIONBUTTON',''))
   assert layout.main[form][slot].name==name,(form,key,name)
 for key in ['SHIFT-1','SHIFT-2','SHIFT-T','SHIFT-X','SHIFT-6']:
- assert g.bindings[key] is None,key
+ assert g.bindings[key] is not None,key
 assert layout.bindings['ALT-Q']=='ACTIONBUTTON7'
 assert layout.bindings['ALT-1']=='MULTIACTIONBAR2BUTTON1'
 print('PASS: v2 key-to-page mapping and control modifier routing.')
+
+# Mouseover selection is explicit: live ally/enemy, dead, wrong faction, focus override.
+ally={'exists':True,'help':True};enemy={'exists':True,'harm':True}
+for name in friendly:
+ spell='Cure Poison' if name=='Poison Cleanse' else name
+ for hover,want in [(ally,'mouseover'),(enemy,'target'),({'exists':True,'help':True,'dead':True},'target'),({},'target')]:
+  units={'mouseover':hover,'target':ally,'player':ally,'focus':enemy}
+  assert run(name,units=units)[0]==[(spell,want)],(name,hover)
+  assert run(name,mods=['alt'],units=units)[0]==[(spell,'player')]
+ assert run(name,units={'target':enemy,'mouseover':enemy,'player':ally})[0]==[(spell,'player')]
+for name in ['Bash','Cat Charge','Bear Charge','Growl','Roots','Hibernate','Pounce','Faerie Fire','Moonfire']:
+ spell={'Roots':'Entangling Roots','Cat Charge':'Feral Charge (Cat)','Bear Charge':'Feral Charge'}.get(name,name)
+ for hover,want in [(enemy,'mouseover'),(ally,'target'),({'exists':True,'harm':True,'dead':True},'target'),({},'target')]:
+  assert run(name,units={'mouseover':hover,'target':enemy,'focus':enemy})[0]==[(spell,want)],(name,hover)
+ assert run(name,units={'mouseover':ally,'target':ally})[0]==[]
+ if name!='Moonfire':
+  assert run(name,mods=['shift'],units={'mouseover':enemy,'target':enemy,'focus':{}})[0]==[]
+  assert run(name,mods=['shift'],units={'mouseover':enemy,'target':enemy,'focus':enemy})[0]==[(spell,'focus')]
+assert run('Rebirth',units={'mouseover':dict(ally,dead=True),'target':ally})[0]==[('Rebirth','mouseover')]
+assert run('Rebirth',units={'mouseover':ally,'target':ally})[0]==[]
+# A failed cast must not have a separate form-cancel command in front of it.
+# This proves macro structure, NOT the client's own autoUnshift failure behaviour.
+for name,body in macros.items():
+ if name!='Leave Form':assert '/cancelform' not in body,name
+for name in friendly+['Roots','Hibernate','Moonfire','Rebirth','Tranquility']:
+ _,state=run(name,cast_blocked=True);assert state['form']==3,name
+# Render the actual learned/unlearned variants and exercise their selectors.
+learned=dict(macros)
+for trained in [False,True]:
+ cfg=lua.table_from(dict(g.FeralSetupDefaults.items()));cfg.hasRavage=trained;cfg.hasPounce=trained
+ for _,m in g.FeralSetupMacros.items():
+  macros[m.name]=A.renderMacro(m,cfg);assert len(macros[m.name].encode())<=255,m.name
+ assert run('Cat Rear',stealth=True)[0]==[('Ravage' if trained else 'Shred','target')]
+ assert run('Cat Rear',stealth=False)[0]==[('Shred','target')]
+ assert run('Cat Q',stealth=True)[0]==([('Pounce','mouseover')] if trained else [('Dash','target')])
+ assert run('Cat Q',stealth=True,mods=['shift'],units={'focus':{},'target':enemy,'mouseover':enemy})[0]==[]
+ assert run('Cat Q',stealth=True,mods=['alt'])[0]==[('Dash','target')]
+macros=learned
+# The real config uses learned spellbook entries, including higher spell ranks.
+lua.execute("""
+spells={'Shred'}
+function GetNumSpellTabs() return 1 end
+function GetSpellTabInfo() return 'Druid',nil,0,#spells end
+function GetSpellBookItemName(i) return spells[i] end
+function GetSpellBookItemInfo(i) return 'SPELL',i end
+""")
+cfg,_=A.config();assert not cfg.hasRavage and not cfg.hasPounce
+lua.execute("spells={'Shred','Ravage','Pounce'}")
+cfg,_=A.config();assert cfg.hasRavage and cfg.hasPounce
+# All rank-independent fallbacks update on /fs update; unrelated macros survive.
+assert A.macros(True)
+i=A.findMacro('Cat Rear',None,None);assert 'Ravage' in g.installed[i].body
+lua.execute("spells={'Shred'}")
+assert A.macros(True)
+i=A.findMacro('Cat Rear',None,None);assert 'Ravage' not in g.installed[i].body
+assert g.installed[2].body=='/say untouched'
+print('PASS: explicit hover/self/focus priority, invalid targets, learned/unlearned opener fallbacks and no forced cancellation before casts.')
+# Modern spellbook API: a visible but unlearned FUTURESPELL is not an opener.
+lua.execute("""
+GetNumSpellTabs=nil;GetSpellTabInfo=nil;GetSpellBookItemName=nil
+Enum={SpellBookSpellBank={Player=0},SpellBookItemType={Spell=1,FutureSpell=2}}
+C_Spell={GetSpellName=function(id) return id==100 and 'Ravage' or 'Pounce' end}
+C_SpellBook={
+ GetNumSpellBookSkillLines=function() return 1 end,
+ GetSpellBookSkillLineInfo=function() return {itemIndexOffset=0,numSpellBookItems=2} end,
+ GetSpellBookItemInfo=function(i) return {spellID=i==1 and 100 or 101,itemType=i==1 and 2 or 1} end
+}
+""")
+cfg,_=A.config();assert not cfg.hasRavage and cfg.hasPounce
+print('PASS: modern spellbook future-spell entries cannot enable an unlearned opener.')

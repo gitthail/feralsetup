@@ -10,6 +10,36 @@ function A.guard()
  return true
 end
 function A.text(s,c) return (s:gsub('{{(%w+)}}',function(k) return tostring(c[k] or '') end)) end
+function A.spellBook()
+ local book={};local count=0
+ if GetNumSpellTabs and GetSpellTabInfo and GetSpellBookItemName then
+  for tab=1,GetNumSpellTabs() do
+   local _,_,off,n=GetSpellTabInfo(tab)
+   for i=(off or 0)+1,(off or 0)+(n or 0) do
+    local name=GetSpellBookItemName(i,BOOKTYPE_SPELL or 'spell')
+    local typ,id
+    if GetSpellBookItemInfo then typ,id=GetSpellBookItemInfo(i,BOOKTYPE_SPELL or 'spell') end
+    if name and (typ==nil or typ=='SPELL') then book[name]={index=i,id=id,legacy=true};count=count+1 end
+   end
+  end
+ elseif C_SpellBook and C_SpellBook.GetNumSpellBookSkillLines and C_SpellBook.GetSpellBookItemInfo then
+  local bank=Enum and Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player or 0
+  for line=1,C_SpellBook.GetNumSpellBookSkillLines() do
+   local l=C_SpellBook.GetSpellBookSkillLineInfo(line)
+   if l then
+    for i=l.itemIndexOffset+1,l.itemIndexOffset+l.numSpellBookItems do
+     local info=C_SpellBook.GetSpellBookItemInfo(i,bank)
+     local id=info and (info.spellID or info.actionID)
+     local name=id and ((C_Spell and C_Spell.GetSpellName and C_Spell.GetSpellName(id)) or (GetSpellInfo and GetSpellInfo(id)))
+     local isSpell=info and (info.itemType==nil or info.itemType=='SPELL' or (Enum and Enum.SpellBookItemType and info.itemType==Enum.SpellBookItemType.Spell))
+     if name and isSpell then book[name]={index=i,id=id,bank=bank};count=count+1 end
+    end
+   end
+  end
+ end
+ return book,count
+end
+
 function A.config()
  local c={};for k,v in pairs(FeralSetupDefaults) do c[k]=v end
  local ids={[768]='cat',[5487]='bear',[9634]='bear',[1066]='aquatic',[783]='travel'}
@@ -27,7 +57,17 @@ function A.config()
   if known(9634) then c.bearSpell='Dire Bear Form' end
   if known(2893) then c.poison='Abolish Poison' end
  end
+ local book=A.spellBook()
+ c.hasRavage=book.Ravage~=nil
+ c.hasPounce=book.Pounce~=nil
  return c,found
+end
+function A.renderMacro(m,c)
+ local body=m.body
+ if (m.name=="Cat Rear" and not c.hasRavage) or (m.name=="Cat Q" and not c.hasPounce) then
+  body=FeralSetupUnlearnedMacros[m.name]
+ end
+ return A.text(body,c)
 end
 -- General macros are the default pool. Existing character macros are recognised.
 -- Resolve names deterministically: General first, then this character; lowest index.
@@ -106,7 +146,7 @@ end
 function A.macros(overwrite)
  local c=A.config();local errors={};local bodies={}
  for _,m in ipairs(FeralSetupMacros) do
-  local body=A.text(m.body,c);bodies[m.name]=body
+  local body=A.renderMacro(m,c);bodies[m.name]=body
   local _,err=A.ensureOne(m.name,body,134400,overwrite)
   if err then errors[#errors+1]=err end
  end
@@ -123,7 +163,7 @@ function A.pageMacros(rows)
    local i,err=A.findMacro(row.name)
    if not i then
     local m=templates[row.name]
-    if m then i,err=A.ensureOne(m.name,A.text(m.body,c),134400,false)
+    if m then i,err=A.ensureOne(m.name,A.renderMacro(m,c),134400,false)
     else err='No template for missing macro: '..row.name end
    end
    if i then

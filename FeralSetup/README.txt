@@ -1,58 +1,62 @@
-FERAL SETUP 3.6.1 — V2 Q/E ATTACK LAYOUT
+FERAL SETUP 3.7.0 — EXPLICIT MOUSEOVER AND A/B LAYOUTS
 
-Use /fs for every command; /feralsetup remains supported.
-See KEYBINDS.txt and Guide.html for all forms, modifiers and utility keys.
+UPGRADE FROM 3.6.x
+Replace files and restart WoW. Out of combat:
+/fs targeting
+Check your hover heal, Roots and Moonfire, then /fs save.
+Existing v2 action slots remain unchanged; do not rebuild pages just to switch.
 
-Cat: Q Claw, E Rake, Shift+Q Bite, Shift+E Rip, R Shred/Ravage.
-Bear: Q Maul, E Swipe, Shift+Q Primal Bite, Shift+E Lacerate, R Roar.
-Human: Q Roots, E Moonfire; Shift+Q Wrath, Shift+E Starfire, 3 Hurricane.
-1 = Cat Dash/Pounce, Bear Bash, human Roots. 2 = Charge / human Hibernate.
-Shift+1/2 = focus control. 3 = Cat Shifting Power / Bear Enrage.
-4 = Faerie Fire in every form. T/X remain Roots/Hibernate in every form.
-Alt+Q remains stealth Dash; Alt+1 remains Barkskin. Z and Shift+R are freed.
-Native mouseover handles normal spells. Cmd/Alt-self and selected Shift-focus
-remain macro-controlled. Ctrl is available for your own bindings.
-Shift+D toggles the native damage meter; use visibility Always outside combat.
+QUICK SWITCH (any form, out of combat)
+/fs a       Numbers: Cat 1 Claw, 2 Bite, 3 Rake, 4 Rip; Q/E controls.
+/fs b       Q/E attacks, Shift+Q/E finishers; 1/2 controls.
+Z is Faerie Fire in BOTH; Shift+Z targets focus. B additionally keeps FF on 4.
+Shift+3 is Shifting Power/Enrage/Hurricane in BOTH; B also keeps plain 3.
+Switching changes only bindings, preserves items/macros/action pages, saves
+character-specific bindings, and reports binding errors. A failed switch
+attempts to restore the previous binding set. Run /fs save to capture a new
+recovery snapshot and flush SavedVariables to disk after testing your choice.
 
-UPGRADE FROM 3.6.0
-Replace files and restart WoW; no setup or bar changes needed.
-Guide-only Mage/Rogue proposals are not addon profiles.
-Leveling.html now explains efficient sessions from level 24 onward.
-
-FIRST INSTALL / SWITCH TO V2
-Replace files and restart WoW. Out of combat, humanoid form on main page 1:
-/fs setup
+FIRST INSTALL / UPGRADE FROM BEFORE 3.6.0
+Start humanoid, main page 1, out of combat:
+/fs setup b    (or /fs setup a; setupa/setupb also accepted)
 Enter Cat: /fs form
 Enter Bear: /fs form
-Check your bars, then /fs save. Both animal pages need rebuilding for v2.
-Setup updates macros, fixed bars, bindings and native targeting settings.
-Personal item slots are preserved. Unlearned spells leave empty slots.
-Train and update native spell ranks manually.
+Check all three pages, then /fs save.
+Only this initial placement needs each form. Unlearned spell slots are empty.
 
-COMMANDS
-/fs targeting       Update macros/bindings, enable native mouseover and auto-self
-                    fallback, disable native self/focus modifiers; keep bars.
-/fs bindings Apply keybindings only; leave action bars unchanged.
-/fs setup    Replace guide macros, fixed bars, bindings, humanoid page.
-/fs form     Place current form page; reuse existing macro bodies.
-/fs install  Replace/create guide macros only; no bar/binding changes.
-/fs update   Same as install; detect learned forms and poison upgrade.
-/fs save     Save recovery snapshot and reload to persist it.
-/fs restore  Restore saved layout, bindings and referenced macros.
-/fs undo     Restore original pre-setup layout and referenced macros.
-/fs status   Version, form pages, macro capacity and recovery status.
-/fs guide    Current recommended area, next area, quests and training.
-/fs guide on|off   Toggle private level-up reminders per character.
-The legacy leftkey command remains optional; the layout no longer relies on it.
+TARGETING
+Heals/cures/buffs: Cmd/Alt self; otherwise friendly living mouseover ->
+friendly living target -> self. Shift alone does nothing.
+CC/charge/FF: Shift hostile focus; otherwise hostile living mouseover ->
+hostile living target. Invalid focus does not fall back.
+Moonfire: hostile hover -> hostile target. Rebirth: dead ally hover -> target.
+Native mouseover off; native modified self/focus NONE. Ctrl remains free.
+Only H / Leave Form explicitly cancels form. Casting relies on the client's
+autoUnshift=1, set out of combat. No mana/range/LOS-aware secure cancellation
+is claimed. A valid target outside range stays the chosen target, not fallback.
 
-LEVEL GUIDE
-The agreed Alliance Druid route covers levels 15-30; reminders default on.
-It is a flexible reference, not completed-quest tracking. No login spam.
-At level 30 it reports the end of the planned route; no later area is invented.
-Saved preferences and recovery snapshots are local WoW SavedVariables data.
+STEALTH FALLBACKS
+R: Shred until Ravage learned, then stealthed Ravage / normal Shred.
+Control key (A Q / B 1): Dash until Pounce learned, then stealthed Pounce /
+normal Dash. Dash must itself be learned. Alt+Q always selects Cat Dash.
+/fs update refreshes learned-opener choices after training (no auto updates).
+Native attack spell ranks still need manual replacement after training.
 
-No automatic layout restoration, combat automation or spell execution.
-All layout changes require explicit out-of-combat commands.
-32 macro templates, using General Macros for new entries. Same-name guide
-macros are updated; unrelated names are retained. No macros are deleted.
-Offline simulated-API checks only; see OFFLINE_TESTS.txt.
+COMMANDS (both /fs and /feralsetup accepted)
+/fs a | b              Quick binding-only layout switch.
+/fs targeting          Refresh macros, targeting settings and selected bindings.
+/fs setup [a|b]        Full setup, including humanoid and fixed bars.
+/fs form               Place current page; reuse existing macro bodies.
+/fs update | install   Replace same-name macros, detect learned forms/openers.
+/fs bindings [a|b]     Binding-only switch/reapply.
+/fs save               Snapshot and reload to persist data.
+/fs restore            Restore saved actions/bindings/settings/layout; then /reload.
+/fs undo               Restore pre-setup snapshot; then /reload.
+/fs status             Version, layout, pages, targeting settings and spell checks.
+/fs guide [on|off]     Current/next area or private reminder toggle, Alliance 15-30.
+
+No automatic layout restoration, spell execution or combat decision scripts.
+32 templates, new entries in General Macros. Same-name definitions replaced;
+unrelated macros preserved. Nothing auto-installs just from copying files.
+Mage/Rogue remain guide-only proposals. See Guide.html and Leveling.html.
+See OFFLINE_TESTS.txt for checks and live-client limits.

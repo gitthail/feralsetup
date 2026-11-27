@@ -1,4 +1,4 @@
--- FeralSetup v3.6.1: setup, snapshots, restore. All changes require a slash command.
+-- FeralSetup v3.7.0: setup, snapshots, restore. All changes require a slash command.
 -- No automatic restoration on login, no combat handlers and no spell casting.
 local A=FeralSetup
 local unpack=unpack or table.unpack
@@ -53,7 +53,7 @@ local function bindingsSnapshot()
  end
  return t
 end
-local cvarNames={'enableMouseoverCast','autoSelfCast','lockActionBars','alwaysShowActionBars'}
+local cvarNames={'enableMouseoverCast','autoSelfCast','autoUnshift','lockActionBars','alwaysShowActionBars'}
 local function settingsSnapshot()
  local s={cvars={},modified={}}
  if GetActionBarToggles then
@@ -61,14 +61,15 @@ local function settingsSnapshot()
   local function on(v) return v==true or v==1 or v=='1' end
   s.toggles={on(a),on(b),on(c),on(d)}
  end
- for _,k in ipairs(cvarNames) do if GetCVar then local ok,v=pcall(GetCVar,k);if ok and v~=nil then s.cvars[k]=v end end end
+ local get=(C_CVar and C_CVar.GetCVar) or GetCVar
+ for _,k in ipairs(cvarNames) do if get then local ok,v=pcall(get,k);if ok and v~=nil then s.cvars[k]=v end end end
  if GetModifiedClick then
   for _,k in ipairs({'SELFCAST','FOCUSCAST','MOUSEOVERCAST'}) do s.modified[k]=GetModifiedClick(k) end
  end
  return s
 end
 local function snapshot()
- local s={version=3,actions={},bindings=bindingsSnapshot(),settings=settingsSnapshot(),time=(time and time()) or 0,pages=copy(db().pages)}
+ local s={version=4,layout=db().layout or 'B',actions={},bindings=bindingsSnapshot(),settings=settingsSnapshot(),time=(time and time()) or 0,pages=copy(db().pages)}
  local slots={};for i=1,120 do slots[i]=true end
  for _,page in pairs(db().pages) do for _,slot in ipairs(page) do slots[slot]=true end end
  for slot in pairs(slots) do s.actions[slot]=actionSnapshot(slot) end
@@ -85,9 +86,14 @@ local function callBool(f,...)
  local ok,result=pcall(f,...);return ok and result~=false
 end
 local function setCvar(k,v)
- if not GetCVar or not SetCVar then return end
- local ok,old=pcall(GetCVar,k)
- if ok and old~=nil then pcall(SetCVar,k,v) end
+ local get=(C_CVar and C_CVar.GetCVar) or GetCVar
+ local set=(C_CVar and C_CVar.SetCVar) or SetCVar
+ if not get or not set then return false end
+ local ok,old=pcall(get,k)
+ if not ok or old==nil then return false end
+ if not pcall(set,k,v) then return false end
+ local read,new=pcall(get,k)
+ return read and tostring(new)==tostring(v)
 end
 local function setVisibility(toggles)
  if SetActionBarToggles then pcall(SetActionBarToggles,unpack(toggles)) end
@@ -100,16 +106,25 @@ local function setVisibility(toggles)
  if MultiActionBar_Update then pcall(MultiActionBar_Update) end
 end
 local function setupTargetingSettings()
- if SetModifiedClick then
-  pcall(SetModifiedClick,'SELFCAST','NONE');pcall(SetModifiedClick,'FOCUSCAST','NONE')
-  pcall(SetModifiedClick,'MOUSEOVERCAST','NONE')
+ local failed={}
+ for _,key in ipairs({'SELFCAST','FOCUSCAST','MOUSEOVERCAST'}) do
+  if not callBool(SetModifiedClick,key,'NONE') then failed[#failed+1]=key
+  elseif GetModifiedClick and GetModifiedClick(key)~='NONE' then failed[#failed+1]=key end
  end
- setCvar('enableMouseoverCast','1');setCvar('autoSelfCast','1')
+ for _,setting in ipairs({{'enableMouseoverCast','0'},{'autoSelfCast','1'},{'autoUnshift','1'}}) do
+  if not setCvar(setting[1],setting[2]) then failed[#failed+1]=setting[1] end
+ end
+ if #failed>0 then
+  A.say('Could not verify targeting settings: '..table.concat(failed,', ')..'. Macros use explicit mouseover; inspect /fs status.')
+  return false
+ end
+ return true
 end
 local function setupSettings()
  setVisibility({true,true,true,false})
- setupTargetingSettings()
+ local ok=setupTargetingSettings()
  setCvar('lockActionBars','1');setCvar('alwaysShowActionBars','1')
+ return ok
 end
 local function restoreSettings(s)
  if not s then return end
@@ -122,7 +137,13 @@ local function saveBindings()
  if not ok then A.say('Client refused SaveBindings(2). Binding persistence is NOT confirmed.') end
  return ok
 end
-local function setupBindings()
+local function selectedProfile(value)
+ local name=(value and value~='' and value:upper()) or db().layout or 'B'
+ if not FeralSetupLayout.bindingProfiles[name] then A.say('Choose A (numbers) or B (Q/E).');return nil end
+ return name
+end
+local function setupBindings(profile)
+ profile=selectedProfile(profile);if not profile then return false end
  local errors={}
  local windows=IsWindowsClient and IsWindowsClient()
  if windows==nil and IsMacClient then windows=not IsMacClient() end
@@ -136,7 +157,7 @@ local function setupBindings()
  for _,k in ipairs({'F','G','5','C','V','Y','8','9'}) do
   for _,mod in ipairs({'CMD-','ALT-','SHIFT-'}) do reserved[mod..k]=true end
  end
- for _,k in ipairs({'1','2','T','X','6'}) do
+ for _,k in ipairs({'1','2','Q','E','T','X','Z','6'}) do
   reserved['SHIFT-'..k]=true
  end
  -- Retire old addon keys; leave a user's unrelated replacement bindings alone.
@@ -160,9 +181,10 @@ local function setupBindings()
   for _,k in ipairs({GetBindingKey(cmd)}) do reserved[k]=true end
  end
  for k in pairs(reserved) do bind(k,nil) end
- for k,cmd in pairs(FeralSetupLayout.bindings) do bind(k,cmd) end
+ for k,cmd in pairs(FeralSetupLayout.bindingProfiles[profile]) do bind(k,cmd) end
  if not saveBindings() then errors[#errors+1]='SaveBindings' end
  if #errors>0 then A.say('Bindings not accepted: '..table.concat(errors,', '));return false end
+ db().layout=profile
  return true
 end
 local function restoreBindings(saved)
@@ -217,34 +239,7 @@ local function currentMain()
  end
  return kind,slots
 end
-local function spellBook()
- local book={};local count=0
- if GetNumSpellTabs and GetSpellTabInfo and GetSpellBookItemName then
-  for tab=1,GetNumSpellTabs() do
-   local _,_,off,n=GetSpellTabInfo(tab)
-   for i=(off or 0)+1,(off or 0)+(n or 0) do
-    local name=GetSpellBookItemName(i,BOOKTYPE_SPELL or 'spell')
-    local typ,id
-    if GetSpellBookItemInfo then typ,id=GetSpellBookItemInfo(i,BOOKTYPE_SPELL or 'spell') end
-    if name and (typ==nil or typ=='SPELL') then book[name]={index=i,id=id,legacy=true};count=count+1 end
-   end
-  end
- elseif C_SpellBook and C_SpellBook.GetNumSpellBookSkillLines and C_SpellBook.GetSpellBookItemInfo then
-  local bank=Enum and Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player or 0
-  for line=1,C_SpellBook.GetNumSpellBookSkillLines() do
-   local l=C_SpellBook.GetSpellBookSkillLineInfo(line)
-   if l then
-    for i=l.itemIndexOffset+1,l.itemIndexOffset+l.numSpellBookItems do
-     local info=C_SpellBook.GetSpellBookItemInfo(i,bank)
-     local id=info and (info.spellID or info.actionID)
-     local name=id and spellName(id)
-     if name then book[name]={index=i,id=id,bank=bank};count=count+1 end
-    end
-   end
-  end
- end
- return book,count
-end
+local spellBook=A.spellBook
 local function clearSlot(slot)
  if actionInfo(slot) then
   if not callBool(PickupAction,slot) then return false end
@@ -318,7 +313,8 @@ local function preflight()
  if n==0 then A.say('Could not read your spellbook. No layout changes made.');return nil end
  return b
 end
-local function applySetup()
+local function applySetup(profile)
+ profile=selectedProfile(profile);if not profile then return end
  local book=preflight();if not book then return end
  if currentForm()~='human' then A.say('Start in HUMANOID form. Click off your form, then /feralsetup setup.');return end
  local kind,main,err=currentMain();if not main then A.say(err);return end
@@ -329,8 +325,9 @@ local function applySetup()
  end
  baseline()
  local bodies=A.macros(true);if not bodies then A.say('Macro preparation failed; see errors above. No bars/bindings changed.');return end
- setupSettings()
- local success=setupBindings()
+ local settingsOK=setupSettings()
+ local success=setupBindings(profile)
+ if not settingsOK then success=false end
  for _,k in ipairs({'support','selfbar','utility'}) do
   if not fill(FeralSetupLayout.fixed[k],fixed[k],book,bodies) then success=false end
  end
@@ -338,7 +335,7 @@ local function applySetup()
  db().pages.human=copy(main)
  if success then
   savedSnapshot()
-  A.say('Bindings, three fixed bars and Humanoid page installed (v3.6.1; Cmd/Alt aliases; Q/E attacks; Faerie Fire on 4).')
+  A.say('Installed v3.7.0 layout '..profile..': '..FeralSetupLayout.profileNames[profile]..'. Faerie Fire: Z in both layouts.')
   A.say('Wheel UP into Cat, then /feralsetup form. Wheel DOWN into Bear, run it again.')
   A.say('Then /feralsetup save to save a recovery snapshot and reload.')
  else A.say('Some operations failed. Backup was preserved; see messages above. /feralsetup undo reverses layout changes.') end
@@ -351,7 +348,7 @@ local function applyForm()
  if fill(FeralSetupLayout.main[kind],slots,book,bodies) then
   db().pages[kind]=copy(slots);savedSnapshot()
   A.say(kind..' page filled using LIVE slots '..slots[1]..'-'..slots[12]..'.')
-  A.say('After both Cat and Bear: /feralsetup save. Cat 1/R select their stealth abilities automatically.')
+  A.say('After both Cat and Bear: /fs save. Then /fs a or /fs b switches all forms using bindings only.')
  end
 end
 local function restore(s,label)
@@ -379,10 +376,22 @@ local function restore(s,label)
  end
  local ok,err=restoreBindings(s.bindings)
  if not ok then failures[#failures+1]=err or 'Could not save bindings' end
- restoreSettings(s.settings);db().pages=copy(s.pages or {})
+ restoreSettings(s.settings);db().pages=copy(s.pages or {});db().layout=s.layout or 'B'
  for _,e in ipairs(failures) do A.say(e) end
  A.say(label..' restore finished: '..#failures..' failures. No macros were deleted.')
  A.say('Use /reload now to commit. /feralsetup save only AFTER checking the restored layout.')
+end
+local function switchProfile(profile)
+ if not A.guard() or not apiReady() then return end
+ profile=selectedProfile(profile);if not profile then return end
+ baseline()
+ local before=bindingsSnapshot();local previous=db().layout
+ if not setupBindings(profile) then
+  local ok,err=restoreBindings(before);db().layout=previous
+  A.say(ok and 'Previous bindings restored; layout switch cancelled.' or ('Binding rollback failed: '..tostring(err)..'. Use /fs restore.'))
+  return
+ end
+ A.say('Layout '..profile..': '..FeralSetupLayout.profileNames[profile]..'. Faerie Fire stays on Z. Bars and macros unchanged.')
 end
 local function saveAndReload()
  if not A.guard() or not apiReady() then return end
@@ -393,8 +402,15 @@ local function saveAndReload()
 end
 local function status()
  local d=db();local form=currentForm() or 'unknown';local slots=getSlots('ActionButton','MainActionBar')
- A.say('v3.6.1. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
+ A.say('v3.7.0. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
  local pages={};for k,v in pairs(d.pages) do pages[#pages+1]=k..' '..v[1]..'-'..v[12] end
+ A.say('Layout '..(d.layout or 'B')..'. /fs a = numbers; /fs b = Q/E. Faerie Fire: Z; Shift+Z: focus.')
+ local get=(C_CVar and C_CVar.GetCVar) or GetCVar
+ if get then
+  for _,key in ipairs({'enableMouseoverCast','autoUnshift'}) do local ok,v=pcall(get,key);A.say(key..'='..tostring(ok and v or 'unavailable')) end
+ end
+ local cfg=A.config()
+ A.say('Learned now: Ravage '..tostring(cfg.hasRavage)..', Pounce '..tostring(cfg.hasPounce)..'. /fs update refreshes stealth fallbacks after training.')
  A.say('Recorded pages: '..(#pages>0 and table.concat(pages,', ') or 'none'))
  A.say('Saved layout: '..(d.saved and 'yes' or 'no')..'; pre-setup backup: '..(d.before and 'yes' or 'no')..'; talent group '..groupKey())
  local ac,ch=GetNumMacros()
@@ -417,18 +433,21 @@ SLASH_FERALSETUP1='/feralsetup'
 SLASH_FERALSETUP2='/fs'
 SlashCmdList.FERALSETUP=function(msg)
  local cmd,rest=(msg or ''):match('^%s*(%S*)%s*(.-)%s*$');cmd=cmd:lower()
- if cmd=='setup' then applySetup()
+ if cmd=='a' or cmd=='b' then switchProfile(cmd)
+ elseif cmd=='setupa' or cmd=='setupb' then applySetup(cmd:sub(-1))
+ elseif cmd=='setup' then applySetup(rest)
  elseif cmd=='form' then applyForm()
  elseif cmd=='targeting' then
   if A.guard() then
    baseline()
    if A.macros(true) then
-    setupTargetingSettings()
-    if setupBindings() then A.say('Native mouseover enabled; macro self/focus retained; Ctrl mouseover retired. Bars unchanged. /fs save after checking.') end
+    local settingsOK=setupTargetingSettings()
+    local bindingsOK=setupBindings()
+    if settingsOK and bindingsOK then A.say('Explicit mouseover macros installed; native mouseover off; self/focus retained. No forced spell-form cancellation. Bars unchanged. /fs save after checking.') end
    end
   end
  elseif cmd=='bindings' then
-  if A.guard() then baseline();if setupBindings() then A.say('Bindings updated; bars unchanged. /feralsetup save after checking.') end end
+  switchProfile(rest)
  elseif cmd=='save' or cmd=='backup' then saveAndReload()
  elseif cmd=='restore' then restore(db().saved,'saved layout')
  elseif cmd=='undo' then restore(db().before,'pre-setup')
@@ -438,8 +457,9 @@ SlashCmdList.FERALSETUP=function(msg)
  elseif cmd=='install' or cmd=='update' then
   if A.guard() and A.macros(true) then A.say('Guide macros installed/replaced. /feralsetup setup also places bars and bindings.') end
  else
-  A.say('/feralsetup setup: replace same-name guide macros + current guide layout (start humanoid).')
-  A.say('/fs targeting: update macros/bindings and enable native mouseover; keep bars.')
+  A.say('/fs a | /fs b: switch numbers / Q/E, bindings only. Z = Faerie Fire in both.')
+  A.say('/fs setup [a|b]: full install, start humanoid. /fs form: fill each animal page once.')
+  A.say('/fs targeting: install explicit mouseover macros/settings/bindings; keep bars.')
   A.say('/feralsetup bindings: apply keybindings only; leave bars unchanged.')
   A.say('/feralsetup form: place current page only; keep existing macro bodies.')
   A.say('/feralsetup save: snapshot + reload. /feralsetup restore: recover saved layout.')
