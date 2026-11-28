@@ -1,11 +1,11 @@
-FERALSETUP 3.8.0 — TWO DRUID LAYOUTS, MAC + WINDOWS
+FERALSETUP 3.9.0 — FIXED NUMBERS VERSION, MAC + WINDOWS
 
-Switch out of combat: /fs a = numbers; /fs b = Q/E.
-All form pages share stable action slots; no per-form rebuild or reload is
-needed to switch. Missing direct-bound macros are prepared on upgrade, but
-existing macro bodies are preserved. Run /fs targeting once after upgrading.
+This package contains one key map. There is no /fs a or /fs b switch.
+After replacing package files, restart WoW. In human form on page 1: /fs setup.
+Enter Cat: /fs form. Enter Bear: /fs form. Check the bars, then /fs save.
+The first four physical bar buttons follow direct build/finish, bleed build/finish.
+Hurricane remains on the human bar without a shortcut.
 
-A: NUMBERS
 Key       Cat                  Bear                 Human
 1         Claw                 Maul                 Roots
 2         Ferocious Bite       Primal Bite          Wrath
@@ -13,21 +13,9 @@ Key       Cat                  Bear                 Human
 4         Rip                  Lacerate             Starfire
 Q         Dash / Pounce*       Bash                 Roots
 E         Cat Charge           Bear Charge          Hibernate
-Shift+Q/E = focus controls, not attacks. Shift+1/2 cleared.
+Shift+Q/E = focus controls. Shift+1/2/3 are unassigned.
 
-B: Q BUILDS, E FINISHES; SHIFT ADDS BLEED
-Q         Claw                 Maul                 Roots
-E         Ferocious Bite       Primal Bite          Wrath
-Shift+Q   Rake                 Swipe                Moonfire
-Shift+E   Rip                  Lacerate             Starfire
-1         Dash / Pounce*       Bash                 Roots
-2         Cat Charge           Bear Charge          Hibernate
-3         Unassigned
-4         Faerie Fire in every form (extra shortcut)
-Shift+1/2 = focus controls. Shift+3 is unassigned in both layouts.
-Hurricane remains on the human bar without a shortcut.
-
-BOTH LAYOUTS
+ALL FORMS
 Shift+W or Z = Faerie Fire on hostile hover/target, in every form.
 Shift+Z = focus Faerie Fire; Shift+W NEVER targets focus.
 Cmd/Alt+Z = healing potion.
@@ -85,4 +73,4 @@ Cmd/Alt+X PvP trinket; Cmd/Alt+B Healthstone.
 P bandage; [ food; ] drink; backslash mount; L mana potion.
 Item slots are yours to populate and are preserved by setup.
 Every assigned Cmd binding has an Alt alternative for Windows.
-Mage and Rogue tables in Guide.html are proposals only, not addon profiles.
+Mage and Rogue tables in Guide.html are proposals only, not installed layouts.

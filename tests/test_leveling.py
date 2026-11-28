@@ -1,7 +1,9 @@
 """Run with lupa available on PYTHONPATH; simulated WoW APIs only."""
 from pathlib import Path
+import sys
 from lupa.lua51 import LuaRuntime
 root = Path(__file__).resolve().parents[1]
+addon = Path(sys.argv[1]).resolve() if len(sys.argv)>1 else root/'FeralSetup'
 lua = LuaRuntime()
 lua.execute('''
 messages={}; SlashCmdList={}; playerLevel=19; class='DRUID'; faction='Alliance'
@@ -18,9 +20,9 @@ end
 function fire(level) messages={};frame.handler(frame,'PLAYER_LEVEL_UP',level) end
 function joined() return table.concat(messages,'\n') end
 '''.replace("'\n'", "'\\n'"))
-for filename in (root/'FeralSetup/FeralSetup.toc').read_text().splitlines():
+for filename in (addon/'FeralSetup.toc').read_text().splitlines():
     if filename.endswith('.lua'):
-        lua.execute((root/'FeralSetup'/filename).read_text())
+        lua.execute((addon/filename).read_text())
 g = lua.globals()
 expected = {15:'Darkshore',19:'Darkshore',20:'Ashenvale',22:'Ashenvale',23:'Wetlands',24:'Wetlands',25:'Duskwood',26:'Duskwood',27:'Wetlands return',29:'Wetlands return'}
 for level, area in expected.items():

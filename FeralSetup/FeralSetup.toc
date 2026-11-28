@@ -1,7 +1,7 @@
 ## Interface: 16001
-## Title: Feral Setup
+## Title: Feral Setup - Numbers
 ## Notes: Explicit macro, binding and action-bar setup, with local snapshot recovery.
-## Version: 3.8.0
+## Version: 3.9.0
 ## SavedVariables: FeralSetupDB
 ## SavedVariablesPerCharacter: FeralSetupCharDB
 Data.lua

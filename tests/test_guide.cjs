@@ -1,7 +1,10 @@
 // Script and archive checks only; this is not a visual browser test.
 const fs=require('fs'),vm=require('vm'),path=require('path'),assert=require('assert');
 const root=path.resolve(__dirname,'..');
-const html=fs.readFileSync(path.join(root,'docs/Guide.html'),'utf8');
+const html=fs.readFileSync(process.argv[3]||path.join(root,'docs/Guide.html'),'utf8');
+assert(!html.includes('Switch between number-key and Q/E attacks'));
+assert(html.includes('Rebuild all three pages once'));
+assert(!html.includes('/fs setup b'));
 const script=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 assert.equal(script.length,1);
 const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]));

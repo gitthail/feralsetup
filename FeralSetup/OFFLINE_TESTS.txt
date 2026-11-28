@@ -1,153 +1,19 @@
-v3.8.0 — personal toolkit / protected heals / direct-bleed layouts
-- Simulated Lua 5.1 checks cover both layouts in every form, Windows Alt parity,
-  retirement of old personal shortcuts, stale-key cleanup and binding rollback.
-- Protected Rejuvenation/Regrowth/Healing Touch request no cast in any animal
-  form without a living friendly recipient; deliberate self and ally heals work.
-  Human self fallback remains. Cures/buffs retain their previous fallback.
-- Shift+W uses normal hostile hover/target even with a different/invalid focus;
-  Shift+Z retains focus routing. Name-bound resource macro selects the current
-  form's resource spell, self-Innervate in human, nothing in Travel/Aquatic.
-- Snapshot/recovery includes macros bound directly by name, even without a bar
-  slot. Upgrade switching creates only missing direct macros and preserves edits.
-- Guide scripts, download ZIP and Lua macro-size/learning/levelling regressions.
-- No live-client test: casting, failed-cast autoUnshift, movement-modifier behaviour
-  and OS shortcut interception still require checking in game.
+v3.9.0 — independent fixed Numbers and QE packages
 
-v3.7.0 — explicit mouseover / A-B layouts
-- Lua 5.1 simulated-API tests exercise the actual setup, form and switch commands.
-- A/B mappings checked in human/Cat/Bear without any action or macro writes on switch.
-- Personal item slots and unrelated keys preserved; stale focus keys cleared.
-- Combat/cursor guards, invalid layout rejection, failed-binding rollback and saved
-  profile restoration verified. Windows skips Command and keeps Alt alternatives.
-- Friendly/hostile/dead hover fallback, forced self, focus precedence and invalid
-  focus/no-target handling checked in the macro condition evaluator.
-- Learned/unlearned Ravage/Pounce variants, after-training update, and macro limits
-  checked. R uses Shred from stealth until Ravage is learned; no forced form cancel
-  before spells. H remains the explicit cancel command.
-- Settings are read back; refused native mouseover settings cannot report success.
-- Generated guide scripts, anchors, learned-opener previews and offline ZIP checked.
-- Not live-client testing: autoUnshift's range/mana/LOS failure behaviour and actual
-  casts are NOT established by these tests. There is no resource/range-aware form
-  cancellation script. Full client integration needs a safe in-game check.
+Lua 5.1 simulations check the actual setup/form/bindings/restore commands:
+- One fixed map per package; no runtime selection table or switching function.
+- First four physical slots: direct builder, direct finisher, bleed builder,
+  bleed finisher. Numbers keys 1-4 map directly to slots 1-4.
+- Human, Cat and Bear pages, personal item preservation and stale A/B state.
+- Old switch commands/arguments make no changes and explain their removal.
+- Binding read-back, rollback after rejected or silently ignored writes,
+  combat/cursor guards, Windows Alt aliases and unrelated personal shortcuts.
+- Snapshot/recovery includes macros bound directly by name.
+- Protected heals, explicit mouseover, focus, self-cast and Shift+W targeting.
+- Dynamic learned form indices and learned/unlearned stealth opener fallbacks.
+- Macro limits, levelling events, guide scripts and single-folder install ZIPs.
 
-v3.6.1 checks
-- Existing Druid bindings/macros unchanged; Mage/Rogue tables are HTML proposals only.
-- Lua 5.1 binding and levelling regression tests pass.
-- Both HTML guides: unique IDs, valid internal anchors and parsable scripts.
-- Generated offline ZIP matches release addon/levelling files.
-- No live-client or visual browser validation performed.
-
-v3.6.0 checks
-- Key-to-page mapping checked across Cat/Bear/human, including Shift+Q/E and 1/2 focus fallthrough.
-- Alt+Q still reaches the Cat Dash/Pounce macro; Alt+1 stays Barkskin.
-- Native targeting and form macro regression checks pass. No live-game test.
-
-v3.5.8 checks
-- Native mouseover and auto-self fallback enabled; native modifiers NONE.
-- Self/focus macro overrides retained; Ctrl bindings preserved and old Ctrl+Shift+R retired.
-- Macro branches defer ordinary targeting to the client; native target resolution and modifier precedence require live-client testing.
-
-v3.5.5 checks
-- Verified Cat 1–4: Claw, Ferocious Bite, Rake, Rip.
-- Verified human Q/E use Roots/Hibernate and fixed T/X retain the same macros.
-- Lua regression tests and generated HTML scripts/archive checks pass. No live-game validation.
-
-v3.5.4 checks
-- Force shifts issue a direct form cast without a preceding cancelform.
-- Simulated failed casts preserve the original form; ordinary repeat scrolls do not cast.
-- Macro predicate tests do not establish real client spell timing or fix reported Forever form/bar desync.
-
-v3.5.3 checks
-- Simulated Windows rejects CMD keys: installer skips them, installs Alt aliases, and still reports real Alt binding failures.
-- Repeated unmodified Cat/Bear macro execution stays in the requested form from humanoid, Cat and Bear starts. This does not verify live Windows bar contents.
-
-FERALSETUP 3.5.2 — GUIDE AND PACKAGE CHECKS
-
-- Generated HTML key table reads the versioned addon layout.
-- Search and form-number configuration tested in a JavaScript stub runtime.
-- HTML scripts parse; internal anchors and local guide links verified.
-- Python release ZIP and HTML-generated ZIP contain exactly one FeralSetup folder.
-- Both ZIP paths contain byte-identical addon sources and the levelling guide.
-- Lua binding and levelling regression checks passed.
-Visual browser preview was unavailable; no live-client test.
-
-FERALSETUP 3.5.1 — HOTFIX CHECKS
-
-Passed Lua 5.1 binding and leveling tests:
-- Shift+R casts Faerie Fire on the current target, not focus.
-- Ctrl+Shift+R casts on enemy mouseover.
-- Old Cmd/Alt+R addon bindings and targeting variants are removed.
-- Remaining Cmd/Alt alternatives, Prowl toggle and other tests still pass.
-
-Historical checks follow.
-
-FERALSETUP 3.5 — OFFLINE CHECKS
-
-Passed in Lua 5.1 with simulated APIs and a macro-condition evaluator:
-- All addon files load; existing level-up guide tests pass.
-- Every Cmd binding has an identical Alt binding.
-- Old focus/Faerie Fire bindings migrate; unrelated bindings are retained.
-- Faerie Fire target/focus/mouseover routes work through Cmd and Alt.
-- Cmd/Alt self-targeting, Ctrl mouseover guards and Shift suppression.
-- Q Dash/Pounce and R Shred/Ravage select correctly by stealth state.
-- B toggles Prowl; B's macro never enters Cat; Bear B stays Challenging Roar.
-- Normal same-form wheel presses are inert; Cmd/Alt re-shift once per press.
-- Shift+Space sets focus; Cmd/Alt+Shift+Space clears it without resetting it.
-- Q/E never cast a form or use a sequence requiring repeated presses.
-- All 32 macro names/bodies fit limits, including upgraded spell/form names.
-
-No live WoW client test; condition tests cannot validate client timing,
-form-state bugs, spell usability or operating-system shortcut interception.
-
-Historical version checks follow.
-
-FERALSETUP 3.4 — PASSED 21 NOVEMBER 2026
-
-Lua 5.1 runtime with simulated WoW APIs (tests/test_leveling.py):
-- All addon Lua files load in TOC order.
-- Current/next areas at each route boundary and adjacent levels.
-- New event level used even when UnitLevel still returns the old level.
-- Milestone training and route-end message at 30; silence outside 15-30.
-- Manual guide; on/off commands; existing character data preserved.
-- Automatic reminders filtered to Alliance Druids.
-No live WoW client test performed.
-
-Historical checks below apply to earlier versions.
-
-FERALSETUP 3.3 — CURRENT CHECKS
-
-Passed 17 November 2026:
-- Mark macro matches Thorns routing, with 128 modifier/recipient cases checked.
-- Mark is 247 characters; all 30 default-resolved macros fit 255 characters
-  and names fit 16 characters.
-- Mark is a macro on Right slot 1 / key 8; modified-8 conflicts are reserved
-  for clearing during setup.
-- Setup HTML JavaScript renders with a DOM stub, including Mark placement.
-- Embedded addon files match standalone files.
-- Separate guide calculator: batch margin, per-minute margin, invalid time.
-
-No live WoW client test or Lua runtime execution was performed for v3.3.
-The tests below are historical supplied v3.2 results, not rerun for v3.3.
-
-FERALSETUP 3.2 — OFFLINE CHECKS
-
-PASS 1: all Lua source files load; 29 macro templates fit original limits
-PASS 2: fresh setup installs named Thorns macro at right slot 2, on key 9
-PASS 3: setup clears conflicting Cmd/Ctrl/Shift+9 while preserving unrelated binding
-PASS 4: setup replaces native Thorns and overwrites manual same-name macro
-PASS 5: same-name copies in General and Character pools both update
-PASS 6: repeated setup creates no duplicates and retains personal item slots
-PASS 7: Cat and Bear form commands populate only their live pages
-PASS 8: setup leaves existing Cat/Bear actions and bindings unchanged except Thorns modifiers
-PASS 9: form reuses edited page macros without reinstalling unrelated Thorns
-PASS 10: save snapshots the new Thorns macro and requests reload
-PASS 11: restore recovers Thorns and bindings after a simulated wipe
-PASS 12: setup refuses combat before changing Thorns
-PASS 13: status identifies v3.2
-ALL 13 LUA TESTS PASSED. Simulated APIs only, not a live client.
-
-PASS: 96 Thorns modifier/recipient/cancellation cases.
-PASS: all existing layout assignments unchanged except Thorns native -> macro.
-PASS: guide has 29 macros and Thorns on Right slot 2 / key 9.
-
-These use simulated APIs and a conditional-logic evaluator, not a live Mac WoW client.
+These are simulated API checks, not a live-client test. Actual key delivery,
+casting, failed-cast autoUnshift, movement/modifier behaviour and OS shortcut
+interception still require checking in game. A successful file sync does not
+rebuild saved bars: follow README.txt's setup steps in all three forms.

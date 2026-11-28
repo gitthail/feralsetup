@@ -1,9 +1,11 @@
-"""Simulated Lua 5.1 binding setup and macro condition checks for v3.8."""
+"""Simulated Lua 5.1 binding setup and macro condition checks for the fixed v3.9 packages."""
 from pathlib import Path
 import itertools
+import sys
 import re
 from lupa.lua51 import LuaRuntime
 ROOT=Path(__file__).resolve().parents[1]
+ADDON=Path(sys.argv[1]).resolve() if len(sys.argv)>1 else ROOT/'FeralSetup'
 lua=LuaRuntime(unpack_returned_tuples=True)
 lua.execute('''
 SlashCmdList={}; messages={}; bindings={}; FeralSetupCharDB={leftKey='SECTION'}
@@ -23,22 +25,24 @@ function findUp(fn,name)
  end
 end
 ''')
-for f in (ROOT/'FeralSetup/FeralSetup.toc').read_text().splitlines():
- if f.endswith('.lua'): lua.execute((ROOT/'FeralSetup'/f).read_text())
+for f in (ADDON/'FeralSetup.toc').read_text().splitlines():
+ if f.endswith('.lua'): lua.execute((ADDON/f).read_text())
 g=lua.globals();A=g.FeralSetup;layout=g.FeralSetupLayout
+assert layout.edition in ('Numbers','QE') and layout.bindingProfiles is None
+qe=layout.edition=='QE'
 for k,v in [('N','MULTIACTIONBAR2BUTTON12'),('`','MULTIACTIONBAR1BUTTON9'),('SECTION','MULTIACTIONBAR1BUTTON9'),('ALT-F','OLD'),('CMD-R','MULTIACTIONBAR1BUTTON9'),('ALT-R','MULTIACTIONBAR1BUTTON9'),('CMD-SHIFT-R','MULTIACTIONBAR1BUTTON9'),('SHIFT-Q','OLD'),('F12','UNRELATED'),('Z','ACTIONBUTTON9'),('SHIFT-R','MULTIACTIONBAR1BUTTON9')]:g.bindings[k]=v
 setup=g.findUp(g.findUp(g.SlashCmdList.FERALSETUP,'applySetup'),'setupBindings')
 assert setup()
 assert g.bindings['N'] is None and g.bindings['`'] is None and g.bindings['SECTION'] is None
 assert g.bindings['F12']=='UNRELATED'
-assert g.bindings['ALT-F'] is None and g.bindings['SHIFT-Q']=='ACTIONBUTTON2'
+assert g.bindings['ALT-F'] is None and g.bindings['SHIFT-Q']==('ACTIONBUTTON3' if qe else 'ACTIONBUTTON7')
 for k,v in layout.bindings.items():
  assert g.bindings[k]==v,(k,v)
  if k.startswith('CMD-'): assert g.bindings['ALT-'+k[4:]]==v,k
 assert g.bindings['CMD-R']=='MACRO Form Resource' and g.bindings['ALT-R']=='MACRO Form Resource' and g.bindings['CMD-SHIFT-R'] is None
 assert g.bindings['Z']=='MULTIACTIONBAR1BUTTON9'
 assert g.bindings['SHIFT-R'] is None
-assert g.bindings['4']=='MULTIACTIONBAR1BUTTON9'
+assert g.bindings['4']==('MULTIACTIONBAR1BUTTON9' if qe else 'ACTIONBUTTON4')
 assert g.bindings['CTRL-SHIFT-R'] is None
 assert g.bindings['CMD-S']=='ACTIONBUTTON11'
 assert g.bindings['CMD-J'] is None
@@ -160,7 +164,7 @@ for name in friendly:
  assert run(name,mods=['ctrl'])[0]==([] if name in heals else [(name if name!='Poison Cleanse' else 'Cure Poison','player')])
  assert '@mouseover' in macros[name]
  assert run(name,mods=['shift'])[0]==[]
-assert [layout.main.cat[i].name for i in range(1,5)]==['Claw','Rake','Ferocious Bite','Rip']
+assert [layout.main.cat[i].name for i in range(1,5)]==['Claw','Ferocious Bite','Rake','Rip']
 assert layout.main.human[7].name=='Roots' and layout.main.human[8].name=='Hibernate'
 assert layout.fixed.support[7].name=='Roots' and layout.fixed.support[8].name=='Hibernate'
 assert layout.bindings['T']=='MULTIACTIONBAR1BUTTON7' and layout.bindings['X']=='MULTIACTIONBAR1BUTTON8'
@@ -208,22 +212,27 @@ for name in ['Bash','Cat Charge','Bear Charge','Growl','Roots','Hibernate']:
  assert out[-1][1]=='focus',name
 print('PASS: native mouseover disabled, explicit self/focus routing, and freed Ctrl bindings. Client casting and form-validation behaviour is not simulated.')
 
-# Actual keys resolve to the expected v2 page slots, across all forms.
-expected={
- 'cat':{'Q':'Claw','SHIFT-Q':'Rake','E':'Ferocious Bite','SHIFT-E':'Rip','1':'Cat Q','2':'Cat Charge','R':'Cat Rear'},
- 'bear':{'Q':'Maul','SHIFT-Q':'Swipe','E':'Primal Bite','SHIFT-E':'Lacerate','1':'Bash','2':'Bear Charge','R':'Demoralizing Roar'},
- 'human':{'Q':'Roots','SHIFT-Q':'Moonfire','E':'Wrath','SHIFT-E':'Starfire','1':'Roots','2':'Hibernate'}}
-for form,keys in expected.items():
- for key,name in keys.items():
+# The installed package has one fixed map; all first-four slots are direct/bleed.
+attack_keys=['Q','E','SHIFT-Q','SHIFT-E'] if qe else ['1','2','3','4']
+control_keys=['1','2'] if qe else ['Q','E']
+for form,attacks in {'cat':['Claw','Ferocious Bite','Rake','Rip'],
+                     'bear':['Maul','Primal Bite','Swipe','Lacerate'],
+                     'human':['Roots','Wrath','Moonfire','Starfire']}.items():
+ for index,(key,name) in enumerate(zip(attack_keys,attacks),1):
+  assert layout.bindings[key]=='ACTIONBUTTON'+str(index),(form,key)
+  assert layout.main[form][index].name==name,(form,key,name)
+ for key,name in zip(control_keys,{'cat':['Cat Q','Cat Charge'],'bear':['Bash','Bear Charge'],'human':['Roots','Hibernate']}[form]):
   slot=int(layout.bindings[key].replace('ACTIONBUTTON',''))
   assert layout.main[form][slot].name==name,(form,key,name)
-for key in ['SHIFT-1','SHIFT-2','SHIFT-T','SHIFT-X','SHIFT-6']:
+for key in ['SHIFT-'+k for k in control_keys]+['SHIFT-T','SHIFT-X','SHIFT-6']:
  assert g.bindings[key] is not None,key
 assert layout.bindings['ALT-Q']=='ACTIONBUTTON7'
 assert layout.bindings['ALT-D']=='MULTIACTIONBAR2BUTTON1'
 assert layout.bindings['ALT-E']=='MULTIACTIONBAR2BUTTON2'
-assert layout.bindings['3'] is None and layout.bindings['SHIFT-3'] is None
-print('PASS: v2 key-to-page mapping and control modifier routing.')
+assert layout.bindings['SHIFT-3'] is None
+if qe:assert layout.bindings['3'] is None
+else:assert g.bindings['SHIFT-1'] is None and g.bindings['SHIFT-2'] is None
+print('PASS: fixed '+layout.edition+' keys match physical page slots in every form.')
 
 # Mouseover selection is explicit: live ally/enemy, dead, wrong faction, focus override.
 ally={'exists':True,'help':True};enemy={'exists':True,'harm':True}

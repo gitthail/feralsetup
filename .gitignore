@@ -8,3 +8,6 @@ Feral_Druid_Setup_*.html
 Feral_Leveling_and_Professions.html
 
 /dist/
+
+# Separate local addon packages; publish/sync only the selected version.
+/local-versions/

@@ -1,32 +1,24 @@
-FERAL SETUP 3.8.0 — EXPLICIT MOUSEOVER AND A/B LAYOUTS
+FERAL SETUP 3.9.0 — FIXED NUMBERS VERSION
 
-UPGRADE FROM 3.6.x OR 3.7.x
-Replace files and restart WoW. Out of combat:
-/fs targeting
-Check Shift+W normal targeting, the new personal keys and protected heals,
-then /fs save. Copying files alone does not update installed macro bodies.
-Existing v2 action slots remain unchanged; do not rebuild pages just to switch.
+This package contains only the Numbers key map. No in-game layout switch.
+Replacing the addon files does not change saved bars or bindings by itself.
+Install only one FeralSetup folder at a time.
 
-QUICK SWITCH (any form, out of combat)
-/fs a       Numbers: Cat 1 Claw, 2 Bite, 3 Rake, 4 Rip; Q/E controls.
-/fs b       Q Claw, E Bite; Shift+Q Rake, Shift+E Rip; 1/2 controls.
-Shift+W and Z are Faerie Fire in BOTH; Shift+Z targets focus. B also has FF on 4.
+INSTALL OR UPGRADE (including from 3.8.x)
+Replace the FeralSetup folder and restart WoW. Out of combat:
+1. Human form, main action page 1: /fs setup
+2. Enter Cat: /fs form
+3. Enter Bear: /fs form
+4. Check all three pages, then: /fs save
+
+The first four bar slots have been reordered to direct build/finish then
+bleed build/finish. Rebuild all three pages once; /fs targeting or /fs bindings
+alone cannot migrate the old arrangement. Personal item slots are preserved.
+Unlearned native spell slots are empty. See KEYBINDS.txt for this version.
+
+Shift+W and Z = normal hover/target Faerie Fire; Shift+Z = focus.
 Alt/Cmd+D Barkskin; +S Bear regeneration; +E Nature's Grasp; +R resources
 (Cat Shifting Power / Bear Enrage / human self-Innervate).
-Old addon Alt/Cmd+1, +2, +J and Shift+3 shortcuts are retired. B plain 3 is free.
-Switching preserves existing macro bodies, items and action pages; it prepares
-missing direct-bound macros on upgrade. It saves
-character-specific bindings, and reports binding errors. A failed switch
-attempts to restore the previous binding set. Run /fs save to capture a new
-recovery snapshot and flush SavedVariables to disk after testing your choice.
-
-FIRST INSTALL / UPGRADE FROM BEFORE 3.6.0
-Start humanoid, main page 1, out of combat:
-/fs setup b    (or /fs setup a; setupa/setupb also accepted)
-Enter Cat: /fs form
-Enter Bear: /fs form
-Check all three pages, then /fs save.
-Only this initial placement needs each form. Unlearned spell slots are empty.
 
 TARGETING
 Heals/cures/buffs: Cmd/Alt self; otherwise friendly living mouseover ->
@@ -44,24 +36,25 @@ is claimed. A valid target outside range stays the chosen target, not fallback.
 
 STEALTH FALLBACKS
 R: Shred until Ravage learned, then stealthed Ravage / normal Shred.
-Control key (A Q / B 1): Dash until Pounce learned, then stealthed Pounce /
-normal Dash. Dash must itself be learned. Alt+Q always selects Cat Dash.
-/fs update refreshes learned-opener choices after training (no auto updates).
+Q: Dash until Pounce learned, then stealthed Pounce / normal Dash.
+Dash must itself be learned. Alt+Q always selects Cat Dash.
+/fs update refreshes learned-opener choices after training.
 Native attack spell ranks still need manual replacement after training.
 
 COMMANDS (both /fs and /feralsetup accepted)
-/fs a | b              Quick binding-only layout switch.
-/fs targeting          Refresh macros, targeting settings and selected bindings.
-/fs setup [a|b]        Full setup, including humanoid and fixed bars.
-/fs form               Place current page; reuse existing macro bodies.
+/fs setup              Install this version's human page, fixed bars and bindings.
+/fs form               Place current form page; reuse existing macro bodies.
+/fs targeting          Refresh macros, targeting settings and fixed bindings.
+/fs bindings           Reapply this version's bindings; leave bars unchanged.
 /fs update | install   Replace same-name macros, detect learned forms/openers.
-/fs bindings [a|b]     Binding-only switch/reapply.
 /fs save               Snapshot and reload to persist data.
-/fs restore            Restore saved actions/bindings/settings/layout/direct macros; then /reload.
+/fs restore            Restore saved actions/bindings/settings/macros; then /reload.
 /fs undo               Restore pre-setup snapshot; then /reload.
-/fs status             Version, layout, pages, targeting settings and spell checks.
+/fs status             Package edition, pages, targeting settings and spell checks.
 /fs guide [on|off]     Current/next area or private reminder toggle, Alliance 15-30.
 
+The old /fs a, /fs b and setup/bindings layout arguments are disabled.
+An old saved A/B preference cannot change this package's installation.
 No automatic layout restoration, spell execution or combat decision scripts.
 34 templates, new entries in General Macros. Same-name definitions replaced;
 unrelated macros preserved. Nothing auto-installs just from copying files.

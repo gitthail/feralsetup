@@ -1,5 +1,150 @@
--- Stable physical action slots shared by A (numbers) and B (Q/E).
+-- Fixed Numbers package. One key map; no runtime layout selection.
 FeralSetupLayout={
+  ["main"]={
+    ["human"]={
+      {
+        ["name"]="Roots",
+        ["kind"]="macro"
+      },
+      {
+        ["name"]="Wrath",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Moonfire",
+        ["kind"]="macro"
+      },
+      {
+        ["name"]="Starfire",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Soothe Animal",
+        ["kind"]="spell"
+      },
+      {
+        ["kind"]="empty"
+      },
+      {
+        ["name"]="Roots",
+        ["kind"]="macro"
+      },
+      {
+        ["name"]="Hibernate",
+        ["kind"]="macro"
+      },
+      {
+        ["name"]="Hurricane",
+        ["kind"]="spell"
+      },
+      {
+        ["kind"]="empty"
+      },
+      {
+        ["kind"]="empty"
+      },
+      {
+        ["kind"]="empty"
+      }
+    },
+    ["cat"]={
+      {
+        ["name"]="Claw",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Ferocious Bite",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Rake",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Rip",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Cat Rear",
+        ["kind"]="macro"
+      },
+      {
+        ["kind"]="empty"
+      },
+      {
+        ["name"]="Cat Q",
+        ["kind"]="macro"
+      },
+      {
+        ["name"]="Cat Charge",
+        ["kind"]="macro"
+      },
+      {
+        ["name"]="Shifting Power",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Prowl",
+        ["kind"]="macro"
+      },
+      {
+        ["kind"]="empty"
+      },
+      {
+        ["name"]="Cower",
+        ["kind"]="spell"
+      }
+    },
+    ["bear"]={
+      {
+        ["name"]="Maul",
+        ["kind"]="macro"
+      },
+      {
+        ["name"]="Primal Bite",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Swipe",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Lacerate",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Demoralizing Roar",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Growl",
+        ["kind"]="macro"
+      },
+      {
+        ["name"]="Bash",
+        ["kind"]="macro"
+      },
+      {
+        ["name"]="Bear Charge",
+        ["kind"]="macro"
+      },
+      {
+        ["name"]="Enrage",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Challenging Roar",
+        ["kind"]="spell"
+      },
+      {
+        ["name"]="Frenzied Regeneration",
+        ["kind"]="spell"
+      },
+      {
+        ["kind"]="empty"
+      }
+    }
+  },
   ["fixed"]={
     ["selfbar"]={
       {
@@ -152,205 +297,82 @@ FeralSetupLayout={
       }
     }
   },
-  ["main"]={
-    ["human"]={
-      {
-        ["kind"]="macro",
-        ["name"]="Roots"
-      },
-      {
-        ["kind"]="macro",
-        ["name"]="Moonfire"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Wrath"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Starfire"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Soothe Animal"
-      },
-      {
-        ["kind"]="empty"
-      },
-      {
-        ["kind"]="macro",
-        ["name"]="Roots"
-      },
-      {
-        ["kind"]="macro",
-        ["name"]="Hibernate"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Hurricane"
-      },
-      {
-        ["kind"]="empty"
-      },
-      {
-        ["kind"]="empty"
-      },
-      {
-        ["kind"]="empty"
-      }
+  ["boundMacros"]={
+    {
+      ["name"]="Faerie Pull",
+      ["kind"]="macro"
     },
-    ["cat"]={
-      {
-        ["kind"]="spell",
-        ["name"]="Claw"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Rake"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Ferocious Bite"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Rip"
-      },
-      {
-        ["kind"]="macro",
-        ["name"]="Cat Rear"
-      },
-      {
-        ["kind"]="empty"
-      },
-      {
-        ["kind"]="macro",
-        ["name"]="Cat Q"
-      },
-      {
-        ["kind"]="macro",
-        ["name"]="Cat Charge"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Shifting Power"
-      },
-      {
-        ["kind"]="macro",
-        ["name"]="Prowl"
-      },
-      {
-        ["kind"]="empty"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Cower"
-      }
-    },
-    ["bear"]={
-      {
-        ["kind"]="macro",
-        ["name"]="Maul"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Swipe"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Primal Bite"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Lacerate"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Demoralizing Roar"
-      },
-      {
-        ["kind"]="macro",
-        ["name"]="Growl"
-      },
-      {
-        ["kind"]="macro",
-        ["name"]="Bash"
-      },
-      {
-        ["kind"]="macro",
-        ["name"]="Bear Charge"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Enrage"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Challenging Roar"
-      },
-      {
-        ["kind"]="spell",
-        ["name"]="Frenzied Regeneration"
-      },
-      {
-        ["kind"]="empty"
-      }
+    {
+      ["name"]="Form Resource",
+      ["kind"]="macro"
     }
   },
+  ["edition"]="Numbers",
+  ["name"]="Numbers: 1/2 direct, 3/4 bleed; Q/E control",
   ["bindings"]={
-    ["ALT-S"]="ACTIONBUTTON11",
-    ["ALT-E"]="MULTIACTIONBAR2BUTTON2",
+    ["ALT-SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
+    ["CMD-S"]="ACTIONBUTTON11",
+    ["SHIFT-Z"]="MULTIACTIONBAR1BUTTON9",
     ["CMD-X"]="MULTIACTIONBAR2BUTTON5",
     ["SHIFT-D"]="FERALSETUP_DAMAGE_METER",
     ["ALT-4"]="MULTIACTIONBAR2BUTTON4",
     ["ALT-3"]="MULTIACTIONBAR2BUTTON3",
     ["CMD-3"]="MULTIACTIONBAR2BUTTON3",
+    ["SHIFT-6"]="ACTIONBUTTON6",
     ["CMD-MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
     ["CMD-MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
     ["CMD-SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
-    ["CMD-S"]="ACTIONBUTTON11",
+    ["ALT-R"]="MACRO Form Resource",
+    ["ALT-S"]="ACTIONBUTTON11",
+    ["CMD-D"]="MULTIACTIONBAR2BUTTON1",
     ["CMD-4"]="MULTIACTIONBAR2BUTTON4",
-    ["ALT-D"]="MULTIACTIONBAR2BUTTON1",
+    ["CMD-E"]="MULTIACTIONBAR2BUTTON2",
+    ["SHIFT-T"]="MULTIACTIONBAR1BUTTON7",
+    ["SHIFT-Q"]="ACTIONBUTTON7",
     ["SPACE"]="JUMP",
+    ["ALT-E"]="MULTIACTIONBAR2BUTTON2",
+    ["SHIFT-X"]="MULTIACTIONBAR1BUTTON8",
+    ["8"]="MULTIACTIONBAR3BUTTON1",
+    ["\\"]="MULTIACTIONBAR3BUTTON10",
     ["ALT-Q"]="ACTIONBUTTON7",
-    ["ALT-SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
-    ["ALT-MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
+    ["]"]="MULTIACTIONBAR3BUTTON9",
+    ["CMD-R"]="MACRO Form Resource",
     ["ALT-Z"]="MULTIACTIONBAR2BUTTON6",
-    ["PAGEDOWN"]="CAMERAZOOMOUT",
+    ["-"]="MULTIACTIONBAR3BUTTON4",
     ["ALT-MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
+    ["CMD-B"]="MULTIACTIONBAR2BUTTON7",
     ["ALT-B"]="MULTIACTIONBAR2BUTTON7",
-    ["ALT-X"]="MULTIACTIONBAR2BUTTON5",
-    ["1"]="ACTIONBUTTON7",
+    ["1"]="ACTIONBUTTON1",
     ["0"]="MULTIACTIONBAR3BUTTON3",
-    ["2"]="ACTIONBUTTON8",
+    ["3"]="ACTIONBUTTON3",
+    ["2"]="ACTIONBUTTON2",
     ["5"]="MULTIACTIONBAR1BUTTON3",
-    ["4"]="MULTIACTIONBAR1BUTTON9",
+    ["4"]="ACTIONBUTTON4",
     ["7"]="MULTIACTIONBAR1BUTTON11",
     ["6"]="ACTIONBUTTON6",
     ["9"]="MULTIACTIONBAR3BUTTON2",
-    ["8"]="MULTIACTIONBAR3BUTTON1",
-    ["CMD-D"]="MULTIACTIONBAR2BUTTON1",
-    ["CMD-E"]="MULTIACTIONBAR2BUTTON2",
+    ["ALT-D"]="MULTIACTIONBAR2BUTTON1",
+    ["SHIFT-W"]="MACRO Faerie Pull",
+    ["PAGEDOWN"]="CAMERAZOOMOUT",
     ["="]="MULTIACTIONBAR3BUTTON5",
-    ["\\"]="MULTIACTIONBAR3BUTTON10",
-    ["MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
-    ["CMD-B"]="MULTIACTIONBAR2BUTTON7",
+    ["W"]="MOVEFORWARD",
+    ["E"]="ACTIONBUTTON8",
+    ["ALT-MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
     ["A"]="STRAFELEFT",
     ["SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
     ["C"]="MULTIACTIONBAR1BUTTON4",
     ["B"]="ACTIONBUTTON10",
-    ["E"]="ACTIONBUTTON3",
+    ["ALT-X"]="MULTIACTIONBAR2BUTTON5",
     ["D"]="STRAFERIGHT",
     ["G"]="MULTIACTIONBAR1BUTTON2",
     ["F"]="MULTIACTIONBAR1BUTTON1",
-    ["MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
+    ["O"]="MULTIACTIONBAR3BUTTON6",
     ["H"]="MULTIACTIONBAR2BUTTON11",
     ["K"]="MULTIACTIONBAR1BUTTON12",
     ["J"]="ACTIONBUTTON12",
-    ["Q"]="ACTIONBUTTON1",
+    ["MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
     ["L"]="MULTIACTIONBAR3BUTTON11",
-    ["O"]="MULTIACTIONBAR3BUTTON6",
-    ["W"]="MOVEFORWARD",
+    ["Q"]="ACTIONBUTTON7",
     ["BUTTON3"]="MULTIACTIONBAR2BUTTON10",
     ["P"]="MULTIACTIONBAR3BUTTON7",
     ["S"]="MOVEBACKWARD",
@@ -362,42 +384,10 @@ FeralSetupLayout={
     ["Y"]="MULTIACTIONBAR1BUTTON6",
     ["X"]="MULTIACTIONBAR1BUTTON8",
     ["["]="MULTIACTIONBAR3BUTTON8",
-    ["]"]="MULTIACTIONBAR3BUTTON9",
+    ["Z"]="MULTIACTIONBAR1BUTTON9",
+    ["SHIFT-E"]="ACTIONBUTTON8",
     ["PAGEUP"]="CAMERAZOOMIN",
-    ["CMD-Z"]="MULTIACTIONBAR2BUTTON6",
-    ["-"]="MULTIACTIONBAR3BUTTON4",
-    ["SHIFT-Q"]="ACTIONBUTTON2",
-    ["SHIFT-E"]="ACTIONBUTTON4"
+    ["MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
+    ["CMD-Z"]="MULTIACTIONBAR2BUTTON6"
   }
 }
-
--- Switching only changes bindings. Every form keeps exactly the same slots.
-FeralSetupLayout.bindings.Z='MULTIACTIONBAR1BUTTON9'
-FeralSetupLayout.bindings['SHIFT-Z']='MULTIACTIONBAR1BUTTON9'
--- Name-bound macros keep every existing form page intact during upgrades.
-FeralSetupLayout.boundMacros={{kind='macro',name='Faerie Pull'},{kind='macro',name='Form Resource'}}
-FeralSetupLayout.bindings['SHIFT-W']='MACRO Faerie Pull'
-FeralSetupLayout.bindings['ALT-R']='MACRO Form Resource'
-FeralSetupLayout.bindings['CMD-R']='MACRO Form Resource'
-FeralSetupLayout.bindings['SHIFT-T']='MULTIACTIONBAR1BUTTON7'
-FeralSetupLayout.bindings['SHIFT-X']='MULTIACTIONBAR1BUTTON8'
-FeralSetupLayout.bindings['SHIFT-6']='ACTIONBUTTON6'
-FeralSetupLayout.bindings['SHIFT-1']='ACTIONBUTTON7'
-FeralSetupLayout.bindings['SHIFT-2']='ACTIONBUTTON8'
-FeralSetupLayout.bindingProfiles={A={},B={}}
-for key,action in pairs(FeralSetupLayout.bindings) do
- FeralSetupLayout.bindingProfiles.A[key]=action
- FeralSetupLayout.bindingProfiles.B[key]=action
-end
-local numbers=FeralSetupLayout.bindingProfiles.A
-numbers['1']='ACTIONBUTTON1'
-numbers['2']='ACTIONBUTTON3'
-numbers['3']='ACTIONBUTTON2'
-numbers['4']='ACTIONBUTTON4'
-numbers.Q='ACTIONBUTTON7'
-numbers.E='ACTIONBUTTON8'
-numbers['SHIFT-Q']='ACTIONBUTTON7'
-numbers['SHIFT-E']='ACTIONBUTTON8'
-numbers['SHIFT-1']=nil
-numbers['SHIFT-2']=nil
-FeralSetupLayout.profileNames={A='Numbers: 1/2 direct, 3/4 bleed; Q/E control',B='Q builds, E finishes; Shift adds bleed; 1/2 control'}
