@@ -1,4 +1,4 @@
-"""Simulated Lua 5.1 binding setup and macro condition checks for the fixed v3.9 packages."""
+"""Simulated Lua 5.1 binding setup and macro condition checks for the fixed v3.9.1 packages."""
 from pathlib import Path
 import itertools
 import sys
@@ -10,7 +10,7 @@ lua=LuaRuntime(unpack_returned_tuples=True)
 lua.execute('''
 SlashCmdList={}; messages={}; bindings={}; FeralSetupCharDB={leftKey='SECTION'}
 function print(s) table.insert(messages,s) end
-function SetBinding(k,v) bindings[k]=v; return true end
+function SetBinding(k,v) assert(not k:find('CMD%-'));bindings[k]=v; return true end
 function SaveBindings(scope) assert(scope==2);return true end
 function GetBindingAction(k) return bindings[k] or '' end
 function GetBindingKey() return nil end
@@ -30,7 +30,7 @@ for f in (ADDON/'FeralSetup.toc').read_text().splitlines():
 g=lua.globals();A=g.FeralSetup;layout=g.FeralSetupLayout
 assert layout.edition in ('Numbers','QE') and layout.bindingProfiles is None
 qe=layout.edition=='QE'
-for k,v in [('N','MULTIACTIONBAR2BUTTON12'),('`','MULTIACTIONBAR1BUTTON9'),('SECTION','MULTIACTIONBAR1BUTTON9'),('ALT-F','OLD'),('CMD-R','MULTIACTIONBAR1BUTTON9'),('ALT-R','MULTIACTIONBAR1BUTTON9'),('CMD-SHIFT-R','MULTIACTIONBAR1BUTTON9'),('SHIFT-Q','OLD'),('F12','UNRELATED'),('Z','ACTIONBUTTON9'),('SHIFT-R','MULTIACTIONBAR1BUTTON9')]:g.bindings[k]=v
+for k,v in [('N','MULTIACTIONBAR2BUTTON12'),('`','MULTIACTIONBAR1BUTTON9'),('SECTION','MULTIACTIONBAR1BUTTON9'),('ALT-F','OLD'),('META-R','MULTIACTIONBAR1BUTTON9'),('ALT-R','MULTIACTIONBAR1BUTTON9'),('SHIFT-META-R','MULTIACTIONBAR1BUTTON9'),('SHIFT-Q','OLD'),('F12','UNRELATED'),('Z','ACTIONBUTTON9'),('SHIFT-R','MULTIACTIONBAR1BUTTON9')]:g.bindings[k]=v
 setup=g.findUp(g.findUp(g.SlashCmdList.FERALSETUP,'applySetup'),'setupBindings')
 assert setup()
 assert g.bindings['N'] is None and g.bindings['`'] is None and g.bindings['SECTION'] is None
@@ -38,20 +38,22 @@ assert g.bindings['F12']=='UNRELATED'
 assert g.bindings['ALT-F'] is None and g.bindings['SHIFT-Q']==('ACTIONBUTTON3' if qe else 'ACTIONBUTTON7')
 for k,v in layout.bindings.items():
  assert g.bindings[k]==v,(k,v)
- if k.startswith('CMD-'): assert g.bindings['ALT-'+k[4:]]==v,k
-assert g.bindings['CMD-R']=='MACRO Form Resource' and g.bindings['ALT-R']=='MACRO Form Resource' and g.bindings['CMD-SHIFT-R'] is None
+ if 'META-' in k:
+  alt=k.replace('META-','');alt='ALT-'+alt
+  assert g.bindings[alt]==v,k
+assert g.bindings['META-R']=='ACTIONBUTTON9' and g.bindings['ALT-R']=='ACTIONBUTTON9' and g.bindings['SHIFT-META-R'] is None
 assert g.bindings['Z']=='MULTIACTIONBAR1BUTTON9'
 assert g.bindings['SHIFT-R'] is None
 assert g.bindings['4']==('MULTIACTIONBAR1BUTTON9' if qe else 'ACTIONBUTTON4')
 assert g.bindings['CTRL-SHIFT-R'] is None
-assert g.bindings['CMD-S']=='ACTIONBUTTON11'
-assert g.bindings['CMD-J'] is None
-assert g.bindings['SHIFT-W']=='MACRO Faerie Pull'
+assert g.bindings['META-S']=='ACTIONBUTTON11'
+assert g.bindings['META-J'] is None
+assert g.bindings['SHIFT-W']=='MULTIACTIONBAR3BUTTON12'
 assert g.bindings['SHIFT-SPACE']=='MULTIACTIONBAR2BUTTON12'
 assert g.bindings['ALT-Q']=='ACTIONBUTTON7'
 # Re-running migration must not remove an unrelated user assignment.
 g.bindings['N']='OPENALLBAGS';assert setup();assert g.bindings['N']=='OPENALLBAGS'
-# Windows rejects CMD keys: skip them without hiding genuine Alt failures.
+# Windows rejects META keys: skip them without hiding genuine Alt failures.
 lua.execute("""
 local original=SetBinding
 function IsWindowsClient() return true end
@@ -62,7 +64,7 @@ end
 """)
 assert setup()
 for k,v in layout.bindings.items():
- if not k.startswith('CMD-'): assert g.bindings[k]==v,(k,v)
+ if 'META-' not in k: assert g.bindings[k]==v,(k,v)
 lua.execute("""
 local original=SetBinding
 function SetBinding(k,v)
@@ -217,7 +219,7 @@ attack_keys=['Q','E','SHIFT-Q','SHIFT-E'] if qe else ['1','2','3','4']
 control_keys=['1','2'] if qe else ['Q','E']
 for form,attacks in {'cat':['Claw','Ferocious Bite','Rake','Rip'],
                      'bear':['Maul','Primal Bite','Swipe','Lacerate'],
-                     'human':['Roots','Wrath','Moonfire','Starfire']}.items():
+                     'human':['Moonfire','Wrath','Starfire','Hurricane']}.items():
  for index,(key,name) in enumerate(zip(attack_keys,attacks),1):
   assert layout.bindings[key]=='ACTIONBUTTON'+str(index),(form,key)
   assert layout.main[form][index].name==name,(form,key,name)

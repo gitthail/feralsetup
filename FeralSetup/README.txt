@@ -1,20 +1,25 @@
-FERAL SETUP 3.9.0 — FIXED NUMBERS VERSION
+FERAL SETUP 3.9.1 — FIXED NUMBERS VERSION
 
 This package contains only the Numbers key map. No in-game layout switch.
 Replacing the addon files does not change saved bars or bindings by itself.
 Install only one FeralSetup folder at a time.
 
-INSTALL OR UPGRADE (including from 3.8.x)
+INSTALL OR UPGRADE (including from 3.9.0)
 Replace the FeralSetup folder and restart WoW. Out of combat:
 1. Human form, main action page 1: /fs setup
 2. Enter Cat: /fs form
 3. Enter Bear: /fs form
 4. Check all three pages, then: /fs save
 
-The first four bar slots have been reordered to direct build/finish then
-bleed build/finish. Rebuild all three pages once; /fs targeting or /fs bindings
-alone cannot migrate the old arrangement. Personal item slots are preserved.
+Human attacks are Moonfire/Wrath/Starfire/Hurricane. The resource macro is
+visible on main-bar button 9 and Shift+W Faerie Fire on right-bar button 12.
+Rebuild all three pages once; /fs targeting or /fs bindings alone cannot place
+these changes. Personal item slots are preserved and their actual contents reported.
 Unlearned native spell slots are empty. See KEYBINDS.txt for this version.
+
+Windows: use Alt. Mac: use Alt or Command. The same package supports both;
+Command bindings are installed only on Mac, with native modifier names/order.
+Old conflicting Command assignments, including Cmd+C = potion, are cleaned up.
 
 Shift+W and Z = normal hover/target Faerie Fire; Shift+Z = focus.
 Alt/Cmd+D Barkskin; +S Bear regeneration; +E Nature's Grasp; +R resources
@@ -51,7 +56,13 @@ COMMANDS (both /fs and /feralsetup accepted)
 /fs restore            Restore saved actions/bindings/settings/macros; then /reload.
 /fs undo               Restore pre-setup snapshot; then /reload.
 /fs status             Package edition, pages, targeting settings and spell checks.
+/fs items              Actual contents of preserved consumable/mount slots (read-only).
 /fs guide [on|off]     Current/next area or private reminder toggle, Alliance 15-30.
+
+Resource and Shift+W macros recover through their visible bar slots. Legacy
+direct macro bindings on managed keys are also captured when making backups.
+Item reports identify empty/wrong-type actions; inspect item names and custom
+macros yourself to confirm the intended potion, food or mount. Nothing auto-fills.
 
 The old /fs a, /fs b and setup/bindings layout arguments are disabled.
 An old saved A/B preference cannot change this package's installation.

@@ -1,16 +1,16 @@
-FERALSETUP 3.9.0 — FIXED NUMBERS VERSION, MAC + WINDOWS
+FERALSETUP 3.9.1 — FIXED NUMBERS VERSION, MAC + WINDOWS
 
 This package contains one key map. There is no /fs a or /fs b switch.
 After replacing package files, restart WoW. In human form on page 1: /fs setup.
 Enter Cat: /fs form. Enter Bear: /fs form. Check the bars, then /fs save.
-The first four physical bar buttons follow direct build/finish, bleed build/finish.
-Hurricane remains on the human bar without a shortcut.
+The four attack buttons are Cat direct/bleed build/finish, Bear attacks, or
+human Moonfire/Wrath/Starfire/Hurricane. Q/E (Numbers) or 1/2 (QE) are controls.
 
 Key       Cat                  Bear                 Human
-1         Claw                 Maul                 Roots
+1         Claw                 Maul                 Moonfire
 2         Ferocious Bite       Primal Bite          Wrath
-3         Rake                 Swipe                Moonfire
-4         Rip                  Lacerate             Starfire
+3         Rake                 Swipe                Starfire
+4         Rip                  Lacerate             Hurricane
 Q         Dash / Pounce*       Bash                 Roots
 E         Cat Charge           Bear Charge          Hibernate
 Shift+Q/E = focus controls. Shift+1/2/3 are unassigned.
@@ -26,6 +26,8 @@ J = Cat Cower; Cmd/Alt+S = Bear Frenzied Regeneration (sustain).
 Cmd/Alt+D = Barkskin (damage protection).
 Cmd/Alt+E = Nature's Grasp (escape).
 Cmd/Alt+R = resources: Cat Shifting Power, Bear Enrage, human self-Innervate.
+Resource macro is visible on main-bar button 9; Shift+W Faerie Fire on
+right-bar button 12. Both are saved/restored with their bars.
 Resource key does nothing in Travel/Aquatic; it never auto-enters another form.
 Alt+Q = Cat Dash even in stealth. Cmd+Q is NOT bound (macOS Quit).
 * R uses Shred in stealth until Ravage is learned. The control key stays
@@ -71,6 +73,8 @@ are preserved). Alt/Cmd+D/S/E/R are the new personal toolkit.
 Cmd/Alt+X PvP trinket; Cmd/Alt+B Healthstone.
 0 Gift of the Wild; - Revive; = Teleport Moonglade; O Track Humanoids.
 P bandage; [ food; ] drink; backslash mount; L mana potion.
-Item slots are yours to populate and are preserved by setup.
-Every assigned Cmd binding has an Alt alternative for Windows.
+Item slots are yours to populate and are preserved by setup. Setup and /fs items
+report actual contents: empty slots, wrong action types and items/macros to verify.
+Windows installs Alt shortcuts. Mac installs the same Alt shortcuts plus Command;
+old Command conflicts such as Cmd+C = potion are removed.
 Mage and Rogue tables in Guide.html are proposals only, not installed layouts.

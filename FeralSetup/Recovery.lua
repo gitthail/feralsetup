@@ -1,4 +1,4 @@
--- FeralSetup v3.9.0: setup, snapshots, restore. All changes require a slash command.
+-- FeralSetup v3.9.1: setup, snapshots, restore. All changes require a slash command.
 -- No automatic restoration on login, no combat handlers and no spell casting.
 local A=FeralSetup
 local unpack=unpack or table.unpack
@@ -43,12 +43,64 @@ local function actionSnapshot(slot)
  elseif k=='spell' then d.name=spellName(id) end
  return d
 end
+-- Command uses META in native binding strings; macro [mod:cmd] is separate.
+local function windowsClient()
+ local windows=IsWindowsClient and IsWindowsClient()
+ if windows==nil and IsMacClient then windows=not IsMacClient() end
+ return windows==true
+end
+local function supportedBindingKey(key)
+ if key:match('^CMD%-') or key:find('%-CMD%-') then return false end
+ return not (windowsClient() and (key:match('^META%-') or key:find('%-META%-')))
+end
+local function managedBindingKeys()
+ local reserved={}
+ -- Clear old primary keys before applying this package's only key map.
+ for _,key in ipairs({'1','2','3','4','Q','E','SHIFT-Q','SHIFT-E'}) do reserved[key]=true end
+ for key in pairs(FeralSetupLayout.bindings) do reserved[key]=true end
+ -- Let the macro receive these modifiers instead of another existing action.
+ for _,k in ipairs({'F','G','5','C','V','Y','8','9'}) do
+  for _,mod in ipairs({'META-','ALT-','SHIFT-'}) do reserved[mod..k]=true end
+ end
+ for _,k in ipairs({'1','2','Q','E','T','X','Z','6'}) do
+  reserved['SHIFT-'..k]=true
+ end
+ -- Retire old addon keys; leave a user's unrelated replacement bindings alone.
+ local retired={['ALT-1']='MULTIACTIONBAR2BUTTON1',['META-1']='MULTIACTIONBAR2BUTTON1',
+  ['ALT-2']='MULTIACTIONBAR2BUTTON2',['META-2']='MULTIACTIONBAR2BUTTON2',
+  ['ALT-J']='ACTIONBUTTON11',['META-J']='ACTIONBUTTON11',['Z']='ACTIONBUTTON9',['SHIFT-R']='MULTIACTIONBAR1BUTTON9',['CTRL-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['META-R']='MULTIACTIONBAR1BUTTON9',['ALT-R']='MULTIACTIONBAR1BUTTON9',
+  ['CTRL-META-R']='MULTIACTIONBAR1BUTTON9',['ALT-CTRL-R']='MULTIACTIONBAR1BUTTON9',
+  ['SHIFT-META-R']='MULTIACTIONBAR1BUTTON9',['ALT-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['N']='MULTIACTIONBAR2BUTTON12',['META-N']='MULTIACTIONBAR2BUTTON12',
+  ['`']='MULTIACTIONBAR1BUTTON9',['CTRL-`']='MULTIACTIONBAR1BUTTON9',['SHIFT-`']='MULTIACTIONBAR1BUTTON9'}
+ if FeralSetupCharDB and FeralSetupCharDB.leftKey then
+  local k=FeralSetupCharDB.leftKey
+  retired[k]='MULTIACTIONBAR1BUTTON9';retired['CTRL-'..k]='MULTIACTIONBAR1BUTTON9';retired['SHIFT-'..k]='MULTIACTIONBAR1BUTTON9'
+ end
+ for k,action in pairs(retired) do
+  if supportedBindingKey(k) and GetBindingAction and GetBindingAction(k)==action then reserved[k]=true end
+ end
+ for i=1,6 do reserved['SHIFT-'..i]=true end
+ for _,wheel in ipairs({'MOUSEWHEELUP','MOUSEWHEELDOWN','BUTTON3'}) do
+  for _,m in ipairs({'SHIFT-','ALT-','META-'}) do reserved[m..wheel]=true end
+ end
+ return reserved
+end
 local function bindingsSnapshot()
  local t={}
  for i=1,GetNumBindings() do
   local cmd=GetBinding(i)
   if cmd and cmd~='' then
-   for _,key in ipairs({GetBindingKey(cmd)}) do if key then t[key]=cmd end end
+   for _,key in ipairs({GetBindingKey(cmd)}) do if key and supportedBindingKey(key) then t[key]=cmd end end
+  end
+ end
+ -- GetNumBindings does not enumerate direct MACRO bindings on this client.
+ -- Read every key this addon can change, including legacy direct shortcuts.
+ if GetBindingAction then
+  for key in pairs(managedBindingKeys()) do
+   if supportedBindingKey(key) then
+    local cmd=GetBindingAction(key)
+    if cmd and cmd~='' and cmd~='NONE' then t[key]=cmd end
+   end
   end
  end
  return t
@@ -69,7 +121,7 @@ local function settingsSnapshot()
  return s
 end
 local function snapshot()
- local s={version=6,boundMacros={},edition=FeralSetupLayout.edition,actions={},bindings=bindingsSnapshot(),settings=settingsSnapshot(),time=(time and time()) or 0,pages=copy(db().pages)}
+ local s={version=7,boundMacros={},edition=FeralSetupLayout.edition,actions={},bindings=bindingsSnapshot(),settings=settingsSnapshot(),time=(time and time()) or 0,pages=copy(db().pages)}
  local slots={};for i=1,120 do slots[i]=true end
  for _,page in pairs(db().pages) do for _,slot in ipairs(page) do slots[slot]=true end end
  for slot in pairs(slots) do s.actions[slot]=actionSnapshot(slot) end
@@ -152,42 +204,11 @@ local function saveBindings()
 end
 local function setupBindings()
  local errors={}
- local windows=IsWindowsClient and IsWindowsClient()
- if windows==nil and IsMacClient then windows=not IsMacClient() end
  local function bind(k,c)
-  -- Windows has no Command bindings. Alt aliases are installed independently.
-  if windows and k:match('^CMD%-') then return end
+  if not supportedBindingKey(k) then return end
   if not callBool(SetBinding,k,c) then errors[#errors+1]=k end
  end
- local reserved={}
- -- Clear old primary keys before applying this package's only key map.
- for _,key in ipairs({'1','2','3','4','Q','E','SHIFT-Q','SHIFT-E'}) do reserved[key]=true end
- for key in pairs(FeralSetupLayout.bindings) do reserved[key]=true end
- -- Let the macro receive these modifiers instead of another existing action.
- for _,k in ipairs({'F','G','5','C','V','Y','8','9'}) do
-  for _,mod in ipairs({'CMD-','ALT-','SHIFT-'}) do reserved[mod..k]=true end
- end
- for _,k in ipairs({'1','2','Q','E','T','X','Z','6'}) do
-  reserved['SHIFT-'..k]=true
- end
- -- Retire old addon keys; leave a user's unrelated replacement bindings alone.
- local retired={['ALT-1']='MULTIACTIONBAR2BUTTON1',['CMD-1']='MULTIACTIONBAR2BUTTON1',
-  ['ALT-2']='MULTIACTIONBAR2BUTTON2',['CMD-2']='MULTIACTIONBAR2BUTTON2',
-  ['ALT-J']='ACTIONBUTTON11',['CMD-J']='ACTIONBUTTON11',['Z']='ACTIONBUTTON9',['SHIFT-R']='MULTIACTIONBAR1BUTTON9',['CTRL-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['CMD-R']='MULTIACTIONBAR1BUTTON9',['ALT-R']='MULTIACTIONBAR1BUTTON9',
-  ['CMD-CTRL-R']='MULTIACTIONBAR1BUTTON9',['ALT-CTRL-R']='MULTIACTIONBAR1BUTTON9',
-  ['CMD-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['ALT-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['N']='MULTIACTIONBAR2BUTTON12',['CMD-N']='MULTIACTIONBAR2BUTTON12',
-  ['`']='MULTIACTIONBAR1BUTTON9',['CTRL-`']='MULTIACTIONBAR1BUTTON9',['SHIFT-`']='MULTIACTIONBAR1BUTTON9'}
- if FeralSetupCharDB and FeralSetupCharDB.leftKey then
-  local k=FeralSetupCharDB.leftKey
-  retired[k]='MULTIACTIONBAR1BUTTON9';retired['CTRL-'..k]='MULTIACTIONBAR1BUTTON9';retired['SHIFT-'..k]='MULTIACTIONBAR1BUTTON9'
- end
- for k,action in pairs(retired) do
-  if GetBindingAction and GetBindingAction(k)==action then reserved[k]=true end
- end
- for i=1,6 do reserved['SHIFT-'..i]=true end
- for _,wheel in ipairs({'MOUSEWHEELUP','MOUSEWHEELDOWN','BUTTON3'}) do
-  for _,m in ipairs({'SHIFT-','ALT-','CMD-'}) do reserved[m..wheel]=true end
- end
+ local reserved=managedBindingKeys()
  -- Unbind action paging and old zoom keys, including secondary bindings.
  for _,cmd in ipairs({'NEXTACTIONPAGE','PREVIOUSACTIONPAGE','CAMERAZOOMIN','CAMERAZOOMOUT'}) do
   for _,k in ipairs({GetBindingKey(cmd)}) do reserved[k]=true end
@@ -196,7 +217,7 @@ local function setupBindings()
  for k,cmd in pairs(FeralSetupLayout.bindings) do bind(k,cmd) end
  if GetBindingAction then
   for k,cmd in pairs(FeralSetupLayout.bindings) do
-   if not (windows and k:match('^CMD%-')) and GetBindingAction(k)~=cmd then errors[#errors+1]=k..' (read-back mismatch)' end
+   if supportedBindingKey(k) and GetBindingAction(k)~=cmd then errors[#errors+1]=k..' (read-back mismatch)' end
   end
  end
  if not saveBindings() then errors[#errors+1]='SaveBindings' end
@@ -206,10 +227,10 @@ end
 local function restoreBindings(saved)
  local now=bindingsSnapshot()
  for k,v in pairs(now) do
-  if saved[k]~=v and not callBool(SetBinding,k,nil) then return false,'could not clear '..k end
+  if supportedBindingKey(k) and saved[k]~=v and not callBool(SetBinding,k,nil) then return false,'could not clear '..k end
  end
  for k,v in pairs(saved) do
-  if now[k]~=v and not callBool(SetBinding,k,v) then return false,'could not bind '..k end
+  if supportedBindingKey(k) and now[k]~=v and not callBool(SetBinding,k,v) then return false,'could not bind '..k end
  end
  return saveBindings()
 end
@@ -228,6 +249,38 @@ local function getSlots(prefix,barName)
   if i>1 and result[i]~=result[1]+i-1 then return nil,'Unexpected paging in '..prefix end
  end
  return result
+end
+local function actionLabel(d)
+ if d.kind=='empty' then return 'EMPTY' end
+ local name=d.name
+ if d.kind=='item' then
+  local get=(C_Item and C_Item.GetItemInfo) or GetItemInfo
+  if get then local ok,n=pcall(get,d.id);if ok then name=n end end
+ end
+ return tostring(name or d.id or '?')..' ('..d.kind..')'
+end
+local function reportItems()
+ A.say('Preserved item slots — actual contents; check that each item matches its purpose:')
+ for _,p in ipairs({{'selfbar','MultiBarBottomRightButton','MultiBarBottomRight'}, {'utility','MultiBarRightButton','MultiBarRight'}}) do
+  local slots,err=getSlots(p[2],p[3])
+  if not slots then A.say(err);return end
+  for i,row in ipairs(FeralSetupLayout.fixed[p[1]]) do
+   if row.kind=='keep' then
+    local d=actionSnapshot(slots[i]);local note
+    if d.kind=='empty' then note='EMPTY — add your chosen '..row.name..'.'
+    elseif d.kind=='macro' then note='VERIFY CUSTOM MACRO: '..actionLabel(d)
+    elseif row.name=='Mount' and d.kind~='item' then
+     local isMount=false
+     if d.kind=='spell' and C_MountJournal and C_MountJournal.GetMountFromSpell then
+      local ok,id=pcall(C_MountJournal.GetMountFromSpell,d.id);isMount=ok and type(id)=='number' and id>0
+     elseif d.kind=='companion' and d.sub=='MOUNT' then isMount=true end
+     note=(isMount and 'MOUNT: ' or 'VERIFY MOUNT: ')..actionLabel(d)
+    elseif d.kind~='item' then note='WRONG TYPE: '..actionLabel(d)..'; expected an item.'
+    else note='ITEM: '..actionLabel(d) end
+    A.say(row.name..' ['..row.keys..'] — '..note)
+   end
+  end
+ end
 end
 local function currentForm()
  local idx=GetShapeshiftForm and GetShapeshiftForm() or 0
@@ -348,9 +401,10 @@ local function applySetup()
  end
  if not fill(FeralSetupLayout.main.human,main,book,bodies) then success=false end
  db().pages.human=copy(main)
+ reportItems()
  if success then
   savedSnapshot()
-  A.say('Installed v3.9.0 '..FeralSetupLayout.name..'. Faerie Fire: Shift+W or Z.')
+  A.say('Installed v3.9.1 '..FeralSetupLayout.name..'. Faerie Fire: Shift+W or Z.')
   A.say('Wheel UP into Cat, then /feralsetup form. Wheel DOWN into Bear, run it again.')
   A.say('Then /feralsetup save to save a recovery snapshot and reload.')
  else A.say('Some operations failed. Backup was preserved; see messages above. /feralsetup undo reverses layout changes.') end
@@ -401,7 +455,6 @@ end
 local function applyBindings()
  if not A.guard() or not apiReady() then return end
  baseline()
- if not A.pageMacros(FeralSetupLayout.boundMacros) then return end
  local before=bindingsSnapshot()
  if not setupBindings() then
   local ok,err=restoreBindings(before)
@@ -419,7 +472,7 @@ local function saveAndReload()
 end
 local function status()
  local d=db();local form=currentForm() or 'unknown';local slots=getSlots('ActionButton','MainActionBar')
- A.say('v3.9.0. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
+ A.say('v3.9.1. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
  local pages={};for k,v in pairs(d.pages) do pages[#pages+1]=k..' '..v[1]..'-'..v[12] end
  A.say('Fixed package: '..FeralSetupLayout.name..'. Faerie Fire: Shift+W or Z; Shift+Z: focus.')
  local get=(C_CVar and C_CVar.GetCVar) or GetCVar
@@ -439,7 +492,7 @@ local function leftKey(k)
  if not A.guard() then return end
  if k=='' then A.say('Usage: /feralsetup leftkey ` (or the actual key immediately left of 1).');return end
  k=k:upper()
- if k:find('%s') or k:find('CMD') or k:find('CTRL') or k:find('SHIFT') then A.say('Use a single unmodified key.');return end
+ if k:find('%s') or k:find('CMD') or k:find('META') or k:find('ALT') or k:find('CTRL') or k:find('SHIFT') then A.say('Use a single unmodified key.');return end
  baseline()
  if callBool(SetBinding,k,'MULTIACTIONBAR1BUTTON9') then
   callBool(SetBinding,'CTRL-'..k,nil);callBool(SetBinding,'SHIFT-'..k,nil)
@@ -469,6 +522,7 @@ SlashCmdList.FERALSETUP=function(msg)
  elseif cmd=='restore' then restore(db().saved,'saved layout')
  elseif cmd=='undo' then restore(db().before,'pre-setup')
  elseif cmd=='status' then status()
+ elseif cmd=='items' then reportItems()
  elseif cmd=='guide' then A.guide(rest)
  elseif cmd=='leftkey' then leftKey(rest)
  elseif cmd=='install' or cmd=='update' then
@@ -480,7 +534,7 @@ SlashCmdList.FERALSETUP=function(msg)
   A.say('/feralsetup bindings: apply keybindings only; leave bars unchanged.')
   A.say('/feralsetup form: place current page only; keep existing macro bodies.')
   A.say('/feralsetup save: snapshot + reload. /feralsetup restore: recover saved layout.')
-  A.say('/feralsetup undo: pre-setup layout. /feralsetup status: diagnostics.')
+  A.say('/feralsetup undo: pre-setup layout. /feralsetup status: diagnostics. /fs items: actual item-slot contents.')
   A.say('/feralsetup guide: current route, quests and training. guide on|off: level-up reminders.')
  end
 end

@@ -1,9 +1,9 @@
--- Fixed Numbers package. One key map; no runtime layout selection.
+-- Fixed Numbers package. One key map; native META bindings are Command on Mac.
 FeralSetupLayout={
   ["main"]={
     ["human"]={
       {
-        ["name"]="Roots",
+        ["name"]="Moonfire",
         ["kind"]="macro"
       },
       {
@@ -11,11 +11,11 @@ FeralSetupLayout={
         ["kind"]="spell"
       },
       {
-        ["name"]="Moonfire",
-        ["kind"]="macro"
+        ["name"]="Starfire",
+        ["kind"]="spell"
       },
       {
-        ["name"]="Starfire",
+        ["name"]="Hurricane",
         ["kind"]="spell"
       },
       {
@@ -34,8 +34,8 @@ FeralSetupLayout={
         ["kind"]="macro"
       },
       {
-        ["name"]="Hurricane",
-        ["kind"]="spell"
+        ["name"]="Form Resource",
+        ["kind"]="macro"
       },
       {
         ["kind"]="empty"
@@ -80,8 +80,8 @@ FeralSetupLayout={
         ["kind"]="macro"
       },
       {
-        ["name"]="Shifting Power",
-        ["kind"]="spell"
+        ["name"]="Form Resource",
+        ["kind"]="macro"
       },
       {
         ["name"]="Prowl",
@@ -129,8 +129,8 @@ FeralSetupLayout={
         ["kind"]="macro"
       },
       {
-        ["name"]="Enrage",
-        ["kind"]="spell"
+        ["name"]="Form Resource",
+        ["kind"]="macro"
       },
       {
         ["name"]="Challenging Roar",
@@ -145,6 +145,88 @@ FeralSetupLayout={
       }
     }
   },
+  ["bindings"]={
+    ["ALT-SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
+    ["META-S"]="ACTIONBUTTON11",
+    ["SHIFT-Z"]="MULTIACTIONBAR1BUTTON9",
+    ["META-X"]="MULTIACTIONBAR2BUTTON5",
+    ["SHIFT-D"]="FERALSETUP_DAMAGE_METER",
+    ["ALT-4"]="MULTIACTIONBAR2BUTTON4",
+    ["ALT-3"]="MULTIACTIONBAR2BUTTON3",
+    ["META-3"]="MULTIACTIONBAR2BUTTON3",
+    ["SHIFT-6"]="ACTIONBUTTON6",
+    ["META-MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
+    ["META-MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
+    ["SHIFT-META-SPACE"]="MULTIACTIONBAR2BUTTON12",
+    ["ALT-R"]="ACTIONBUTTON9",
+    ["ALT-S"]="ACTIONBUTTON11",
+    ["META-D"]="MULTIACTIONBAR2BUTTON1",
+    ["META-4"]="MULTIACTIONBAR2BUTTON4",
+    ["META-E"]="MULTIACTIONBAR2BUTTON2",
+    ["SHIFT-T"]="MULTIACTIONBAR1BUTTON7",
+    ["SHIFT-Q"]="ACTIONBUTTON7",
+    ["SPACE"]="JUMP",
+    ["ALT-E"]="MULTIACTIONBAR2BUTTON2",
+    ["META-Z"]="MULTIACTIONBAR2BUTTON6",
+    ["MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
+    ["PAGEUP"]="CAMERAZOOMIN",
+    ["SHIFT-E"]="ACTIONBUTTON8",
+    ["META-R"]="ACTIONBUTTON9",
+    ["ALT-Z"]="MULTIACTIONBAR2BUTTON6",
+    ["-"]="MULTIACTIONBAR3BUTTON4",
+    ["ALT-MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
+    ["5"]="MULTIACTIONBAR1BUTTON3",
+    ["["]="MULTIACTIONBAR3BUTTON8",
+    ["1"]="ACTIONBUTTON1",
+    ["0"]="MULTIACTIONBAR3BUTTON3",
+    ["3"]="ACTIONBUTTON3",
+    ["2"]="ACTIONBUTTON2",
+    ["META-B"]="MULTIACTIONBAR2BUTTON7",
+    ["4"]="ACTIONBUTTON4",
+    ["7"]="MULTIACTIONBAR1BUTTON11",
+    ["6"]="ACTIONBUTTON6",
+    ["9"]="MULTIACTIONBAR3BUTTON2",
+    ["8"]="MULTIACTIONBAR3BUTTON1",
+    ["ALT-D"]="MULTIACTIONBAR2BUTTON1",
+    ["SHIFT-W"]="MULTIACTIONBAR3BUTTON12",
+    ["="]="MULTIACTIONBAR3BUTTON5",
+    ["PAGEDOWN"]="CAMERAZOOMOUT",
+    ["TAB"]="TARGETNEARESTENEMY",
+    ["ALT-X"]="MULTIACTIONBAR2BUTTON5",
+    ["A"]="STRAFELEFT",
+    ["SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
+    ["C"]="MULTIACTIONBAR1BUTTON4",
+    ["B"]="ACTIONBUTTON10",
+    ["E"]="ACTIONBUTTON8",
+    ["D"]="STRAFERIGHT",
+    ["G"]="MULTIACTIONBAR1BUTTON2",
+    ["F"]="MULTIACTIONBAR1BUTTON1",
+    ["U"]="MULTIACTIONBAR1BUTTON10",
+    ["H"]="MULTIACTIONBAR2BUTTON11",
+    ["K"]="MULTIACTIONBAR1BUTTON12",
+    ["J"]="ACTIONBUTTON12",
+    ["MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
+    ["L"]="MULTIACTIONBAR3BUTTON11",
+    ["O"]="MULTIACTIONBAR3BUTTON6",
+    ["BUTTON3"]="MULTIACTIONBAR2BUTTON10",
+    ["Q"]="ACTIONBUTTON7",
+    ["P"]="MULTIACTIONBAR3BUTTON7",
+    ["S"]="MOVEBACKWARD",
+    ["R"]="ACTIONBUTTON5",
+    ["ALT-MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
+    ["T"]="MULTIACTIONBAR1BUTTON7",
+    ["W"]="MOVEFORWARD",
+    ["V"]="MULTIACTIONBAR1BUTTON5",
+    ["Y"]="MULTIACTIONBAR1BUTTON6",
+    ["X"]="MULTIACTIONBAR1BUTTON8",
+    ["ALT-B"]="MULTIACTIONBAR2BUTTON7",
+    ["Z"]="MULTIACTIONBAR1BUTTON9",
+    ["]"]="MULTIACTIONBAR3BUTTON9",
+    ["\\"]="MULTIACTIONBAR3BUTTON10",
+    ["ALT-Q"]="ACTIONBUTTON7",
+    ["SHIFT-X"]="MULTIACTIONBAR1BUTTON8"
+  },
+  ["name"]="Numbers: 1/2 direct, 3/4 bleed; Q/E control",
   ["fixed"]={
     ["selfbar"]={
       {
@@ -169,11 +251,13 @@ FeralSetupLayout={
       },
       {
         ["name"]="Healing potion",
-        ["kind"]="keep"
+        ["kind"]="keep",
+        ["keys"]="Alt/Cmd+Z"
       },
       {
         ["name"]="Healthstone",
-        ["kind"]="keep"
+        ["kind"]="keep",
+        ["keys"]="Alt/Cmd+B"
       },
       {
         ["name"]="Cat Form",
@@ -273,121 +357,34 @@ FeralSetupLayout={
       },
       {
         ["name"]="Bandage",
-        ["kind"]="keep"
+        ["kind"]="keep",
+        ["keys"]="P"
       },
       {
         ["name"]="Food",
-        ["kind"]="keep"
+        ["kind"]="keep",
+        ["keys"]="["
       },
       {
         ["name"]="Drink",
-        ["kind"]="keep"
+        ["kind"]="keep",
+        ["keys"]="]"
       },
       {
         ["name"]="Mount",
-        ["kind"]="keep"
+        ["kind"]="keep",
+        ["keys"]="Backslash"
       },
       {
         ["name"]="Mana potion",
-        ["kind"]="keep"
+        ["kind"]="keep",
+        ["keys"]="L"
       },
       {
-        ["name"]="Soothe Animal",
-        ["kind"]="spell"
+        ["name"]="Faerie Pull",
+        ["kind"]="macro"
       }
     }
   },
-  ["boundMacros"]={
-    {
-      ["name"]="Faerie Pull",
-      ["kind"]="macro"
-    },
-    {
-      ["name"]="Form Resource",
-      ["kind"]="macro"
-    }
-  },
-  ["edition"]="Numbers",
-  ["name"]="Numbers: 1/2 direct, 3/4 bleed; Q/E control",
-  ["bindings"]={
-    ["ALT-SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
-    ["CMD-S"]="ACTIONBUTTON11",
-    ["SHIFT-Z"]="MULTIACTIONBAR1BUTTON9",
-    ["CMD-X"]="MULTIACTIONBAR2BUTTON5",
-    ["SHIFT-D"]="FERALSETUP_DAMAGE_METER",
-    ["ALT-4"]="MULTIACTIONBAR2BUTTON4",
-    ["ALT-3"]="MULTIACTIONBAR2BUTTON3",
-    ["CMD-3"]="MULTIACTIONBAR2BUTTON3",
-    ["SHIFT-6"]="ACTIONBUTTON6",
-    ["CMD-MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
-    ["CMD-MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
-    ["CMD-SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
-    ["ALT-R"]="MACRO Form Resource",
-    ["ALT-S"]="ACTIONBUTTON11",
-    ["CMD-D"]="MULTIACTIONBAR2BUTTON1",
-    ["CMD-4"]="MULTIACTIONBAR2BUTTON4",
-    ["CMD-E"]="MULTIACTIONBAR2BUTTON2",
-    ["SHIFT-T"]="MULTIACTIONBAR1BUTTON7",
-    ["SHIFT-Q"]="ACTIONBUTTON7",
-    ["SPACE"]="JUMP",
-    ["ALT-E"]="MULTIACTIONBAR2BUTTON2",
-    ["SHIFT-X"]="MULTIACTIONBAR1BUTTON8",
-    ["8"]="MULTIACTIONBAR3BUTTON1",
-    ["\\"]="MULTIACTIONBAR3BUTTON10",
-    ["ALT-Q"]="ACTIONBUTTON7",
-    ["]"]="MULTIACTIONBAR3BUTTON9",
-    ["CMD-R"]="MACRO Form Resource",
-    ["ALT-Z"]="MULTIACTIONBAR2BUTTON6",
-    ["-"]="MULTIACTIONBAR3BUTTON4",
-    ["ALT-MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
-    ["CMD-B"]="MULTIACTIONBAR2BUTTON7",
-    ["ALT-B"]="MULTIACTIONBAR2BUTTON7",
-    ["1"]="ACTIONBUTTON1",
-    ["0"]="MULTIACTIONBAR3BUTTON3",
-    ["3"]="ACTIONBUTTON3",
-    ["2"]="ACTIONBUTTON2",
-    ["5"]="MULTIACTIONBAR1BUTTON3",
-    ["4"]="ACTIONBUTTON4",
-    ["7"]="MULTIACTIONBAR1BUTTON11",
-    ["6"]="ACTIONBUTTON6",
-    ["9"]="MULTIACTIONBAR3BUTTON2",
-    ["ALT-D"]="MULTIACTIONBAR2BUTTON1",
-    ["SHIFT-W"]="MACRO Faerie Pull",
-    ["PAGEDOWN"]="CAMERAZOOMOUT",
-    ["="]="MULTIACTIONBAR3BUTTON5",
-    ["W"]="MOVEFORWARD",
-    ["E"]="ACTIONBUTTON8",
-    ["ALT-MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
-    ["A"]="STRAFELEFT",
-    ["SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
-    ["C"]="MULTIACTIONBAR1BUTTON4",
-    ["B"]="ACTIONBUTTON10",
-    ["ALT-X"]="MULTIACTIONBAR2BUTTON5",
-    ["D"]="STRAFERIGHT",
-    ["G"]="MULTIACTIONBAR1BUTTON2",
-    ["F"]="MULTIACTIONBAR1BUTTON1",
-    ["O"]="MULTIACTIONBAR3BUTTON6",
-    ["H"]="MULTIACTIONBAR2BUTTON11",
-    ["K"]="MULTIACTIONBAR1BUTTON12",
-    ["J"]="ACTIONBUTTON12",
-    ["MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
-    ["L"]="MULTIACTIONBAR3BUTTON11",
-    ["Q"]="ACTIONBUTTON7",
-    ["BUTTON3"]="MULTIACTIONBAR2BUTTON10",
-    ["P"]="MULTIACTIONBAR3BUTTON7",
-    ["S"]="MOVEBACKWARD",
-    ["R"]="ACTIONBUTTON5",
-    ["U"]="MULTIACTIONBAR1BUTTON10",
-    ["T"]="MULTIACTIONBAR1BUTTON7",
-    ["TAB"]="TARGETNEARESTENEMY",
-    ["V"]="MULTIACTIONBAR1BUTTON5",
-    ["Y"]="MULTIACTIONBAR1BUTTON6",
-    ["X"]="MULTIACTIONBAR1BUTTON8",
-    ["["]="MULTIACTIONBAR3BUTTON8",
-    ["Z"]="MULTIACTIONBAR1BUTTON9",
-    ["SHIFT-E"]="ACTIONBUTTON8",
-    ["PAGEUP"]="CAMERAZOOMIN",
-    ["MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
-    ["CMD-Z"]="MULTIACTIONBAR2BUTTON6"
-  }
+  ["edition"]="Numbers"
 }

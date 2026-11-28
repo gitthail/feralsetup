@@ -1,19 +1,23 @@
-v3.9.0 — independent fixed Numbers and QE packages
+v3.9.1 — Windows/Mac fixes and visible resource/Faerie Fire buttons
 
-Lua 5.1 simulations check the actual setup/form/bindings/restore commands:
-- One fixed map per package; no runtime selection table or switching function.
-- First four physical slots: direct builder, direct finisher, bleed builder,
-  bleed finisher. Numbers keys 1-4 map directly to slots 1-4.
-- Human, Cat and Bear pages, personal item preservation and stale A/B state.
-- Old switch commands/arguments make no changes and explain their removal.
-- Binding read-back, rollback after rejected or silently ignored writes,
-  combat/cursor guards, Windows Alt aliases and unrelated personal shortcuts.
-- Snapshot/recovery includes macros bound directly by name.
-- Protected heals, explicit mouseover, focus, self-cast and Shift+W targeting.
-- Dynamic learned form indices and learned/unlearned stealth opener fallbacks.
-- Macro limits, levelling events, guide scripts and single-folder install ZIPs.
+Lua 5.1 simulations cover both independent Numbers and QE packages:
+- Full setup, three form pages, ordinary binding reapply and snapshot restore.
+- Native binding API rejects CMD- strings; Mac accepts canonical META chords;
+  Windows receives no META binding writes, including Mac-snapshot recovery.
+- Exact stale Mac cases: Cmd+C potion, Cmd+R old regeneration and old Cmd+1/2.
+- Shared Alt parity, self/focus macro routing and modifier precedence.
+- GetNumBindings excludes directly bound macros, matching the observed client.
+- Resource/Shift+W recover through visible bar slots; legacy direct bindings on
+  managed keys are also captured for backups/rollback.
+- Human Moonfire/Wrath/Starfire/Hurricane and single Roots/Hibernate control pair.
+- Preserved item slots report actual names, missing items, wrong action types,
+  and unverified custom macros/mounts; contents are not silently replaced.
+- Binding read-back/rollback, combat/cursor guards, personal edits, learned form
+  indices, stealth fallbacks, macro lengths, levelling and guide-download ZIPs.
 
-These are simulated API checks, not a live-client test. Actual key delivery,
-casting, failed-cast autoUnshift, movement/modifier behaviour and OS shortcut
-interception still require checking in game. A successful file sync does not
-rebuild saved bars: follow README.txt's setup steps in all three forms.
+These are API simulations informed by the client's saved state and Blizzard's
+binding utility, not a live-client test. Actual input delivery, casting, range,
+line of sight, failed-cast autoUnshift and OS shortcuts still need in-game checks.
+Reports identify item names/types; they do not infer every custom macro effect
+or guarantee a preserved item is the right consumable. Installing files alone
+does not update saved bars: follow README.txt's full setup steps.

@@ -5,6 +5,12 @@ const html=fs.readFileSync(process.argv[3]||path.join(root,'docs/Guide.html'),'u
 assert(!html.includes('Switch between number-key and Q/E attacks'));
 assert(html.includes('Rebuild all three pages once'));
 assert(!html.includes('/fs setup b'));
+const combat=html.match(/<section id="combat">([\s\S]*?)<\/section>/)[1];
+const attackKey=combat.includes('Numbers ·')?'1':'Q';
+assert(combat.includes(`<td>${attackKey}</td><td>Claw</td><td>Claw</td><td>Maul</td><td>Moonfire</td>`));
+assert(combat.includes('<td>Cmd/Alt+R</td><td>Shifting Power</td><td>Shifting Power</td><td>Enrage</td><td>Innervate (self)</td>'));
+assert(combat.includes('main bar button 9')&&combat.includes('right-bar button 12'));
+assert(html.includes('/fs items'));
 const script=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 assert.equal(script.length,1);
 const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]));
