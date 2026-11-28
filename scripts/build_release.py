@@ -31,6 +31,7 @@ def label(entry):return entry.get('name','—')
 edition=layout['edition']
 assert edition in ('Numbers','QE')
 numbered=edition=='Numbers'
+variant_folder='A-numbers' if numbered else 'B-qe'
 control,charge=('Q','E') if numbered else ('1','2')
 def combat_rows():
  keys=(['1','2','3','4','Q','E'] if numbered else ['Q','E','SHIFT-Q','SHIFT-E','1','2','4'])+['R','ALT-R','Z','SHIFT-W','6','B','J','ALT-S']
@@ -68,6 +69,7 @@ files={'FeralSetup/'+p.name:p.read_text() for p in sorted(ADDON.iterdir()) if p.
 files['FeralSetup/Leveling.html']=(ROOT/'docs/Leveling.html').read_text()
 def jsjson(obj):return json.dumps(obj,ensure_ascii=True).replace('<','\\u003c')
 values={'VERSION':version,'EDITION':edition,'COMBAT_ROWS':combat_rows(),'CONTROL_KEY':control,'CHARGE_KEY':charge,'ATTACK_SUMMARY':('Cat: 1 → 2 = Claw → Bite; 3 → 4 = Rake → Rip. Bear: 1 Maul, 2 Primal Bite, 3 Swipe, 4 Lacerate. Human: 1 Moonfire, 2 Wrath, 3 Starfire, 4 Hurricane.' if numbered else 'Cat: Q → E = Claw → Bite; Shift+Q → Shift+E = Rake → Rip. Bear: Q Maul, E Primal Bite, Shift+Q Swipe, Shift+E Lacerate. Human: Q Moonfire, E Wrath, Shift+Q Starfire, Shift+E Hurricane.'),'SECONDARY_NOTE':('Shift+Q/E focus the controls; Shift+1/2/3 are unassigned.' if numbered else 'Shift+Q/E are bleed/secondary damage. Shift+1/2 focus the controls. Plain 3 and Shift+3 are unassigned; 4 is an extra Faerie Fire key.'),'SUPPORT_ROWS':rows(support),'UTILITY_ROWS':rows(utility),'FORM_ROWS':rows(forms),'COMMAND_ROWS':rows(commands),'ROUTE_ROWS':rows(route_rows),'MACRO_ROWS':macro_rows,'DATA_JSON':jsjson({'defaults':defaults,'macros':macros,'unlearned':unlearned}),'FILES_JSON':jsjson(files),'ZIP_JS':(ROOT/'scripts/zip_store.js').read_text(),'CAT':defaults['cat'],'BEAR':defaults['bear'],'AQUATIC':defaults['aquatic'],'TRAVEL':defaults['travel']}
+values['VARIANT_FOLDER']=variant_folder
 template=(ROOT/'scripts/guide_template.html').read_text()
 guide=re.sub(r'\{\{([A-Z_]+)\}\}',lambda m:values[m[1]],template)
 args.guide_output.parent.mkdir(parents=True,exist_ok=True)

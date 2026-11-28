@@ -2,6 +2,8 @@
 __pycache__/
 *.pyc
 *.zip
+!variants/A-numbers/FeralSetup.zip
+!variants/B-qe/FeralSetup.zip
 # Local planning documents and generated personal guides.
 FeralSetup_Design.org
 Feral_Druid_Setup_*.html
@@ -9,5 +11,5 @@ Feral_Leveling_and_Professions.html
 
 /dist/
 
-# Separate local addon packages; publish/sync only the selected version.
+# Local working copies; published packages live under variants/.
 /local-versions/

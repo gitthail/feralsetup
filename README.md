@@ -1,12 +1,21 @@
-# FeralSetup — Numbers version
+# FeralSetup — A and B variants
 
 Personal WoW Forever Druid controls, recovery snapshots and levelling advice.
 
-**[Download FeralSetup.zip](https://github.com/gitthail/feralsetup/releases/latest/download/FeralSetup.zip)** — extract and move the single **FeralSetup** folder into `Interface/AddOns`. No build step, renaming or extra nesting. Use the release asset, not GitHub's automatic source archive.
+Choose one package below. Each ZIP extracts to a single **FeralSetup** folder ready to move into `Interface/AddOns`, with its own offline guides. No build step or renaming. Both support Windows and Mac.
+
+| Variant | Attack keys | Control keys | Download | Folder |
+| --- | --- | --- | --- | --- |
+| **A — Numbers** | 1/2 direct, 3/4 bleed | Q/E | [FeralSetup.zip](https://github.com/gitthail/feralsetup/raw/refs/heads/main/variants/A-numbers/FeralSetup.zip) | [A-numbers](variants/A-numbers) |
+| **B — Q/E** | Q/E direct, Shift+Q/E bleed | 1/2 | [FeralSetup.zip](https://github.com/gitthail/feralsetup/raw/refs/heads/main/variants/B-qe/FeralSetup.zip) | [B-qe](variants/B-qe) |
+
+Install only **one** variant at a time; both use the addon folder name **FeralSetup**. To change variants, replace that folder with the other package and follow the setup steps below. The GitHub source archive contains both variants and the project files; use the individual ZIP links above for installation.
 
 ## Version 3.9.1
 
-This repository and release contain the fixed **Numbers** version: attacks on 1–4, controls on Q/E. Runtime A/B switching and saved layout selection have been removed. The separate Q/E package is kept locally and is not included in this release.
+Both fixed variants are published in their own folders. The root `FeralSetup/` source and the existing release's default ZIP remain **A — Numbers**: attacks on 1–4, controls on Q/E. Runtime A/B switching and saved layout selection have been removed. Each package installs its own single key map.
+
+The table below shows **A — Numbers**; [B's complete map](variants/B-qe/FeralSetup/KEYBINDS.txt) covers the Q/E variant.
 
 | Key | Cat | Bear | Human |
 | --- | --- | --- | --- |
@@ -41,7 +50,7 @@ Personal item slots are preserved. Unlearned native spell slots are empty; nativ
 
 ## Guides and recovery
 
-Both offline HTML guides are inside the ZIP and separately downloadable:
+Both offline HTML guides are inside each variant's ZIP. The matching `Guide.html` and `KEYBINDS.txt` are also in each variant's `FeralSetup/` folder. The existing release's standalone guides are:
 
 - [Guide.html](https://github.com/gitthail/feralsetup/releases/latest/download/Guide.html): the installed Numbers layout, targeting, commands and searchable macros; Mage/Rogue proposals only.
 - [Leveling.html](https://github.com/gitthail/feralsetup/releases/latest/download/Leveling.html): efficient sessions from level 24 onward, dungeon/route decisions and professions.
@@ -65,4 +74,18 @@ node tests/test_guide.cjs
 
 The build generates `docs/Guide.html` and `dist/FeralSetup.zip`. The guide can also generate an offline ZIP. Tests reject invalid Mac key names and model the client’s exclusion of direct macros from binding enumeration. Both platforms are tested. Live key delivery and casting are not verified. See [validation notes](FeralSetup/OFFLINE_TESTS.txt).
 
-An independent local addon folder can be checked with `python3 tests/test_setup.py /absolute/path/FeralSetup`. The packaging script accepts `--addon-dir`, `--guide-output` and `--zip-output` paths; these do not add runtime switching to the addon.
+An independent addon folder can be checked with `python3 tests/test_setup.py /absolute/path/FeralSetup`. The packaging script accepts `--addon-dir`, `--guide-output` and `--zip-output` paths; these do not add runtime switching to the addon.
+
+Rebuild both published variant ZIPs and their matching guides:
+
+```sh
+for variant in A-numbers B-qe; do
+  python3 scripts/build_release.py \
+    --addon-dir "variants/$variant/FeralSetup" \
+    --guide-output "variants/$variant/FeralSetup/Guide.html" \
+    --zip-output "variants/$variant/FeralSetup.zip"
+  cp docs/Leveling.html "variants/$variant/FeralSetup/Leveling.html"
+done
+```
+
+Each published folder is a complete package. Keep shared fixes in both variants and the root source; preserve their distinct `Layout.lua`, title and key-map documentation. Validate each variant on both platforms before publishing.

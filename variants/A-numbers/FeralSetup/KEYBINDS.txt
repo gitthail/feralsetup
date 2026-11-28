@@ -1,0 +1,80 @@
+FERALSETUP 3.9.1 — FIXED NUMBERS VERSION, MAC + WINDOWS
+
+This package contains one key map. There is no /fs a or /fs b switch.
+After replacing package files, restart WoW. In human form on page 1: /fs setup.
+Enter Cat: /fs form. Enter Bear: /fs form. Check the bars, then /fs save.
+The four attack buttons are Cat direct/bleed build/finish, Bear attacks, or
+human Moonfire/Wrath/Starfire/Hurricane. Q/E (Numbers) or 1/2 (QE) are controls.
+
+Key       Cat                  Bear                 Human
+1         Claw                 Maul                 Moonfire
+2         Ferocious Bite       Primal Bite          Wrath
+3         Rake                 Swipe                Starfire
+4         Rip                  Lacerate             Hurricane
+Q         Dash / Pounce*       Bash                 Roots
+E         Cat Charge           Bear Charge          Hibernate
+Shift+Q/E = focus controls. Shift+1/2/3 are unassigned.
+
+ALL FORMS
+Shift+W or Z = Faerie Fire on hostile hover/target, in every form.
+Shift+Z = focus Faerie Fire; Shift+W NEVER targets focus.
+Cmd/Alt+Z = healing potion.
+R = Cat Shred / Ravage*; Bear Demoralizing Roar; human Soothe Animal.
+6 = Bear Growl; Shift+6 = focus Growl.
+B = Cat Prowl toggle; Bear Challenging Roar; human empty.
+J = Cat Cower; Cmd/Alt+S = Bear Frenzied Regeneration (sustain).
+Cmd/Alt+D = Barkskin (damage protection).
+Cmd/Alt+E = Nature's Grasp (escape).
+Cmd/Alt+R = resources: Cat Shifting Power, Bear Enrage, human self-Innervate.
+Resource macro is visible on main-bar button 9; Shift+W Faerie Fire on
+right-bar button 12. Both are saved/restored with their bars.
+Resource key does nothing in Travel/Aquatic; it never auto-enters another form.
+Alt+Q = Cat Dash even in stealth. Cmd+Q is NOT bound (macOS Quit).
+* R uses Shred in stealth until Ravage is learned. The control key stays
+Dash in stealth until Pounce is learned. Dash must itself be learned.
+Run /fs update after learning those spells to refresh the macros.
+Learned spells do not fall back on energy/range/position/cooldown failure.
+
+EXPLICIT MOUSEOVER
+F Rejuvenation; G Regrowth; 5 Healing Touch; C Remove Curse;
+V Cure/Abolish Poison; Y Innervate; 8 Mark of the Wild; 9 Thorns.
+Cmd/Alt forces self. Otherwise living friendly hover -> friendly target.
+F/G/5 fall back to self ONLY in human form. No friendly recipient in an animal
+form = no heal cast; deliberate ally healing can still leave form. Cures and
+buffs retain their existing self fallback.
+Shift alone is inactive on these friendly spells. Ctrl has no special role.
+
+T Roots; X Hibernate, in every form; Shift+T/X = hostile focus.
+Controls (including Pounce/Bash/Charge/Growl/FF): Shift = hostile focus;
+otherwise living hostile hover -> living hostile selected target.
+Invalid focus does NOT fall back. An out-of-range hover stays the chosen
+recipient; range/immunity/line of sight are not macro fallback conditions.
+7 Moonfire: hostile hover -> hostile target (also on the human main page).
+U Rebirth: dead friendly hover -> dead friendly target.
+K Tranquility. No spell macro forcibly cancels form. Only H does.
+Native mouseover is disabled; native self/focus modifiers are NONE.
+autoUnshift=1 lets the client handle caster spells leaving form; the addon
+cannot guarantee form retention on every client-side failed cast.
+
+FORMS / MOVEMENT / FOCUS
+Wheel up Cat, wheel down Bear. Unmodified repeats do not re-shift.
+Cmd/Alt+wheel = deliberate form re-cast. Middle click = Aquatic/Travel.
+H = explicitly leave form, stop casting and attacking.
+Shift+Space = set focus (living hover, then target).
+Cmd/Alt+Shift+Space = clear focus.
+W/S forward/back; A/D strafe; Tab nearest enemy; Space jump.
+Page Up/Down = camera zoom. Ctrl and Shift+R remain available.
+Shift+D = toggle native damage meter (visibility follows game settings).
+
+OTHER SHARED KEYS
+Cmd/Alt+3 Shadowmeld; +4 Elune's Light.
+Old addon Cmd/Alt+1, +2 and +J are retired (unrelated personal replacements
+are preserved). Alt/Cmd+D/S/E/R are the new personal toolkit.
+Cmd/Alt+X PvP trinket; Cmd/Alt+B Healthstone.
+0 Gift of the Wild; - Revive; = Teleport Moonglade; O Track Humanoids.
+P bandage; [ food; ] drink; backslash mount; L mana potion.
+Item slots are yours to populate and are preserved by setup. Setup and /fs items
+report actual contents: empty slots, wrong action types and items/macros to verify.
+Windows installs Alt shortcuts. Mac installs the same Alt shortcuts plus Command;
+old Command conflicts such as Cmd+C = potion are removed.
+Mage and Rogue tables in Guide.html are proposals only, not installed layouts.
