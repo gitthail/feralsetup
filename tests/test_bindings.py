@@ -1,4 +1,4 @@
-"""Simulated Lua 5.1 binding setup and macro condition checks for the fixed v3.9.1 packages."""
+"""Simulated Lua 5.1 binding setup and macro condition checks for the fixed v3.9.2 packages."""
 from pathlib import Path
 import itertools
 import sys
@@ -31,7 +31,7 @@ g=lua.globals();A=g.FeralSetup;layout=g.FeralSetupLayout
 assert layout.edition in ('Numbers','QE') and layout.bindingProfiles is None
 qe=layout.edition=='QE'
 for k,v in [('N','MULTIACTIONBAR2BUTTON12'),('`','MULTIACTIONBAR1BUTTON9'),('SECTION','MULTIACTIONBAR1BUTTON9'),('ALT-F','OLD'),('META-R','MULTIACTIONBAR1BUTTON9'),('ALT-R','MULTIACTIONBAR1BUTTON9'),('SHIFT-META-R','MULTIACTIONBAR1BUTTON9'),('SHIFT-Q','OLD'),('F12','UNRELATED'),('Z','ACTIONBUTTON9'),('SHIFT-R','MULTIACTIONBAR1BUTTON9')]:g.bindings[k]=v
-setup=g.findUp(g.findUp(g.SlashCmdList.FERALSETUP,'applySetup'),'setupBindings')
+setup=g.findUp(g.findUp(g.findUp(g.SlashCmdList.FERALSETUP,'applySetup'),'installBindings'),'setupBindings')
 assert setup()
 assert g.bindings['N'] is None and g.bindings['`'] is None and g.bindings['SECTION'] is None
 assert g.bindings['F12']=='UNRELATED'

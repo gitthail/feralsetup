@@ -160,6 +160,31 @@ g.PickupItem(123);g.SlashCmdList.FERALSETUP('bindings');assert bindings()==befor
 for failure in ['rejectKey','ignoreKey']:
  setattr(g,failure,'E');g.SlashCmdList.FERALSETUP('bindings');assert bindings()==before
  assert 'Previous bindings restored' in g.messages[len(g.messages)]
+# A form install must repair a missing/legacy resource key as well as fill slot 9.
+# Previously /fs form reported success and saved the page with both keys unbound.
+for form in [0,3,1]:
+ for old_action in [None,'MACRO Form Resource']:
+  for mod in mods:g.bindings[mod+'-R']=old_action
+  g.setForm(form);g.messages=lua.table();g.SlashCmdList.FERALSETUP('form')
+  for mod in mods:
+   assert g.bindings[mod+'-R']=='ACTIONBUTTON9'
+   assert action_name(form,mod+'-R')=='Form Resource'
+   assert g.FeralSetupCharDB.profiles['1'].saved.bindings[mod+'-R']=='ACTIONBUTTON9'
+  assert 'bindings applied and verified' in '\n'.join(g.messages.values())
+assert bindings()==before
+# Rejected/silently ignored bindings must not fill a page or replace its snapshot.
+for command in ['form','setup']:
+ for failure in ['rejectKey','ignoreKey']:
+  g.setForm(0);g.bindings['ALT-R']=None
+  original=bindings();writes=g.actionWrites
+  lua.execute("savedBeforeBindingFailure=FeralSetupCharDB.profiles['1'].saved")
+  setattr(g,failure,'ALT-R');g.messages=lua.table();g.SlashCmdList.FERALSETUP(command)
+  assert bindings()==original and g.actionWrites==writes
+  assert lua.eval("rawequal(savedBeforeBindingFailure,FeralSetupCharDB.profiles['1'].saved)")
+  messages='\n'.join(g.messages.values())
+  assert 'bindings failed' in messages and 'bindings applied and verified' not in messages
+  g.SlashCmdList.FERALSETUP('bindings')
+assert bindings()==before
 # Resource and normal FF now recover through visible action slots, without enumeration of direct macros.
 g.SlashCmdList.FERALSETUP('save');saved=g.FeralSetupCharDB.profiles['1'].saved
 assert saved.edition==layout.edition and saved.version==7 and len(saved.boundMacros)==0
@@ -182,6 +207,8 @@ g.refusedSetting=None
 i=g.FeralSetup.findMacro('Form Resource');g.installed[i].body='/say personal resource edit'
 writes=(g.actionWrites,g.macroWrites);g.SlashCmdList.FERALSETUP('bindings')
 assert (g.actionWrites,g.macroWrites)==writes and g.installed[i].body=='/say personal resource edit'
+g.SlashCmdList.FERALSETUP('form')
+assert g.macroWrites==writes[1] and g.installed[i].body=='/say personal resource edit'
 # Recover legacy direct bindings even though GetNumBindings omits them.
 g.bindings['ALT-R']='MACRO Form Resource';g.bindings['SHIFT-W']='MACRO Faerie Pull'
 g.FeralSetupCharDB.profiles['1'].before=None;g.setForm(0);g.SlashCmdList.FERALSETUP('setup')
@@ -193,4 +220,4 @@ g.bindings['ALT-1']='PERSONAL_UTILITY';g.bindings['ALT-J']='ACTIONBUTTON11'
 g.SlashCmdList.FERALSETUP('bindings')
 assert g.bindings['ALT-1']=='PERSONAL_UTILITY' and g.bindings['ALT-J'] is None
 assert len(g.invalidKeys)==0,list(g.invalidKeys.values())
-print('PASS: '+layout.edition+' on '+platform+': fixed pages, native modifier syntax/order, stale Cmd cleanup, visible macro recovery, legacy direct snapshots, item auditing, rollback and preserved personal slots.')
+print('PASS: '+layout.edition+' on '+platform+': form installs repair resource bindings; rejected bindings cannot change bars or snapshots; native modifier syntax/order, stale Cmd cleanup, visible macro recovery, legacy direct snapshots, item auditing and preserved personal slots.')

@@ -1,4 +1,4 @@
--- FeralSetup v3.9.1: setup, snapshots, restore. All changes require a slash command.
+-- FeralSetup v3.9.2: setup, snapshots, restore. All changes require a slash command.
 -- No automatic restoration on login, no combat handlers and no spell casting.
 local A=FeralSetup
 local unpack=unpack or table.unpack
@@ -234,6 +234,13 @@ local function restoreBindings(saved)
  end
  return saveBindings()
 end
+local function installBindings()
+ local before=bindingsSnapshot()
+ if setupBindings() then return true end
+ local ok,err=restoreBindings(before)
+ A.say(ok and 'Previous bindings restored; binding update cancelled.' or ('Binding rollback failed: '..tostring(err)..'. Use /fs restore.'))
+ return false
+end
 local function buttonSlot(b)
  if not b then return nil end
  if b.CalculateAction then local ok,n=pcall(b.CalculateAction,b);if ok and type(n)=='number' then return n end end
@@ -357,7 +364,7 @@ local function put(slot,d,book,bodies)
  return true
 end
 local function apiReady()
- for _,name in ipairs({'GetActionInfo','GetNumBindings','GetBinding','GetBindingKey','SetBinding','SaveBindings','GetCursorInfo','ClearCursor','PickupAction','PlaceAction','PickupMacro'}) do
+ for _,name in ipairs({'GetActionInfo','GetNumBindings','GetBinding','GetBindingKey','GetBindingAction','SetBinding','SaveBindings','GetCursorInfo','ClearCursor','PickupAction','PlaceAction','PickupMacro'}) do
   if not _G[name] then A.say('Missing client API: '..name..'. No layout changes made.');return false end
  end
  return true
@@ -394,7 +401,8 @@ local function applySetup()
  baseline()
  local bodies=A.macros(true);if not bodies then A.say('Macro preparation failed; see errors above. No bars/bindings changed.');return end
  local settingsOK=setupSettings()
- local success=setupBindings()
+ if not installBindings() then A.say('Setup stopped before changing action bars: bindings failed.');return end
+ local success=true
  if not settingsOK then success=false end
  for _,k in ipairs({'support','selfbar','utility'}) do
   if not fill(FeralSetupLayout.fixed[k],fixed[k],book,bodies) then success=false end
@@ -404,7 +412,7 @@ local function applySetup()
  reportItems()
  if success then
   savedSnapshot()
-  A.say('Installed v3.9.1 '..FeralSetupLayout.name..'. Faerie Fire: Shift+W or Z.')
+  A.say('Installed v3.9.2 '..FeralSetupLayout.name..'. Faerie Fire: Shift+W or Z.')
   A.say('Wheel UP into Cat, then /feralsetup form. Wheel DOWN into Bear, run it again.')
   A.say('Then /feralsetup save to save a recovery snapshot and reload.')
  else A.say('Some operations failed. Backup was preserved; see messages above. /feralsetup undo reverses layout changes.') end
@@ -414,9 +422,13 @@ local function applyForm()
  local kind,slots,err=currentMain();if not slots then A.say(err);return end
  baseline()
  local bodies=A.pageMacros(FeralSetupLayout.main[kind]);if not bodies then return end
+ -- A populated form page is not usable without its keys. Reapply and verify
+ -- this package's bindings before touching the page or saving a snapshot.
+ if not installBindings() then A.say('Form page unchanged: bindings failed.');return end
  if fill(FeralSetupLayout.main[kind],slots,book,bodies) then
   db().pages[kind]=copy(slots);savedSnapshot()
-  A.say(kind..' page filled using LIVE slots '..slots[1]..'-'..slots[12]..'.')
+  A.say(kind..' page filled using LIVE slots '..slots[1]..'-'..slots[12]..'; package bindings applied and verified.')
+  A.say('Resource: main button 9, Alt+R'..(windowsClient() and '.' or ' / Command+R.'))
   A.say('After setting up both Cat and Bear: /fs save.')
  end
 end
@@ -455,12 +467,7 @@ end
 local function applyBindings()
  if not A.guard() or not apiReady() then return end
  baseline()
- local before=bindingsSnapshot()
- if not setupBindings() then
-  local ok,err=restoreBindings(before)
-  A.say(ok and 'Previous bindings restored; binding update cancelled.' or ('Binding rollback failed: '..tostring(err)..'. Use /fs restore.'))
-  return
- end
+ if not installBindings() then return end
  A.say('Applied '..FeralSetupLayout.name..' bindings. Bars unchanged; use /fs setup and /fs form after changing package.')
 end
 local function saveAndReload()
@@ -472,7 +479,7 @@ local function saveAndReload()
 end
 local function status()
  local d=db();local form=currentForm() or 'unknown';local slots=getSlots('ActionButton','MainActionBar')
- A.say('v3.9.1. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
+ A.say('v3.9.2. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
  local pages={};for k,v in pairs(d.pages) do pages[#pages+1]=k..' '..v[1]..'-'..v[12] end
  A.say('Fixed package: '..FeralSetupLayout.name..'. Faerie Fire: Shift+W or Z; Shift+Z: focus.')
  local get=(C_CVar and C_CVar.GetCVar) or GetCVar
@@ -485,7 +492,7 @@ local function status()
  A.say('Saved layout: '..(d.saved and 'yes' or 'no')..'; pre-setup backup: '..(d.before and 'yes' or 'no')..'; talent group '..groupKey())
  local ac,ch=GetNumMacros()
  A.say('Macros: General '..ac..'/'..tostring(MAX_ACCOUNT_MACROS or 120)..'; Character '..ch..'/'..tostring(MAX_CHARACTER_MACROS or 18)..'. New macros use General.')
- A.say('setup/install/update replace same-name guide macros. form only places the current page.')
+ A.say('setup/install/update replace same-name guide macros. form places the current page and verifies package bindings.')
  A.say('Only explicit commands change the layout. Nothing is auto-restored on login.')
 end
 local function leftKey(k)
@@ -512,7 +519,7 @@ SlashCmdList.FERALSETUP=function(msg)
    baseline()
    if A.macros(true) then
     local settingsOK=setupTargetingSettings()
-    local bindingsOK=setupBindings()
+    local bindingsOK=installBindings()
     if settingsOK and bindingsOK then A.say('Explicit mouseover macros installed; heals need a friendly target or Cmd/Alt in form; native mouseover off; self/focus retained. No forced spell-form cancellation. Bars unchanged. /fs save after checking.') end
    end
   end
@@ -532,7 +539,7 @@ SlashCmdList.FERALSETUP=function(msg)
   A.say('/fs setup: full install, start humanoid. /fs form: fill each animal page once.')
   A.say('/fs targeting: install explicit mouseover macros/settings/bindings; keep bars.')
   A.say('/feralsetup bindings: apply keybindings only; leave bars unchanged.')
-  A.say('/feralsetup form: place current page only; keep existing macro bodies.')
+  A.say('/feralsetup form: place current page and verify bindings; keep macro bodies.')
   A.say('/feralsetup save: snapshot + reload. /feralsetup restore: recover saved layout.')
   A.say('/feralsetup undo: pre-setup layout. /feralsetup status: diagnostics. /fs items: actual item-slot contents.')
   A.say('/feralsetup guide: current route, quests and training. guide on|off: level-up reminders.')

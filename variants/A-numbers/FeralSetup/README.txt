@@ -1,8 +1,14 @@
-FERAL SETUP 3.9.1 — FIXED NUMBERS VERSION
+FERAL SETUP 3.9.2 — FIXED NUMBERS VERSION
 
 This package contains only the Numbers key map. No in-game layout switch.
 Replacing the addon files does not change saved bars or bindings by itself.
 Install only one FeralSetup folder at a time.
+
+RESOURCE KEY REPAIR IN 3.9.2
+After replacing the files, /reload, then /fs form in your current form.
+This now applies and verifies the package bindings, including Alt/Cmd+R for
+resource button 9, before filling the page. Binding failure leaves the page
+and saved snapshot unchanged. Existing macro bodies are reused.
 
 INSTALL OR UPGRADE (including from 3.9.0)
 Replace the FeralSetup folder and restart WoW. Out of combat:
@@ -48,7 +54,7 @@ Native attack spell ranks still need manual replacement after training.
 
 COMMANDS (both /fs and /feralsetup accepted)
 /fs setup              Install this version's human page, fixed bars and bindings.
-/fs form               Place current form page; reuse existing macro bodies.
+/fs form               Apply/verify package bindings and place current form page; reuse macros.
 /fs targeting          Refresh macros, targeting settings and fixed bindings.
 /fs bindings           Reapply this version's bindings; leave bars unchanged.
 /fs update | install   Replace same-name macros, detect learned forms/openers.

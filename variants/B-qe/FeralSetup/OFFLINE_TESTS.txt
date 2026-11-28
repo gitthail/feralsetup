@@ -1,7 +1,11 @@
-v3.9.1 — Windows/Mac fixes and visible resource/Faerie Fire buttons
+v3.9.2 — form installation applies and verifies resource bindings
 
 Lua 5.1 simulations cover both independent Numbers and QE packages:
 - Full setup, three form pages, ordinary binding reapply and snapshot restore.
+- /fs form repairs missing and legacy direct resource keys in every form.
+  The regression fails on the previously published 3.9.1 code.
+- Rejected or silently ignored bindings stop setup/form before bar changes
+  or saved-snapshot replacement. Existing macro edits survive form placement.
 - Native binding API rejects CMD- strings; Mac accepts canonical META chords;
   Windows receives no META binding writes, including Mac-snapshot recovery.
 - Exact stale Mac cases: Cmd+C potion, Cmd+R old regeneration and old Cmd+1/2.

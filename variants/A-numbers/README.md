@@ -1,4 +1,4 @@
-# A — Numbers · v3.9.1
+# A — Numbers · v3.9.2
 
 Attacks on **1–4**, controls on **Q/E**. This is the currently installed layout.
 
@@ -17,7 +17,9 @@ Shift+Q/E focus eligible controls. Shift+W or Z is Faerie Fire; Shift+Z targets 
 
 Extract the ZIP and move its **FeralSetup** folder into `Interface/AddOns`. Alternatively, copy this directory's complete **FeralSetup** folder. Install only one variant at a time, replacing the previous FeralSetup folder when changing variants.
 
-Restart WoW, then out of combat:
+**Resource key repair:** after replacing files, `/reload`, then `/fs form` in your current form. Form setup now applies and verifies the package bindings before placing the page.
+
+For a full install, restart WoW, then out of combat:
 
 1. Human form, main action page 1: `/fs setup`.
 2. Enter Cat: `/fs form`.

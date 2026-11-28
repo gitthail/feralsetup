@@ -1,4 +1,4 @@
-FERALSETUP 3.9.1 — FIXED QE VERSION, MAC + WINDOWS
+FERALSETUP 3.9.2 — FIXED QE VERSION, MAC + WINDOWS
 
 This package contains one key map. There is no /fs a or /fs b switch.
 After replacing package files, restart WoW. In human form on page 1: /fs setup.

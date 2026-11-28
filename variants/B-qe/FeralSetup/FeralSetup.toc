@@ -1,7 +1,7 @@
 ## Interface: 16001
 ## Title: Feral Setup - QE
 ## Notes: Explicit macro, binding and action-bar setup, with local snapshot recovery.
-## Version: 3.9.1
+## Version: 3.9.2
 ## SavedVariables: FeralSetupDB
 ## SavedVariablesPerCharacter: FeralSetupCharDB
 Data.lua

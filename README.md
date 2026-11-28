@@ -11,7 +11,11 @@ Choose one package below. Each ZIP extracts to a single **FeralSetup** folder re
 
 Install only **one** variant at a time; both use the addon folder name **FeralSetup**. To change variants, replace that folder with the other package and follow the setup steps below. The GitHub source archive contains both variants and the project files; use the individual ZIP links above for installation.
 
-## Version 3.9.1
+## Version 3.9.2
+
+Fixed a setup bug: `/fs form` could fill resource button 9 and report success while its keys stayed unbound. It now applies and verifies the package bindings before placing the page. A binding failure leaves the page and saved snapshot unchanged.
+
+For this repair, replace the files, run `/reload`, then `/fs form` in your current form. Resource remains **Alt+R** on Windows and **Alt/Command+R** on Mac.
 
 Both fixed variants are published in their own folders. The root `FeralSetup/` source and the existing release's default ZIP remain **A — Numbers**: attacks on 1–4, controls on Q/E. Runtime A/B switching and saved layout selection have been removed. Each package installs its own single key map.
 
