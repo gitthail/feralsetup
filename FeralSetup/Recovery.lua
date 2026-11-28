@@ -1,4 +1,4 @@
--- FeralSetup v3.7.0: setup, snapshots, restore. All changes require a slash command.
+-- FeralSetup v3.8.0: setup, snapshots, restore. All changes require a slash command.
 -- No automatic restoration on login, no combat handlers and no spell casting.
 local A=FeralSetup
 local unpack=unpack or table.unpack
@@ -69,10 +69,23 @@ local function settingsSnapshot()
  return s
 end
 local function snapshot()
- local s={version=4,layout=db().layout or 'B',actions={},bindings=bindingsSnapshot(),settings=settingsSnapshot(),time=(time and time()) or 0,pages=copy(db().pages)}
+ local s={version=5,boundMacros={},layout=db().layout or 'B',actions={},bindings=bindingsSnapshot(),settings=settingsSnapshot(),time=(time and time()) or 0,pages=copy(db().pages)}
  local slots={};for i=1,120 do slots[i]=true end
  for _,page in pairs(db().pages) do for _,slot in ipairs(page) do slots[slot]=true end end
  for slot in pairs(slots) do s.actions[slot]=actionSnapshot(slot) end
+ -- Name-bound macros have no action slot, but must survive snapshot recovery.
+ local seen={}
+ for _,cmd in pairs(s.bindings) do
+  local name=cmd:match('^MACRO (.+)$')
+  if name and not seen[name] then
+   seen[name]=true
+   local i=tonumber(name) or A.findMacro(name)
+   if i then
+    local n,icon,body=GetMacroInfo(i)
+    if n then s.boundMacros[#s.boundMacros+1]={kind='macro',name=n,icon=icon,body=body,scope=i>(MAX_ACCOUNT_MACROS or 120) and 'character' or 'general'} end
+   end
+  end
+ end
  return s
 end
 local function baseline()
@@ -153,6 +166,10 @@ local function setupBindings(profile)
   if not callBool(SetBinding,k,c) then errors[#errors+1]=k end
  end
  local reserved={}
+ -- Clear the union so keys absent from the destination profile cannot linger.
+ for _,keys in pairs(FeralSetupLayout.bindingProfiles) do
+  for key in pairs(keys) do reserved[key]=true end
+ end
  -- Let the macro receive these modifiers instead of another existing action.
  for _,k in ipairs({'F','G','5','C','V','Y','8','9'}) do
   for _,mod in ipairs({'CMD-','ALT-','SHIFT-'}) do reserved[mod..k]=true end
@@ -161,7 +178,9 @@ local function setupBindings(profile)
   reserved['SHIFT-'..k]=true
  end
  -- Retire old addon keys; leave a user's unrelated replacement bindings alone.
- local retired={['Z']='ACTIONBUTTON9',['SHIFT-R']='MULTIACTIONBAR1BUTTON9',['CTRL-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['CMD-R']='MULTIACTIONBAR1BUTTON9',['ALT-R']='MULTIACTIONBAR1BUTTON9',
+ local retired={['ALT-1']='MULTIACTIONBAR2BUTTON1',['CMD-1']='MULTIACTIONBAR2BUTTON1',
+  ['ALT-2']='MULTIACTIONBAR2BUTTON2',['CMD-2']='MULTIACTIONBAR2BUTTON2',
+  ['ALT-J']='ACTIONBUTTON11',['CMD-J']='ACTIONBUTTON11',['Z']='ACTIONBUTTON9',['SHIFT-R']='MULTIACTIONBAR1BUTTON9',['CTRL-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['CMD-R']='MULTIACTIONBAR1BUTTON9',['ALT-R']='MULTIACTIONBAR1BUTTON9',
   ['CMD-CTRL-R']='MULTIACTIONBAR1BUTTON9',['ALT-CTRL-R']='MULTIACTIONBAR1BUTTON9',
   ['CMD-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['ALT-SHIFT-R']='MULTIACTIONBAR1BUTTON9',['N']='MULTIACTIONBAR2BUTTON12',['CMD-N']='MULTIACTIONBAR2BUTTON12',
   ['`']='MULTIACTIONBAR1BUTTON9',['CTRL-`']='MULTIACTIONBAR1BUTTON9',['SHIFT-`']='MULTIACTIONBAR1BUTTON9'}
@@ -335,7 +354,7 @@ local function applySetup(profile)
  db().pages.human=copy(main)
  if success then
   savedSnapshot()
-  A.say('Installed v3.7.0 layout '..profile..': '..FeralSetupLayout.profileNames[profile]..'. Faerie Fire: Z in both layouts.')
+  A.say('Installed v3.8.0 layout '..profile..': '..FeralSetupLayout.profileNames[profile]..'. Faerie Fire: Shift+W or Z in both layouts.')
   A.say('Wheel UP into Cat, then /feralsetup form. Wheel DOWN into Bear, run it again.')
   A.say('Then /feralsetup save to save a recovery snapshot and reload.')
  else A.say('Some operations failed. Backup was preserved; see messages above. /feralsetup undo reverses layout changes.') end
@@ -355,12 +374,14 @@ local function restore(s,label)
  local book=preflight();if not book then return end
  if not s then A.say('No '..label..' snapshot on this character/talent group yet. Use /feralsetup setup.');return end
  local need={};local problems={}
- for _,d in pairs(s.actions) do
+ local function needMacro(d)
   if d.kind=='macro' then
    if not d.name or not d.body then problems[#problems+1]='Unreadable saved macro'
    else need[(d.scope or 'any')..'\001'..d.name..'\001'..d.body]=d end
   end
  end
+ for _,d in pairs(s.actions) do needMacro(d) end
+ for _,d in ipairs(s.boundMacros or {}) do needMacro(d) end
  for _,m in pairs(need) do
   local _,err=A.ensureOne(m.name,m.body,m.icon,true,m.scope)
   if err then problems[#problems+1]=err end
@@ -385,13 +406,15 @@ local function switchProfile(profile)
  if not A.guard() or not apiReady() then return end
  profile=selectedProfile(profile);if not profile then return end
  baseline()
+ -- Prepare only missing direct-bind macros; ordinary A/B switches do not edit them.
+ if not A.pageMacros(FeralSetupLayout.boundMacros) then return end
  local before=bindingsSnapshot();local previous=db().layout
  if not setupBindings(profile) then
   local ok,err=restoreBindings(before);db().layout=previous
   A.say(ok and 'Previous bindings restored; layout switch cancelled.' or ('Binding rollback failed: '..tostring(err)..'. Use /fs restore.'))
   return
  end
- A.say('Layout '..profile..': '..FeralSetupLayout.profileNames[profile]..'. Faerie Fire stays on Z. Bars and macros unchanged.')
+ A.say('Layout '..profile..': '..FeralSetupLayout.profileNames[profile]..'. Faerie Fire: Shift+W or Z. Bars unchanged; existing macros preserved.')
 end
 local function saveAndReload()
  if not A.guard() or not apiReady() then return end
@@ -402,9 +425,9 @@ local function saveAndReload()
 end
 local function status()
  local d=db();local form=currentForm() or 'unknown';local slots=getSlots('ActionButton','MainActionBar')
- A.say('v3.7.0. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
+ A.say('v3.8.0. Form: '..form..'; current main slots: '..(slots and (slots[1]..'-'..slots[12]) or 'unreadable'))
  local pages={};for k,v in pairs(d.pages) do pages[#pages+1]=k..' '..v[1]..'-'..v[12] end
- A.say('Layout '..(d.layout or 'B')..'. /fs a = numbers; /fs b = Q/E. Faerie Fire: Z; Shift+Z: focus.')
+ A.say('Layout '..(d.layout or 'B')..'. /fs a = numbers; /fs b = Q/E. Faerie Fire: Shift+W or Z; Shift+Z: focus.')
  local get=(C_CVar and C_CVar.GetCVar) or GetCVar
  if get then
   for _,key in ipairs({'enableMouseoverCast','autoUnshift'}) do local ok,v=pcall(get,key);A.say(key..'='..tostring(ok and v or 'unavailable')) end
@@ -443,7 +466,7 @@ SlashCmdList.FERALSETUP=function(msg)
    if A.macros(true) then
     local settingsOK=setupTargetingSettings()
     local bindingsOK=setupBindings()
-    if settingsOK and bindingsOK then A.say('Explicit mouseover macros installed; native mouseover off; self/focus retained. No forced spell-form cancellation. Bars unchanged. /fs save after checking.') end
+    if settingsOK and bindingsOK then A.say('Explicit mouseover macros installed; heals need a friendly target or Cmd/Alt in form; native mouseover off; self/focus retained. No forced spell-form cancellation. Bars unchanged. /fs save after checking.') end
    end
   end
  elseif cmd=='bindings' then
@@ -457,7 +480,7 @@ SlashCmdList.FERALSETUP=function(msg)
  elseif cmd=='install' or cmd=='update' then
   if A.guard() and A.macros(true) then A.say('Guide macros installed/replaced. /feralsetup setup also places bars and bindings.') end
  else
-  A.say('/fs a | /fs b: switch numbers / Q/E, bindings only. Z = Faerie Fire in both.')
+  A.say('/fs a | /fs b: switch numbers / Q/E, bindings only. Shift+W / Z = Faerie Fire in both.')
   A.say('/fs setup [a|b]: full install, start humanoid. /fs form: fill each animal page once.')
   A.say('/fs targeting: install explicit mouseover macros/settings/bindings; keep bars.')
   A.say('/feralsetup bindings: apply keybindings only; leave bars unchanged.')

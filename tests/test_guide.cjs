@@ -12,9 +12,9 @@ Object.assign(nodes.cat,{value:'3'});Object.assign(nodes.bear,{value:'1'});Objec
 let archive;
 const sandbox={TextEncoder,Uint8Array,Uint32Array,Blob,setTimeout(){},URL:{createObjectURL(blob){archive=blob;return 'blob:test'},revokeObjectURL(){}},document:{documentElement:{outerHTML:html.replace(/^<!doctype html>\s*/i,'')},getElementById(id){assert(nodes[id],id);return nodes[id]},createElement(){return {click(){}}}},navigator:{}};
 vm.createContext(sandbox);vm.runInContext(script[0],sandbox);
-assert(nodes['macro-status'].textContent.includes('32 macros'));
+assert(nodes['macro-status'].textContent.includes('34 macros'));
 nodes.search.value='Faerie Fire';vm.runInContext('renderMacros()',sandbox);
-const visible=Object.keys(nodes).filter(k=>/^macro-\d+$/.test(k)&&!nodes[k].hidden);assert.equal(visible.length,1);
+const visible=Object.keys(nodes).filter(k=>/^macro-\d+$/.test(k)&&!nodes[k].hidden);assert.equal(visible.length,2);
 assert(nodes[visible[0]].querySelector('pre').textContent.includes('@mouseover,harm,nodead'));
 assert(nodes[visible[0]].querySelector('pre').textContent.includes('Faerie Fire'));
 nodes.cat.value='2';nodes.search.value='Prowl';vm.runInContext('renderMacros()',sandbox);

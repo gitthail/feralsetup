@@ -84,7 +84,7 @@ lua.execute("actions[54]={kind='item',id=12345}")
 g.SlashCmdList.FERALSETUP('setup b')
 assert g.cvars.enableMouseoverCast=='0' and g.cvars.autoUnshift=='1'
 assert g.actions[54].id==12345
-assert len(g.installed)==32
+assert len(g.installed)==34
 for form in [3,1]:g.setForm(form);g.SlashCmdList.FERALSETUP('form')
 assert g.FeralSetupCharDB.profiles['1'].layout=='B'
 assert g.FeralSetupCharDB.profiles['1'].pages.cat[1]==73
@@ -94,6 +94,8 @@ start_writes=(g.actionWrites,g.macroWrites)
 def bindings():return dict(g.bindings.items())
 def action_name(form,key):
  cmd=g.bindings[key]
+ if cmd.startswith('MACRO '):
+  name=cmd[6:];assert g.FeralSetup.findMacro(name) is not None;return name
  if cmd.startswith('ACTIONBUTTON'):base={0:0,3:72,1:84}[form];slot=base+int(cmd[12:])
  else:
   assert cmd.startswith('MULTIACTIONBAR1BUTTON'),cmd
@@ -115,11 +117,19 @@ for form in [0,3,1]:
    expected={3:['Claw','Ferocious Bite','Rake','Rip'],1:['Maul','Primal Bite','Swipe','Lacerate'],0:['Roots','Wrath','Moonfire','Starfire']}[form]
    assert [action_name(form,k) for k in ['1','2','3','4']]==expected
   else:
-   assert g.bindings['SHIFT-Q']=='ACTIONBUTTON3' and g.bindings['SHIFT-E']=='ACTIONBUTTON4'
-   expected={3:['Claw','Rake','Ferocious Bite','Rip'],1:['Maul','Swipe','Primal Bite','Lacerate'],0:['Roots','Moonfire','Wrath','Starfire']}[form]
+   assert g.bindings['SHIFT-Q']=='ACTIONBUTTON2' and g.bindings['SHIFT-E']=='ACTIONBUTTON4'
+   expected={3:['Claw','Ferocious Bite','Rake','Rip'],1:['Maul','Primal Bite','Swipe','Lacerate'],0:['Roots','Wrath','Moonfire','Starfire']}[form]
    assert [action_name(form,k) for k in ['Q','E','SHIFT-Q','SHIFT-E']]==expected
   assert g.bindings['F12']=='PERSONAL'
-  assert g.bindings['SHIFT-3']=='ACTIONBUTTON9'
+  assert g.bindings['SHIFT-3'] is None
+  assert action_name(form,'SHIFT-W')=='Faerie Pull'
+  for mod in ['ALT','CMD']:
+   assert action_name(form,mod+'-R')=='Form Resource'
+   assert g.bindings[mod+'-D']=='MULTIACTIONBAR2BUTTON1'
+   assert g.bindings[mod+'-E']=='MULTIACTIONBAR2BUTTON2'
+   assert g.bindings[mod+'-S']=='ACTIONBUTTON11'
+   assert g.bindings[mod+'-1'] is None and g.bindings[mod+'-2'] is None and g.bindings[mod+'-J'] is None
+  if profile=='b':assert g.bindings['3'] is None
   assert g.bindings['ALT-Q']=='ACTIONBUTTON7'
 # Switching in combat / with an occupied cursor has zero side effects.
 before=bindings();g.combat=True;g.SlashCmdList.FERALSETUP('a');assert bindings()==before
@@ -132,7 +142,14 @@ assert g.FeralSetupCharDB.profiles['1'].layout=='B'
 assert 'Previous bindings restored' in g.messages[len(g.messages)]
 # Saves/restores retain selected profile metadata as well as keys.
 g.SlashCmdList.FERALSETUP('a');g.SlashCmdList.FERALSETUP('save')
-g.SlashCmdList.FERALSETUP('b');g.SlashCmdList.FERALSETUP('restore')
+g.SlashCmdList.FERALSETUP('b')
+# Direct-bound macros are saved even though they never occupy an action slot.
+saved=g.FeralSetupCharDB.profiles['1'].saved
+assert {m.name for m in saved.boundMacros.values()}=={'Faerie Pull','Form Resource'}
+lua.execute("table.remove(installed,FeralSetup.findMacro('Faerie Pull'));table.remove(installed,FeralSetup.findMacro('Form Resource'))")
+g.SlashCmdList.FERALSETUP('restore')
+assert action_name(1,'SHIFT-W')=='Faerie Pull'
+assert action_name(1,'ALT-R')=='Form Resource'
 assert g.FeralSetupCharDB.profiles['1'].layout=='A' and g.bindings['Q']=='ACTIONBUTTON7'
 # Refused settings cannot produce the former false success message.
 g.refusedSetting='enableMouseoverCast';g.cvars.enableMouseoverCast='1';g.messages=lua.table()
@@ -144,3 +161,20 @@ g.refusedSetting=None;g.windows=True
 g.SlashCmdList.FERALSETUP('b');assert g.bindings['ALT-MOUSEWHEELDOWN']=='MULTIACTIONBAR2BUTTON9'
 assert g.FeralSetupCharDB.profiles['1'].layout=='B'
 print('PASS: actual setup/form/profile commands, both key maps in all forms, stable bars/macros/items, focus-key cleanup, combat/cursor guards, rollback, restore metadata, setting refusal and Windows aliases.')
+
+# Upgrade-only switch prepares missing direct-bound macros without touching bars
+# or overwriting a personal edit to an existing macro.
+g.windows=False
+lua.execute("table.remove(installed,FeralSetup.findMacro('Faerie Pull'))")
+i=g.FeralSetup.findMacro('Form Resource');g.installed[i].body='/say personal resource edit'
+writes=g.actionWrites
+g.SlashCmdList.FERALSETUP('a')
+assert g.actionWrites==writes and action_name(1,'SHIFT-W')=='Faerie Pull'
+i=g.FeralSetup.findMacro('Form Resource');assert g.installed[i].body=='/say personal resource edit'
+# Old Alt number/J bindings migrate, but unrelated replacements are retained.
+g.bindings['ALT-1']='MULTIACTIONBAR2BUTTON1';g.bindings['CMD-2']='MULTIACTIONBAR2BUTTON2'
+g.bindings['ALT-J']='ACTIONBUTTON11';g.bindings['ALT-2']='PERSONAL_UTILITY'
+g.SlashCmdList.FERALSETUP('b')
+assert g.bindings['ALT-1'] is None and g.bindings['CMD-2'] is None and g.bindings['ALT-J'] is None
+assert g.bindings['ALT-2']=='PERSONAL_UTILITY'
+print('PASS: direct macro snapshot restoration, upgrade preparation, stale personal-key migration and preserved user edits.')

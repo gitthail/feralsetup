@@ -1,3 +1,18 @@
+v3.8.0 — personal toolkit / protected heals / direct-bleed layouts
+- Simulated Lua 5.1 checks cover both layouts in every form, Windows Alt parity,
+  retirement of old personal shortcuts, stale-key cleanup and binding rollback.
+- Protected Rejuvenation/Regrowth/Healing Touch request no cast in any animal
+  form without a living friendly recipient; deliberate self and ally heals work.
+  Human self fallback remains. Cures/buffs retain their previous fallback.
+- Shift+W uses normal hostile hover/target even with a different/invalid focus;
+  Shift+Z retains focus routing. Name-bound resource macro selects the current
+  form's resource spell, self-Innervate in human, nothing in Travel/Aquatic.
+- Snapshot/recovery includes macros bound directly by name, even without a bar
+  slot. Upgrade switching creates only missing direct macros and preserves edits.
+- Guide scripts, download ZIP and Lua macro-size/learning/levelling regressions.
+- No live-client test: casting, failed-cast autoUnshift, movement-modifier behaviour
+  and OS shortcut interception still require checking in game.
+
 v3.7.0 — explicit mouseover / A-B layouts
 - Lua 5.1 simulated-API tests exercise the actual setup, form and switch commands.
 - A/B mappings checked in human/Cat/Bear without any action or macro writes on switch.

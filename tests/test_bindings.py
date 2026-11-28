@@ -1,4 +1,4 @@
-"""Simulated Lua 5.1 binding setup and macro condition checks for v3.5."""
+"""Simulated Lua 5.1 binding setup and macro condition checks for v3.8."""
 from pathlib import Path
 import itertools
 import re
@@ -31,16 +31,18 @@ setup=g.findUp(g.findUp(g.SlashCmdList.FERALSETUP,'applySetup'),'setupBindings')
 assert setup()
 assert g.bindings['N'] is None and g.bindings['`'] is None and g.bindings['SECTION'] is None
 assert g.bindings['F12']=='UNRELATED'
-assert g.bindings['ALT-F'] is None and g.bindings['SHIFT-Q']=='ACTIONBUTTON3'
+assert g.bindings['ALT-F'] is None and g.bindings['SHIFT-Q']=='ACTIONBUTTON2'
 for k,v in layout.bindings.items():
  assert g.bindings[k]==v,(k,v)
  if k.startswith('CMD-'): assert g.bindings['ALT-'+k[4:]]==v,k
-assert g.bindings['CMD-R'] is None and g.bindings['ALT-R'] is None and g.bindings['CMD-SHIFT-R'] is None
+assert g.bindings['CMD-R']=='MACRO Form Resource' and g.bindings['ALT-R']=='MACRO Form Resource' and g.bindings['CMD-SHIFT-R'] is None
 assert g.bindings['Z']=='MULTIACTIONBAR1BUTTON9'
 assert g.bindings['SHIFT-R'] is None
 assert g.bindings['4']=='MULTIACTIONBAR1BUTTON9'
 assert g.bindings['CTRL-SHIFT-R'] is None
-assert g.bindings['CMD-J']=='ACTIONBUTTON11'
+assert g.bindings['CMD-S']=='ACTIONBUTTON11'
+assert g.bindings['CMD-J'] is None
+assert g.bindings['SHIFT-W']=='MACRO Faerie Pull'
 assert g.bindings['SHIFT-SPACE']=='MULTIACTIONBAR2BUTTON12'
 assert g.bindings['ALT-Q']=='ACTIONBUTTON7'
 # Re-running migration must not remove an unrelated user assignment.
@@ -147,6 +149,7 @@ assert run('Faerie Fire',mods=['shift'])[0]==[('Faerie Fire','focus')]
 assert run('Faerie Fire',mods=['ctrl','shift'])[0]==[('Faerie Fire','focus')]
 assert run('Set Focus',mods=['shift'])[0]==[('/focus','mouseover')]
 # Both self modifiers must work identically, including with Shift/Ctrl held.
+heals={'Rejuvenation','Regrowth','Healing Touch'}
 friendly=['Rejuvenation','Regrowth','Healing Touch','Remove Curse','Poison Cleanse','Innervate','Thorns','Mark of the Wild']
 for name in friendly:
  for mod in ['cmd','alt']:
@@ -154,7 +157,7 @@ for name in friendly:
    out,_=run(name,mods=(mod,)+extra)
    assert out[-1][1]=='player',(name,mod,extra,out)
  # Explicit friendly target, then player fallback when no friendly unit exists.
- assert run(name,mods=['ctrl'])[0][-1]==(name if name!='Poison Cleanse' else 'Cure Poison','player')
+ assert run(name,mods=['ctrl'])[0]==([] if name in heals else [(name if name!='Poison Cleanse' else 'Cure Poison','player')])
  assert '@mouseover' in macros[name]
  assert run(name,mods=['shift'])[0]==[]
 assert [layout.main.cat[i].name for i in range(1,5)]==['Claw','Rake','Ferocious Bite','Rip']
@@ -180,11 +183,11 @@ function EditMacro(i,name,icon,body) installed[i]={name=name,body=body};return i
 function CreateMacro(name,icon,body) installed[#installed+1]={name=name,body=body};return #installed end
 """)
 assert A.macros(True) is not None
-assert len(g.installed)==33  # 32 guide macros + one unrelated macro.
+assert len(g.installed)==35  # 34 guide macros + one unrelated macro.
 assert g.installed[1].body==macros['Prowl']
 assert g.installed[2].body=='/say untouched'
 assert len(g.FeralSetupCharDB.macroReplacements)==1
-assert A.macros(True) is not None and len(g.installed)==33
+assert A.macros(True) is not None and len(g.installed)==35
 print('PASS: binding migration/aliases, macro limits, stealth selection/toggle, focus, self/mouseover routing, single-press forms, Q/E no-autoshift, real macro updater and idempotence.')
 
 # Targeting migration uses explicit macros; native mouseover is disabled.
@@ -207,9 +210,9 @@ print('PASS: native mouseover disabled, explicit self/focus routing, and freed C
 
 # Actual keys resolve to the expected v2 page slots, across all forms.
 expected={
- 'cat':{'Q':'Claw','E':'Rake','SHIFT-Q':'Ferocious Bite','SHIFT-E':'Rip','1':'Cat Q','2':'Cat Charge','3':'Shifting Power','R':'Cat Rear'},
- 'bear':{'Q':'Maul','E':'Swipe','SHIFT-Q':'Primal Bite','SHIFT-E':'Lacerate','1':'Bash','2':'Bear Charge','3':'Enrage','R':'Demoralizing Roar'},
- 'human':{'Q':'Roots','E':'Moonfire','SHIFT-Q':'Wrath','SHIFT-E':'Starfire','1':'Roots','2':'Hibernate','3':'Hurricane'}}
+ 'cat':{'Q':'Claw','SHIFT-Q':'Rake','E':'Ferocious Bite','SHIFT-E':'Rip','1':'Cat Q','2':'Cat Charge','R':'Cat Rear'},
+ 'bear':{'Q':'Maul','SHIFT-Q':'Swipe','E':'Primal Bite','SHIFT-E':'Lacerate','1':'Bash','2':'Bear Charge','R':'Demoralizing Roar'},
+ 'human':{'Q':'Roots','SHIFT-Q':'Moonfire','E':'Wrath','SHIFT-E':'Starfire','1':'Roots','2':'Hibernate'}}
 for form,keys in expected.items():
  for key,name in keys.items():
   slot=int(layout.bindings[key].replace('ACTIONBUTTON',''))
@@ -217,7 +220,9 @@ for form,keys in expected.items():
 for key in ['SHIFT-1','SHIFT-2','SHIFT-T','SHIFT-X','SHIFT-6']:
  assert g.bindings[key] is not None,key
 assert layout.bindings['ALT-Q']=='ACTIONBUTTON7'
-assert layout.bindings['ALT-1']=='MULTIACTIONBAR2BUTTON1'
+assert layout.bindings['ALT-D']=='MULTIACTIONBAR2BUTTON1'
+assert layout.bindings['ALT-E']=='MULTIACTIONBAR2BUTTON2'
+assert layout.bindings['3'] is None and layout.bindings['SHIFT-3'] is None
 print('PASS: v2 key-to-page mapping and control modifier routing.')
 
 # Mouseover selection is explicit: live ally/enemy, dead, wrong faction, focus override.
@@ -228,7 +233,7 @@ for name in friendly:
   units={'mouseover':hover,'target':ally,'player':ally,'focus':enemy}
   assert run(name,units=units)[0]==[(spell,want)],(name,hover)
   assert run(name,mods=['alt'],units=units)[0]==[(spell,'player')]
- assert run(name,units={'target':enemy,'mouseover':enemy,'player':ally})[0]==[(spell,'player')]
+ assert run(name,units={'target':enemy,'mouseover':enemy,'player':ally})[0]==([] if name in heals else [(spell,'player')])
 for name in ['Bash','Cat Charge','Bear Charge','Growl','Roots','Hibernate','Pounce','Faerie Fire','Moonfire']:
  spell={'Roots':'Entangling Roots','Cat Charge':'Feral Charge (Cat)','Bear Charge':'Feral Charge'}.get(name,name)
  for hover,want in [(enemy,'mouseover'),(ally,'target'),({'exists':True,'harm':True,'dead':True},'target'),({},'target')]:
@@ -289,3 +294,32 @@ C_SpellBook={
 """)
 cfg,_=A.config();assert not cfg.hasRavage and cfg.hasPounce
 print('PASS: modern spellbook future-spell entries cannot enable an unlearned opener.')
+
+# A stray heal key against an enemy/empty/dead target must not request a cast
+# in any animal form, even with autoSelfCast enabled by the addon.
+for name in heals:
+ for form in [0,1,2,3,4]:
+  for hover,target in itertools.product([{},enemy,dict(ally,dead=True)],repeat=2):
+   units={'mouseover':hover,'target':target,'player':ally}
+   for mods in [(),('ctrl',)]:
+    out,state=run(name,form=form,units=units,mods=mods)
+    assert out==([(name,'player')] if form==0 else []),(name,form,mods,out)
+    assert state['form']==form
+   for mod in ['alt','cmd']:
+    assert run(name,form=form,units=units,mods=[mod])[0]==[(name,'player')]
+  assert run(name,form=form,units={'mouseover':ally,'target':enemy})[0]==[(name,'mouseover')]
+  assert run(name,form=form,units={'target':ally})[0]==[(name,'target')]
+# Shift+W must never follow Shift+Z's focus branch (including missing focus).
+for form in [0,1,2,3,4]:
+ for focus in [enemy,{}]:
+  for hover,want in [(enemy,'mouseover'),(ally,'target'),({},'target')]:
+   units={'mouseover':hover,'target':enemy,'focus':focus}
+   assert run('Faerie Pull',form=form,mods=['shift'],units=units)[0]==[('Faerie Fire',want)]
+  assert run('Faerie Pull',form=form,mods=['shift'],units={'target':ally,'focus':focus})[0]==[]
+ assert run('Faerie Pull',form=form,mods=['shift','alt'])[0]==[]
+for mod in ['alt','cmd']:
+ for form,want in [(0,[('Innervate','player')]),(1,[('Enrage','target')]),(3,[('Shifting Power','target')]),(2,[]),(4,[])]:
+  out,state=run('Form Resource',form=form,mods=[mod])
+  assert out==want and state['form']==form,(form,mod,out)
+assert 'Form' not in macros['Form Resource'].replace('Shifting Power','')
+print('PASS: accidental-heal guards in every form, deliberate ally/self healing, Shift+W normal targeting, and form-specific personal resources.')

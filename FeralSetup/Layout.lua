@@ -298,8 +298,8 @@ FeralSetupLayout={
     }
   },
   ["bindings"]={
-    ["ALT-J"]="ACTIONBUTTON11",
-    ["ALT-2"]="MULTIACTIONBAR2BUTTON2",
+    ["ALT-S"]="ACTIONBUTTON11",
+    ["ALT-E"]="MULTIACTIONBAR2BUTTON2",
     ["CMD-X"]="MULTIACTIONBAR2BUTTON5",
     ["SHIFT-D"]="FERALSETUP_DAMAGE_METER",
     ["ALT-4"]="MULTIACTIONBAR2BUTTON4",
@@ -308,9 +308,9 @@ FeralSetupLayout={
     ["CMD-MOUSEWHEELUP"]="MULTIACTIONBAR2BUTTON8",
     ["CMD-MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
     ["CMD-SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
-    ["CMD-J"]="ACTIONBUTTON11",
+    ["CMD-S"]="ACTIONBUTTON11",
     ["CMD-4"]="MULTIACTIONBAR2BUTTON4",
-    ["ALT-1"]="MULTIACTIONBAR2BUTTON1",
+    ["ALT-D"]="MULTIACTIONBAR2BUTTON1",
     ["SPACE"]="JUMP",
     ["ALT-Q"]="ACTIONBUTTON7",
     ["ALT-SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
@@ -322,7 +322,6 @@ FeralSetupLayout={
     ["ALT-X"]="MULTIACTIONBAR2BUTTON5",
     ["1"]="ACTIONBUTTON7",
     ["0"]="MULTIACTIONBAR3BUTTON3",
-    ["3"]="ACTIONBUTTON9",
     ["2"]="ACTIONBUTTON8",
     ["5"]="MULTIACTIONBAR1BUTTON3",
     ["4"]="MULTIACTIONBAR1BUTTON9",
@@ -330,8 +329,8 @@ FeralSetupLayout={
     ["6"]="ACTIONBUTTON6",
     ["9"]="MULTIACTIONBAR3BUTTON2",
     ["8"]="MULTIACTIONBAR3BUTTON1",
-    ["CMD-1"]="MULTIACTIONBAR2BUTTON1",
-    ["CMD-2"]="MULTIACTIONBAR2BUTTON2",
+    ["CMD-D"]="MULTIACTIONBAR2BUTTON1",
+    ["CMD-E"]="MULTIACTIONBAR2BUTTON2",
     ["="]="MULTIACTIONBAR3BUTTON5",
     ["\\"]="MULTIACTIONBAR3BUTTON10",
     ["MOUSEWHEELDOWN"]="MULTIACTIONBAR2BUTTON9",
@@ -340,7 +339,7 @@ FeralSetupLayout={
     ["SHIFT-SPACE"]="MULTIACTIONBAR2BUTTON12",
     ["C"]="MULTIACTIONBAR1BUTTON4",
     ["B"]="ACTIONBUTTON10",
-    ["E"]="ACTIONBUTTON2",
+    ["E"]="ACTIONBUTTON3",
     ["D"]="STRAFERIGHT",
     ["G"]="MULTIACTIONBAR1BUTTON2",
     ["F"]="MULTIACTIONBAR1BUTTON1",
@@ -367,7 +366,7 @@ FeralSetupLayout={
     ["PAGEUP"]="CAMERAZOOMIN",
     ["CMD-Z"]="MULTIACTIONBAR2BUTTON6",
     ["-"]="MULTIACTIONBAR3BUTTON4",
-    ["SHIFT-Q"]="ACTIONBUTTON3",
+    ["SHIFT-Q"]="ACTIONBUTTON2",
     ["SHIFT-E"]="ACTIONBUTTON4"
   }
 }
@@ -375,7 +374,11 @@ FeralSetupLayout={
 -- Switching only changes bindings. Every form keeps exactly the same slots.
 FeralSetupLayout.bindings.Z='MULTIACTIONBAR1BUTTON9'
 FeralSetupLayout.bindings['SHIFT-Z']='MULTIACTIONBAR1BUTTON9'
-FeralSetupLayout.bindings['SHIFT-3']='ACTIONBUTTON9'
+-- Name-bound macros keep every existing form page intact during upgrades.
+FeralSetupLayout.boundMacros={{kind='macro',name='Faerie Pull'},{kind='macro',name='Form Resource'}}
+FeralSetupLayout.bindings['SHIFT-W']='MACRO Faerie Pull'
+FeralSetupLayout.bindings['ALT-R']='MACRO Form Resource'
+FeralSetupLayout.bindings['CMD-R']='MACRO Form Resource'
 FeralSetupLayout.bindings['SHIFT-T']='MULTIACTIONBAR1BUTTON7'
 FeralSetupLayout.bindings['SHIFT-X']='MULTIACTIONBAR1BUTTON8'
 FeralSetupLayout.bindings['SHIFT-6']='ACTIONBUTTON6'
@@ -397,4 +400,4 @@ numbers['SHIFT-Q']='ACTIONBUTTON7'
 numbers['SHIFT-E']='ACTIONBUTTON8'
 numbers['SHIFT-1']=nil
 numbers['SHIFT-2']=nil
-FeralSetupLayout.profileNames={A='Numbers: 1/2 direct, 3/4 bleed; Q/E control',B='Q/E attacks, Shift+Q/E finishers; 1/2 control'}
+FeralSetupLayout.profileNames={A='Numbers: 1/2 direct, 3/4 bleed; Q/E control',B='Q builds, E finishes; Shift adds bleed; 1/2 control'}

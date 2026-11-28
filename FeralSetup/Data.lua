@@ -12,9 +12,9 @@ FeralSetupDefaults={
   ["trinket"]="13",
 }
 FeralSetupMacros={
-  {name="Rejuvenation",body="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] Rejuvenation"},
-  {name="Regrowth",body="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] Regrowth"},
-  {name="Healing Touch",body="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] Healing Touch"},
+  {name="Rejuvenation",body="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][noform,@player] Rejuvenation"},
+  {name="Regrowth",body="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][noform,@player] Regrowth"},
+  {name="Healing Touch",body="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][noform,@player] Healing Touch"},
   {name="Remove Curse",body="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] Remove Curse"},
   {name="Poison Cleanse",body="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] {{poison}}"},
   {name="Innervate",body="#showtooltip\n/stopmacro [mod:shift,nomod:cmd/alt]\n/cast [mod:cmd/alt,@player][@mouseover,help,nodead][help,nodead][@player] Innervate"},
@@ -24,6 +24,8 @@ FeralSetupMacros={
   {name="Cat Charge",body="#showtooltip\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt,@mouseover,harm,nodead][nomod:shift/cmd/alt,harm,nodead] Feral Charge (Cat)"},
   {name="Bear Charge",body="#showtooltip\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt,@mouseover,harm,nodead][nomod:shift/cmd/alt,harm,nodead] {{bearCharge}}"},
   {name="Faerie Fire",body="#showtooltip\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt,@mouseover,harm,nodead][nomod:shift/cmd/alt,harm,nodead] Faerie Fire"},
+  {name="Faerie Pull",body="#showtooltip Faerie Fire\n/cast [nomod:cmd/alt,@mouseover,harm,nodead][nomod:cmd/alt,harm,nodead] Faerie Fire"},
+  {name="Form Resource",body="#showtooltip\n/cast [form:{{cat}}] Shifting Power; [form:{{bear}}] Enrage; [noform,@player] Innervate"},
   {name="Growl",body="#showtooltip\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt,@mouseover,harm,nodead][nomod:shift/cmd/alt,harm,nodead] Growl"},
   {name="Roots",body="#showtooltip\n/stopattack\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt,@mouseover,harm,nodead][nomod:shift/cmd/alt,harm,nodead] Entangling Roots"},
   {name="Hibernate",body="#showtooltip\n/stopattack\n/cast [mod:shift,@focus,harm,nodead][nomod:shift/cmd/alt,@mouseover,harm,nodead][nomod:shift/cmd/alt,harm,nodead] Hibernate"},
